@@ -1,7 +1,10 @@
 # import curses as c
 # from curses import wrapper
 from local_output import output
+# update
 from local_room import test_room
+from local_enemies_class import enemies_class_update
+# keys
 from local_input_key import get_in, player_move
 from local_input import keyin
 from local_terrain import terrain
@@ -48,6 +51,9 @@ while p["hp"] > 0:
             if manacounter > p["manacounter"]:
                 manacounter -= p["manacounter"]
                 p["mana"] += 1
+
+        enemies_class_update(m, [p["y"], p["x"]])
+
         if p["hp"] == p["maxhp"]:
             hpcounter = 0
         else:

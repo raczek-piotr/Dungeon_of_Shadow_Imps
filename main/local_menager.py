@@ -1,7 +1,8 @@
-from random import randint
+from random import randint, choice
 from local_zero3 import zero3  # or "*" -PR-
 from local_map import map_init
 from local_item_class import item_class_init, item_class_clear
+from local_enemies_class import enemies_class_clear
 from local_translator import translate
 
 def menager(command = "#R", m = {}, p = {}): # #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
@@ -21,6 +22,8 @@ def menager(command = "#R", m = {}, p = {}): # #R - try to reload or start, #S -
 
 def prepare_map(m, p):
     item_class_clear()
+    enemies_class_clear()
+    elist = [0,1,2]
     ilist = ["]" + zero3(item_class_init("]", {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": False, "grouping": False}))]
     for i in range(15):
         ilist.append("$" + zero3(item_class_init("$", randint(1, 99))))
@@ -28,7 +31,7 @@ def prepare_map(m, p):
         ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(10, 40), "ARROWS"], "ident": True, "grouping": True})))
     for i in range(randint(0, 2)):
         ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "ident": True, "grouping": True})))
-    p["y"], p["x"] = map_init(m, p, ilist, randint(0,2))
+    p["y"], p["x"] = map_init(m, p, ilist, elist, choice([0,2]))#randint(0,2))
 
 def start_data():
     path = "data/"

@@ -106,7 +106,10 @@ def output(m, p):
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
-                    i += m["o"][ty][tx][0]
+                    try: # for testing m["m"] and move enemies -PR-
+                        i += m["m"][ty][tx][0]
+                    except:
+                        i += m["o"][ty][tx][0]
                 else:
                     i += " "
         else:
