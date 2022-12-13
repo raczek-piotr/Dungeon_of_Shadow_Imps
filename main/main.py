@@ -18,12 +18,13 @@ test_room(m, [p["y"], p["x"]])
 
 while p["hp"] > 0:
     print(output(m, p) + p["echo"]+":")
+    p["wasattackby"] = ""
     gi = get_in()
-    p["newy"], p["newx"], t1 = player_move(gi)
+    p["dy"], p["dx"], t1 = player_move(gi)
     if t1:
-        move, p["echo"], p["moved"] = terrain(m, p, [p["newy"] + p["y"], p["newx"] + p["x"]], (True if p["newy"] == 0 and p["newx"] == 0 else False))
+        move, p["echo"], p["moved"] = terrain(m, p, [p["dy"] + p["y"], p["dx"] + p["x"]], (True if p["dy"] == 0 and p["dx"] == 0 else False))
         if move:
-            p["y"], p["x"] = p["newy"] + p["y"], p["newx"] + p["x"]
+            p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
     else:
         p["echo"], p["moved"] = keyin(m, p, [p["y"], p["x"]], gi)
         if p["echo"][:1] == "#": # it could be "" -PR-
@@ -39,7 +40,7 @@ while p["hp"] > 0:
             if p["torchtime"] < 0:
                 p["torch"] = False
         while p["xp"] >= p["needxp"]:
-            p["xp"] += 1
+            p["lw"] += 1
             p["needxp"] = (p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 30 - 6 # sum of ((x+4)**2)//5 -PR-
             p["maxhp"] += p["hpchange"]
             p["hp"] += p["hpchange"]
@@ -52,7 +53,7 @@ while p["hp"] > 0:
                 manacounter -= p["manacounter"]
                 p["mana"] += 1
 
-        enemies_class_update(m, [p["y"], p["x"]])
+        enemies_class_update(m, p, [p["y"], p["x"]])
 
         if p["hp"] == p["maxhp"]:
             hpcounter = 0
@@ -65,7 +66,9 @@ while p["hp"] > 0:
             p["hp"] = p["maxhp"]
         if p["hp"] <= 0:
             break
-    # die - PR
+menager("#E", m, p)
+input(output(m, p) + p["echo"]+"\n"+"wynik")
+# die - PR
     # c.init_pair(0, c.COLOR_BLUE, c.COLOR_BLACK)
     # s.clear()
     # s.addstr(1,1,"gh",c.color_pair(0))

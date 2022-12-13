@@ -1,5 +1,7 @@
 from local_translator import translate
 from local_item_class import item_class_get
+from local_enemies_class import enemies_class_is_attacked
+from local_equip import get_equip_values
 #from local_items import *
 BP_mask = []
 
@@ -11,7 +13,7 @@ def update_BP_mask(p):
         if i["grouping"]:
             BP_mask.append(i["item"])
 
-def merge(p):
+def merge(p): # polacz (PL) -PR-
     i = 0
     while i < len(p["BP"]):
         j = 1
@@ -62,6 +64,7 @@ def f_arrows(m, p, npos, stay):
             p["BP"].append(i)
             merge(p)
             update_BP_mask(p)
+            get_equip_values(p)
             echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+translate("ARROWS", i["values"][0])
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["r"][npy][npx] = m["r"][npy][npx]
@@ -80,6 +83,7 @@ def f_weapons(m, p, npos, stay):
         if len(p["BP"]) < 6:
             p["BP"].append(i)
             update_BP_mask(p)
+            get_equip_values(p)
             echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+("["+str(i["values"][0])+"]" if i["ident"] else "[?]"))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["r"][npy][npx] = m["r"][npy][npx]
@@ -99,7 +103,7 @@ def f_torch(m, p, npos, stay):
             p["BP"].append(i)
             merge(p)
             update_BP_mask(p)
-            update_BP_mask(p)
+            get_equip_values(p)
             echo = translate("YOU TAKE")+" "+translate("TORCH")
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["r"][npy][npx] = m["r"][npy][npx]
@@ -149,4 +153,7 @@ def terrain(m, p, npos, stay):
             return [True, "Tu są schody do góry", True]
         case _:
         # move a player?, echo, moved?
-            return [False, "", True]
+            print(m["r"][npos[0]][npos[1]])
+            id = int(m["r"][npos[0]][npos[1]][1:4])
+            enemies_class_is_attacked(m, p, id, p["attack"])
+            return [False, p["echo"], True]

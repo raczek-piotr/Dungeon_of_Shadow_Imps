@@ -56,11 +56,11 @@ def playerdata(y, p):
         case 9:
             return " gold: " + str(p["gold"])
         case 11:
-            return " " + item(p["attack"])
+            return " attack: " + str(p["attack"])
         case 12:
-            return " " + item(p["hand"])
+            return "    bow: " + str(p["bow"])
         case 13:
-            return " " + item(p["armor"])
+            return "  armor: " + str(p["armor"])
         case 15:
             return " " + item(p["BP"], 0)
         case 16:

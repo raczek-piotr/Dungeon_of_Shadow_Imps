@@ -3,10 +3,14 @@ from local_zero3 import zero3  # or "*" -PR-
 from local_map import map_init
 from local_item_class import item_class_init, item_class_clear
 from local_enemies_class import enemies_class_clear
+
+from local_equip import get_equip_values
 from local_translator import translate
 
-def menager(command = "#R", m = {}, p = {}): # #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
+def menager(command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command:
+        case "#E":
+            p["echo"] = translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))
         case "#U":
             p["depth"] -= 1
             prepare_map(m, p)
@@ -23,15 +27,15 @@ def menager(command = "#R", m = {}, p = {}): # #R - try to reload or start, #S -
 def prepare_map(m, p):
     item_class_clear()
     enemies_class_clear()
-    elist = [0,1,2]
+    elist = [["r",4,2,1,1,6,False,[]],["r",4,2,1,1,6,False,[]],["r",4,2,1,1,6,False,[]],["b",4,4,2,1,6,False,[]],["a",6,3,2,3,10,True,[]],["a",6,3,2,3,10,True,[]],["c",6,5,4,3,10,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
     ilist = ["]" + zero3(item_class_init("]", {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": False, "grouping": False}))]
     for i in range(15):
-        ilist.append("$" + zero3(item_class_init("$", randint(1, 99))))
-    for i in range(2):
-        ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(10, 40), "ARROWS"], "ident": True, "grouping": True})))
+        ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
+    for i in range(randint(0, 2)):
+        ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "ident": True, "grouping": True})))
     for i in range(randint(0, 2)):
         ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "ident": True, "grouping": True})))
-    p["y"], p["x"] = map_init(m, p, ilist, elist, choice([0,2]))#randint(0,2))
+    p["y"], p["x"] = map_init(m, p, ilist, elist, randint(0,2))
 
 def start_data():
     path = "data/"
@@ -48,11 +52,11 @@ def start_data():
         "specials": "",
         "name": "qwe",
         "maxmana": 2,
-        "mana": 1,
+        "mana": 2,
         "manacounter": 75,
-        "maxhp": 20,
-        "hp": 1,
-        "hpchange": 4,
+        "maxhp": 10,
+        "hp": 10,
+        "hpchange": 2,
         "hpcounter": 10,
         "needxp": 5,
         "xp": 0,
@@ -60,25 +64,29 @@ def start_data():
         "depth": 1,
         "strength": 10,
         "gold": 0,
-        "attack": {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": True, "grouping": False},
-        "hand": {"item": "SHORT BOW {", "type": "}", "values": [3, 1, 10], "ident": True, "grouping": False},
-        "armor": {"item": "FUR (", "type": ")", "values": [1, 1, 9], "ident": True, "grouping": False},
+        "attack": 1,
+        "bow": 1,
+        "armor": 0,
+        "e_attack": {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": True, "grouping": False},
+        "e_hand": {"item": "SHORT BOW {", "type": "}", "values": [3, 1, 10], "ident": True, "grouping": False},
+        "e_armor": {"item": "FUR (", "type": ")", "values": [1, 1, 9], "ident": True, "grouping": False},
         "y": 0,
         "x": 0,
-        "newy": 0,
-        "newx": 0,
+        "dy": 0, # direction y -PR-
+        "dx": 0,
         "wasattackby": "",
         "echo": "",
         "torch": True,
-        "torchtime": 350,
+        "torchtime": 35000,
+        "arrows_id": 0,
         "BP": [
-               {"item": "BOW {", "type": "}", "values": [5, 2, 12], "ident": False, "grouping": False},
-               {"item": "ARROW", "type": "", "values": [35, "ARROWS"], "ident": True, "grouping": True},
+               {"item": "ARROW", "type": "", "values": [12, "ARROWS"], "ident": True, "grouping": True},
                {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "ident": True, "grouping": True},
 # no rings for a time! -PR- {"item": "RING |", "type": "|", "values": ["RING OF POWER |", 1], "ident": True, "grouping": False},
-               {"item": "POTION OF HEALING", "type": "", "values": [2, "POTIONS OF HEALING"], "ident": True, "grouping": True}
+               #{"item": "POTION OF HEALING", "type": "", "values": [2, "POTIONS OF HEALING"], "ident": True, "grouping": True}
                ],
         "time": 0,
         "moved": True,
         }
+    get_equip_values(p)
     return m, p, path

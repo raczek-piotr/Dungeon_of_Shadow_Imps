@@ -31,6 +31,7 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
             pokoje[i][3] = int(2*pokoje[i][3])
 
 def map_init(m, p, items, enemies, type_of_map = 0):
+    print(type_of_map)
     pokoje = []
     m["sy"], m["sx"] = 32, 32
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -119,16 +120,8 @@ def map_init(m, p, items, enemies, type_of_map = 0):
                 while m["r"][j[0]][j[1]] != "_.":
                     i = randint(1, len(pokoje)-2)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init("r", j[0], j[1], 8, 2, 1, 3, 5)
-                m["r"][j[0]][j[1]] = "_"+"r"+zero3(e_id)+"."
-            for k in enemies:
-                i = randint(1, len(pokoje)-2)
-                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != "_.":
-                    i = randint(1, len(pokoje)-2)
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init("a", j[0], j[1], 4, 2, 1, 5, 10, True)
-                m["r"][j[0]][j[1]] = "_"+"a"+zero3(e_id)+"."
+                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
             if p["depth"] % 5 == 0:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "_=>"
             else:
@@ -200,6 +193,7 @@ def map_init(m, p, items, enemies, type_of_map = 0):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
+            l_pokoje = l_pokoje-1
             i = randint(ran, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
@@ -207,14 +201,15 @@ def map_init(m, p, items, enemies, type_of_map = 0):
                     i = randint(ran, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
+            ran = len(pokoje)-1
             for k in enemies:
-                i = randint(ran, l_pokoje)
+                i = randint(1, ran)
                 j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != " ":
-                    i = randint(ran, l_pokoje)
+                while m["r"][j[0]][j[1]] != "_.":
+                    i = randint(1, ran)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init("r", j[0], j[1], 8, 2, 1, 3, 5)
-                m["r"][j[0]][j[1]] = "r"+zero3(e_id)+" "
+                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
             if p["depth"] % 5 == 0:
                 m["r"][pokoje[1][0]+pokoje[1][2]//2][pokoje[1][1]+pokoje[1][3]//2] = "_=>"
             else:
@@ -276,8 +271,8 @@ def map_init(m, p, items, enemies, type_of_map = 0):
                 while m["r"][j[0]][j[1]] != " ":
                     i = randint(1, len(pokoje)-2)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init("r", j[0], j[1], 8, 2, 1, 3, 5)
-                m["r"][j[0]][j[1]] = "r"+zero3(e_id)+" "
+                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
             if p["depth"] % 5 == 0:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "=>"
             else:
