@@ -26,7 +26,7 @@ def enemies_class_init(head, y, x, hp = 8, attack = 2, xp = 1, time_sleep = 1, h
 
 def enemies_class_update(m, p, yx):
     global c, a, mhr, tlist, exlist
-    m["m"] = [[-1 for _ in range(m["sy"])] for _ in range(m["sx"])]
+    m["m"] = [[-1 for _ in range(m["sx"])] for _ in range(m["sy"])]
     w, k = yx[0], yx[1] # row kolumn -PR-
     q = [[w, k, -1]]
     while q != []:
@@ -63,14 +63,14 @@ def enemies_class_update(m, p, yx):
                 m["m"][w+1][k+1] = p1[2] + 1
 
     t = []
-    for i in range(len(c)):
-        q = c[i]
-        if q["head"] == m["r"][q["y"]][c[i]["x"]][0] and m["m"][q["y"]][c[i]["x"]] < q["hear_range"]: # q["hp"] > 0 he won't be on the map! -PR-
+    for it in range(len(c)):
+        q = c[it]
+        if q["head"]+zero3(it) == m["r"][q["y"]][q["x"]][:4] and m["m"][q["y"]][c[it]["x"]] < q["hear_range"]: # q["hp"] > 0 he won't be on the map! -PR-
             if q["time_sleep"] == 0:
                 if m["m"][q["y"]][q["x"]] == 0:
                     enemies_class_attack(p, q["head"], q["attack"])
                 else:
-                    t.append(i)
+                    t.append(it)
             else:
                 q["time_sleep"] -= 1
     while t != []:
@@ -98,7 +98,8 @@ def enemies_class_update(m, p, yx):
         if m["r"][q["y"]][q["x"]] == "":
             m["r"][q["y"]][q["x"]] = " "
             print("CUT OFF WORNING, I DON'T KNOW WHY")
-        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+        if m["v"][q["y"]][q["x"]][0] != " ":
+            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
         if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
             q["y"], q["x"] = direction[1:]
         m["r"][q["y"]][q["x"]] = q["head"]+zero3(it)+m["r"][q["y"]][q["x"]]
@@ -188,7 +189,8 @@ def enemies_class_update(m, p, yx):
         if m["r"][q["y"]][q["x"]] == "":
             m["r"][q["y"]][q["x"]] = " "
             print("CUT OFF WORNING, I DON'T KNOW WHY")
-        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+        if m["v"][q["y"]][q["x"]][0] != " ":
+            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
         if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
             q["y"], q["x"] = direction[1:]
         m["r"][q["y"]][q["x"]] = q["head"]+zero3(it+500)+m["r"][q["y"]][q["x"]]

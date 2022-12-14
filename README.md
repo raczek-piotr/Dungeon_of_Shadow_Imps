@@ -1,4 +1,4 @@
-## Dungeons
+## Dungeons of Imps
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)

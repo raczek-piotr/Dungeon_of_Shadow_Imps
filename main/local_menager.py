@@ -27,15 +27,15 @@ def menager(command = "#R", m = {}, p = {}): # #E - end game #R - try to reload 
 def prepare_map(m, p):
     item_class_clear()
     enemies_class_clear()
-    elist = [["r",4,2,1,1,6,False,[]],["r",4,2,1,1,6,False,[]],["r",4,2,1,1,6,False,[]],["b",4,4,2,1,6,False,[]],["a",6,3,2,3,10,True,[]],["a",6,3,2,3,10,True,[]],["c",6,5,4,3,10,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
+    elist = [["r",2,2,1,1,6,False,[]],["r",2,2,1,1,6,False,[]],["r",2,2,1,1,6,False,[]],["r",2,2,1,1,6,False,[]],["r",2,2,1,1,6,False,[]],["g",3,1,1,4,6,True,[]],["g",3,1,1,4,6,True,[]],["g",3,1,1,4,6,True,[]],["g",3,1,1,4,6,True,[]],["b",1,1,1,1,20,False,[]],["b",1,1,1,1,20,False,[]],["b",1,1,1,1,20,False,[]],["k",3,3,2,4,6,False,[]],["k",3,3,2,4,6,False,[]],["a",4,5,7,1,15,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
     ilist = ["]" + zero3(item_class_init("]", {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": False, "grouping": False}))]
-    for i in range(15):
+    for i in range(randint(0, 6)):
         ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
     for i in range(randint(0, 2)):
         ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "ident": True, "grouping": True})))
     for i in range(randint(0, 2)):
         ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "ident": True, "grouping": True})))
-    p["y"], p["x"] = map_init(m, p, ilist, elist, randint(0,2))
+    p["y"], p["x"] = map_init(m, p, ilist, elist, (choice([0,1,2]) if p["depth"] > 0 else "surface")) # 0,1,2,
 
 def start_data():
     path = "data/"
@@ -61,7 +61,7 @@ def start_data():
         "needxp": 5,
         "xp": 0,
         "lw": 1,
-        "depth": 1,
+        "depth": 0,
         "strength": 10,
         "gold": 0,
         "attack": 1,
