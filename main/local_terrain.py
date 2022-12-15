@@ -145,6 +145,8 @@ def terrain(m, p, npos, stay):
             return [True, "", True]
         case " ":
             return [True, "", True]
+        case "^":
+            return [False, translate("HERE IS A VERY STEP HILL, YOU CAN'T GET HERE"), False]
         case "#":
             return [False, translate("HERE IS A WALL"), False]
         case ">":

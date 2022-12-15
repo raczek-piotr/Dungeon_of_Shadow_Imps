@@ -1,6 +1,7 @@
 from random import randint, choice
 
 from local_zero3 import zero3
+from local_item_class import item_class_init
 from local_enemies_class import enemies_class_init
 
 #def galwana(x, sx):
@@ -40,19 +41,33 @@ def map_init_str(m, p, items, enemies, type_of_map):
     #match type_of_map:
         #case "surface":
             with open("maps/surface.map", "r") as rm: # readmap -PR-
+                p["echo"] = "?!"
                 rm = rm.read().split("\n")
                 ty, tx = rm.pop(0).split(" ")
                 m["sy"], m["sx"] = int(ty), int(tx)
                 ty, tx = rm.pop(0).split(" ")
-                m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
+                m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
                 m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
                 m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+                l = 0
                 for y in range(m["sy"]-2):
                     t = rm[y].split(";")
                     for x in range(m["sx"]-2):
                         m["r"][y+1][x+1] = t[x]
                         if m["r"][y+1][x+1] == "_":
                             m["r"][y+1][x+1] += "."
+                        elif m["r"][y+1][x+1][0] == "_":
+                            if m["r"][y+1][x+1][1] in ["]","}",")","$","~","-","!","?"]:
+                                l -= 1
+                                it = rm[l].split(" ")
+                                if it[-1] == "i.int":
+                                    it = item_class_init(t[x][0], randint(int(it[0]), int(it[1])))
+                                    m["r"][y+1][x+1] = t[x][0:2]+zero3(it)+t[x][2:]
+                        elif m["r"][y+1][x+1][0] == "e":
+                            l -= 1
+                            e = rm[l].split(" ")
+                            it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
+                            m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
             return(int(ty), int(tx))
                         
                     
