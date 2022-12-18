@@ -13,11 +13,11 @@ from local_terrain import terrain
 
 from local_menager import menager
 m, p, path = menager()
-hpcounter, manacounter = 0, 0
+hpcounter, manacounter, foodcounter = 0, 0, 0
 test_room(m, [p["y"], p["x"]])
 
 while p["hp"] > 0:
-    print(output(m, p) + p["echo"]+":")
+    print("\n"+output(m, p) + p["echo"]+":") # in curses please remove ("\n"+...), if it worked normally -PR-
     p["wasattackby"] = ""
     gi = get_in()
     p["dy"], p["dx"], t1 = player_move(gi)
@@ -41,7 +41,7 @@ while p["hp"] > 0:
                 p["torch"] = False
         while p["xp"] >= p["needxp"]:
             p["lw"] += 1
-            p["needxp"] = (p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 30 - 6 # sum of ((x+4)**2)//5 -PR-
+            p["needxp"] = (p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
             p["maxhp"] += p["hpchange"]
             p["hp"] += p["hpchange"]
         p["wasattackby"] = ""

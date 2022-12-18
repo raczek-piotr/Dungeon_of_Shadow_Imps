@@ -6,7 +6,7 @@ from local_equip import get_equip_values
 BP_mask = []
 
 
-def update_BP_mask(p):
+def update_BP_mask(p): # is local_input
     global BP_mask
     BP_mask = []
     for i in p["BP"]:
@@ -75,6 +75,26 @@ def f_arrows(m, p, npos, stay):
         echo = translate("HERE ARE")+" "+str(i["values"][0])+"x "+translate("ARROWS", 0 if i["values"][0] == 1 else i["values"][0])
     return[True, echo, True]
 
+def f_items(m, p, npos, stay):
+    npy, npx = npos
+    i = int(m["r"][npy][npx][1:4])
+    i = item_class_get(i)
+    if stay:
+        if len(p["BP"]) < 6 or i["item"] in BP_mask:
+            p["BP"].append(i)
+            merge(p)
+            update_BP_mask(p)
+            get_equip_values(p)
+            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+translate(i["values"][-1], i["values"][0])
+            m["r"][npy][npx] = m["r"][npy][npx][4:]
+            m["r"][npy][npx] = m["r"][npy][npx]
+        else:
+            echo = translate("YOUR'S BACKPACK IS FULL!")
+            return[False, echo, False]
+    else:
+        echo = translate("HERE ARE" if i["values"][0] > 1 else "HERE IS")+" "+str(i["values"][0])+"x "+translate(i["values"][-1], 0 if i["values"][0] == 1 else i["values"][0])
+    return[True, echo, True]
+
 def f_weapons(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
@@ -120,7 +140,9 @@ def terrain(m, p, npos, stay):
         case "$":
             return f_gold(m, p, npos, stay)
         case "-":
-            return f_arrows(m, p, npos, stay)
+            return f_items(m, p, npos, stay)
+        case "*":
+            return f_items(m, p, npos, stay)
         # # case "!":
         # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "+":

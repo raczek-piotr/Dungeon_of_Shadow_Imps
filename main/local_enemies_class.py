@@ -4,7 +4,7 @@ from local_translator import translate
 
 def enemies_class_clear():
     global c, a, mhr, tlist, exlist # c - class, mhr - max hear range -PR-
-    tlist = [".",","," ","]","}",")","$","~","-","!","?","<",">"]
+    tlist = [".",","," ","]","}",")","$","~","-","*","!","?","<",">"]
     exlist = tlist.copy()
     c, a, mhr = [], [], 1
 
@@ -95,9 +95,9 @@ def enemies_class_update(m, p, yx):
                 p_min = i[0]
                 direction = i
         m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-        if m["r"][q["y"]][q["x"]] == "":
-            m["r"][q["y"]][q["x"]] = " "
-            print("CUT OFF WORNING, I DON'T KNOW WHY")
+        #if m["r"][q["y"]][q["x"]] == "":
+        #    m["r"][q["y"]][q["x"]] = " "
+        #    print("CUT OFF WORNING, I DON'T KNOW WHY")
         if m["v"][q["y"]][q["x"]][0] != " ":
             m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
         if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
@@ -158,7 +158,7 @@ def enemies_class_update(m, p, yx):
         if q["head"]+zero3(it+500) == m["r"][q["y"]][q["x"]][:4] and m["m"][q["y"]][q["x"]] < q["hear_range"]:
             if q["time_sleep"] == 0:
                 if m["m"][q["y"]][q["x"]] == 0:
-                    if enemies_class_clear_shot(m["r"], [q["y"], q["x"]], [p["y"], p["x"]]):
+                    if enemies_class_clear_shot(m["r"], [q["y"], q["x"]], [p["y"], p["x"]], q["hear_range"]):
                         enemies_class_attack(p, q["head"], q["attack"])
                 else:
                     t.append(it)
@@ -186,9 +186,9 @@ def enemies_class_update(m, p, yx):
                 p_min = i[0]
                 direction = i
         m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-        if m["r"][q["y"]][q["x"]] == "":
-            m["r"][q["y"]][q["x"]] = " "
-            print("CUT OFF WORNING, I DON'T KNOW WHY")
+        #if m["r"][q["y"]][q["x"]] == "":
+        #    m["r"][q["y"]][q["x"]] = " "
+        #    print("CUT OFF WORNING, I DON'T KNOW WHY")
         if m["v"][q["y"]][q["x"]][0] != " ":
             m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
         if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
@@ -202,7 +202,7 @@ def enemies_class_update(m, p, yx):
 
 # enemies attacks player
 
-def enemies_class_clear_shot(rmap, e, p):
+def enemies_class_clear_shot(rmap, e, p, hear_range):
     dire = [0, 0] # direction -PR-
     if p[0] < e[0]:
         dire[0] = 1
@@ -212,11 +212,18 @@ def enemies_class_clear_shot(rmap, e, p):
         dire[1] = 1
     elif p[1] > e[1]:
         dire[1] = -1
-    if rmap[p[0]+dire[0]][p[1]+dire[1]] in tlist:
+    if abs(p[0] - e[0]) + abs(p[1] - e[1]) <= hear_range and clear(rmap, e, p, dire):
         return True
     elif p[0]+dire[0] == e[0] and p[1]+dire[1] == e[1]:
         return True
     return False
+
+def clear(rmap, e, p, dire):
+    while p != e:
+        if rmap[p[0]][p[1]][0] not in [" ",",","."]:
+            return False
+        p[0], p[1] = p[0]+dire[0], p[1]+dire[1]
+    return True
 
 def enemies_class_attack(p,head, value):
     if randint(0, 1) == 0:
@@ -246,9 +253,9 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
             q = c[it]
         q["hp"] -= value
         if ranged:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+str(q["hp"])+"|"
+            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
         else:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+str(q["hp"])+"|"
+            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
         if q["hp"] <= 0:
             m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
             if m["v"][q["y"]][q["x"]][0] == q["head"]:

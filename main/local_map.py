@@ -31,49 +31,97 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
             pokoje[i][2] = int(2*pokoje[i][2])
             pokoje[i][3] = int(2*pokoje[i][3])
 
-def map_init(m, p, items, enemies, type_of_map = 0):
+def map_init(m, p, items, enemies, type_of_map = 0, stairs = 3):
     if type(type_of_map) == type(0):
-        return map_init_int(m, p, items, enemies, type_of_map)
+        return map_init_int(m, p, items, enemies, type_of_map, stairs)
     else:
         return map_init_str(m, p, items, enemies, type_of_map)
 
 def map_init_str(m, p, items, enemies, type_of_map):
-    #match type_of_map:
-        #case "surface":
-            with open("maps/surface.map", "r") as rm: # readmap -PR-
-                p["echo"] = "?!"
-                rm = rm.read().split("\n")
-                ty, tx = rm.pop(0).split(" ")
-                m["sy"], m["sx"] = int(ty), int(tx)
-                ty, tx = rm.pop(0).split(" ")
-                m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
-                m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-                m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-                l = 0
-                for y in range(m["sy"]-2):
-                    t = rm[y].split(";")
-                    for x in range(m["sx"]-2):
-                        m["r"][y+1][x+1] = t[x]
-                        if m["r"][y+1][x+1] == "_":
-                            m["r"][y+1][x+1] += "."
-                        elif m["r"][y+1][x+1][0] == "_":
-                            if m["r"][y+1][x+1][1] in ["]","}",")","$","~","-","!","?"]:
-                                l -= 1
-                                it = rm[l].split(" ")
-                                if it[-1] == "i.int":
-                                    it = item_class_init(t[x][0], randint(int(it[0]), int(it[1])))
-                                    m["r"][y+1][x+1] = t[x][0:2]+zero3(it)+t[x][2:]
-                        elif m["r"][y+1][x+1][0] == "e":
+    if type_of_map == "surface":
+        with open("maps/surface.map", "r") as rm: # readmap -PR-
+            p["echo"] = "?!"
+            rm = rm.read().split("\n")
+            ty, tx = rm.pop(0).split(" ")
+            m["sy"], m["sx"] = int(ty), int(tx)
+            ty, tx = rm.pop(0).split(" ")
+            m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+            l = 0
+            for y in range(m["sy"]-2):
+                t = rm[y].split(";")
+                for x in range(m["sx"]-2):
+                    m["r"][y+1][x+1] = t[x]
+                    if m["r"][y+1][x+1] == "_":
+                        m["r"][y+1][x+1] += "."
+                    elif m["r"][y+1][x+1][0] == "_":
+                        if m["r"][y+1][x+1][1] == "i":
                             l -= 1
-                            e = rm[l].split(" ")
-                            it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
-                            m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
-            return(int(ty), int(tx))
+                            it = rm[l].split(" ")
+                            e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
+                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                        elif m["r"][y+1][x+1][1] == "w":
+                            l -= 1
+                            it = rm[l].split("|")
+                            e = it[-1].split(";")
+                            for i in range(len(e)):
+                                if e[i][0] == '"':
+                                    e[i] = e[i][1:]
+                                else:
+                                    e[i] = int(e[i])
+                            e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
+                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                    elif m["r"][y+1][x+1][0] == "e":
+                        l -= 1
+                        e = rm[l].split(" ")
+                        it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
+                        m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
+    else:
+        with open("maps/"+type_of_map+".map", "r") as rm:
+            p["echo"] = "?!"
+            rm = rm.read().split("\n")
+            ty, tx = rm.pop(0).split(" ")
+            m["sy"], m["sx"] = int(ty), int(tx)
+            ty, tx = rm.pop(0).split(" ")
+            m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+            l = 0
+            for y in range(m["sy"]-2):
+                t = rm[y].split(";")
+                for x in range(m["sx"]-2):
+                    m["r"][y+1][x+1] = t[x]
+                    if m["r"][y+1][x+1] == "_":
+                        m["r"][y+1][x+1] += "."
+                    elif m["r"][y+1][x+1][0] == "_":
+                        if m["r"][y+1][x+1][1] == "i":
+                            l -= 1
+                            it = rm[l].split(" ")
+                            e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
+                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                        elif m["r"][y+1][x+1][1] == "w":
+                            l -= 1
+                            it = rm[l].split("|")
+                            e = it[-1].split(";")
+                            for i in range(len(e)):
+                                if e[i][0] == '"':
+                                    e[i] = e[i][1:]
+                                else:
+                                    e[i] = int(e[i])
+                            e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
+                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                    elif m["r"][y+1][x+1][0] == "e":
+                        l -= 1
+                        e = rm[l].split(" ")
+                        it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
+                        m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
+    return(int(ty), int(tx))
                         
                     
         
 
-def map_init_int(m, p, items, enemies, type_of_map):
+def map_init_int(m, p, items, enemies, type_of_map, stairs):
     print(type_of_map)
     pokoje = []
     m["sy"], m["sx"] = 32, 32
@@ -254,10 +302,10 @@ def map_init_int(m, p, items, enemies, type_of_map):
                     e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
                     m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
             print("1-done")
-            if p["depth"] % 5 == 0:
-                m["r"][pokoje[1][0]+pokoje[1][2]//2][pokoje[1][1]+pokoje[1][3]//2] = "_=>"
-            else:
-                m["r"][pokoje[1][0]+pokoje[1][2]//2][pokoje[1][1]+pokoje[1][3]//2] = "_>"
+            if stairs > 1:
+                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "_>."
+            if stairs % 2 == 1:
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_<."
         case 2:
             locate_a_room(m, pokoje, 1, 1, 1, 1, 1, False)
             locate_a_room(m, pokoje, 4, 5, 3, 3, 5, False)
@@ -299,11 +347,9 @@ def map_init_int(m, p, items, enemies, type_of_map):
                 ConnectCave(m, p2, middle2)
                 ConnectCave(m, p1, middle1, True)
                 pokojeok.append(pokojen.pop(n_minodl))
-            if p["depth"] % 5 == 0:
-                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "=> "
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "=< "
-            else:
+            if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
+            if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
             l_pokoje = len(pokoje)-3
             i = randint(1, l_pokoje)

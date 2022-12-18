@@ -7,14 +7,38 @@ from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values
 
+def update_BP_mask(p): # is local_terrain
+    global BP_mask
+    BP_mask = []
+    for i in p["BP"]:
+        if i["grouping"]:
+            BP_mask.append(i["item"])
 
 def item_menager(m, p):
     t1 = "\n\n\n\n\n\n\n\n\n\n\n\n\n       Equipted:\n   " + item(p["e_attack"], 9, p["strength"]) + "\n   " + item(p["e_hand"], 9, p["strength"]) + "\n   " + item(p["e_armor"], 9, p["strength"]) + "\n\n       Backpack:\n"
     for i in range(6):
         t1 += str(i+1)+": "+item(p["BP"], i, p["strength"]) + "\n"
     print(t1, end="\nWhat do you want to do?:")
-    input()
-    return["", True]
+    gi = get_in()
+    try:
+        gi = int(gi)-1
+        if gi > len(p["BP"]) or gi < 0:
+            return["", False]
+    except:
+        return["", False]
+    t = p["BP"][gi]
+    match t["item"]:
+        case "TORCH":
+            t["values"][0] -= 1
+            p["torchtime"] = 350
+            p["torch"] = True
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
+        case _:
+            return[translate("YOU CAN'T USE THAT"), False]
+    return[translate("WRONG SLOT!"), True]
 
 def shot_menager(m, p):
     print(output(m, p) + translate("WHERE DO YOU WANT TO SHOT?"))
@@ -36,32 +60,6 @@ def keyin(m, p, pos, key):
              return item_menager(m, p)
         case "0":
              return shot_menager(m, p)
-        # case "-":
-        #     return f_arrows(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # # case "!":
-        # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "+":
-        #     return f_door(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "]":
-        #     return f_weapon(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "}":
-        #     return f_putter(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case ")":
-        #     return f_armor(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "~":
-        #     return f_torch(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "?":
-        #     return f_potion(rmap, vmap, p, np, gold, baner, backpack, direction)
-        # case "=":
-        #     return [p, gold, translate("THIS TILE IS CLOSE"), 0]
-        # case ".":
-        #     return [np, gold, "", 1]
-        # case ",":
-        #     return [np, gold, "", 1]
-        # case " ":
-        #     return [np, gold, "", 1]
-        # case "#":
-        #     return [p, gold, translate("HERE IS A WALL"), 0]
         case ">":
             if m["r"][pos[0]][pos[1]][0] == ">":
                 return ["#D", False]
