@@ -67,7 +67,7 @@ while p["hp"] > 0:
         if p["hp"] <= 0:
             break
 menager("#E", m, p)
-input(output(m, p) + p["echo"]+"\n"+"wynik")
+input(output(m, p) + p["echo"]+"\n"+"wynik: "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-50))
 # die - PR
     # c.init_pair(0, c.COLOR_BLUE, c.COLOR_BLACK)
     # s.clear()

@@ -1,3 +1,4 @@
+import curses as c
 from local_translator import translate
 
 
@@ -74,12 +75,12 @@ def playerdata(y, p):
         case 20:
             return " " + item(p["BP"], 5)
         case 22:
-            return " attack by: " + p["wasattackby"]
+            return " attack by:"
         case _:
-            return "=----------------------="
+            return ""
 
 
-def output(m, p):
+def output(w, m, p):
     if p["torch"] == 1:
         for y in range(-1, 2):  # In the future I will make it better !!!
             for x in range(-1, 2):
@@ -98,22 +99,53 @@ def output(m, p):
                 i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
                 if m["o"][i[0]][i[1]] == " ":
                     m["o"][i[0]][i[1]] = "."
-    j = ""
+    q = """    j = ""
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:
             i = ""
-            t = m["o"][ty]
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
                     #try: # for testing m["m"] and move enemies -PR-
-                    #    i += t[tx][0]
+                    #    i += m["m"][ty][tx][0]
                     #except:
-                        i += t[tx][0]
+                        i += m["o"][ty][tx][0]
                 else:
                     i += " "
-        else:
-            i = "                                                     "
-        j += i + "| " + playerdata(y, p) + "\n"
-    return j
+            w.addstr(y, 0, i + "| " + playerdata(y, p))
+        w.addstr(y, 53, "| " + playerdata(y, p))"""
+    #c.init_pair(1, c.COLOR_RED, c.COLOR_WHITE)
+    c.init_pair(1, 231, 16)
+    c.init_pair(2, 46, 16)
+    c.init_pair(3, 5, 16)
+    c.init_pair(4, 136, 16)
+    c.init_pair(5, 245, 16)#148 :) -PR-
+    for y in range(23):
+        ty = p["y"] + y - 11
+        if ty >= 0 and ty < m["sy"]:
+            t = m["o"][ty]
+            for x in range(53):
+                tx = p["x"] + x - 26
+                if tx >= 0 and tx < m["sx"]:
+                    if t[tx] == "":
+                        t[tx] = "!"
+                    i = t[tx][0]
+                    if i in {"]","}",")","~","$","*","-"}:
+                        w.addstr(y, x, i, c.color_pair(2))
+                    elif i == "#":
+                        w.addstr(y, x, i, c.color_pair(5))
+                    elif i in {"<",">","+",",",":"}:
+                        w.addstr(y, x, i, c.color_pair(4))
+                    elif i.upper() != i.lower():
+                        w.addstr(y, x, i, c.color_pair(3))
+                    else:
+                        w.addstr(y, x, i, c.color_pair(1))
+        w.addstr(y, 53, "|", c.color_pair(4))
+        w.addstr(y, 55, playerdata(y, p), c.color_pair(1))
+        w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
+        w.addstr(0, 55, "=----------------------=", c.color_pair(4))
+        w.addstr(2, 55, "=----------------------=", c.color_pair(4))
+        w.addstr(10, 55, "=----------------------=", c.color_pair(4))
+        w.addstr(14, 55, "=----------------------=", c.color_pair(4))
+        w.addstr(21, 55, "=----------------------=", c.color_pair(4))
