@@ -22,6 +22,8 @@ def item_menager(w, m, p):
     c.init_pair(4, 136, 16)
     c.init_pair(5, 245, 16)#148 :) -PR-
     w.clear()
+    w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
+    w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
     w.addstr(11, 0,"Equipted:", c.color_pair(4))
     w.addstr(12, 2, item(p["e_attack"], 9, p["strength"]), c.color_pair(5))
     w.addstr(13, 2, item(p["e_hand"], 9, p["strength"]), c.color_pair(5))
@@ -42,12 +44,39 @@ def item_menager(w, m, p):
     match t["item"]:
         case "TORCH":
             t["values"][0] -= 1
-            p["torchtime"] = 350
+            p["torchtime"] = 300
             p["torch"] = True
             if t["values"][0] <= 0:
                 p["BP"].pop(gi)
                 update_BP_mask(p)
             return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
+        case "BREAD":
+            t["values"][0] -= 1
+            p["fullness"] = 500
+            p["starving"] = False
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU ATE A") + " " + translate("BREAD"), True]
+        case "CORPSE":
+            t["values"][0] -= 1
+            p["fullness"] = 100
+            p["starving"] = False
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU ATE A") + " " + translate("CORPSE"), True]
+        case "POTION":
+            t["values"][0] -= 1
+            match randint(0,1):
+                case 0:
+                    p["hp"] = p["maxhp"]
+                case _:
+                    p["strength"] += 1
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU DRANK A") + " " + translate("POTION"), True]
         case _:
             return[translate("YOU CAN'T USE THAT"), False]
     return[translate("WRONG SLOT!"), True]

@@ -19,6 +19,10 @@ lang_PL = {
     "BREAD1": "CHLEB",
     "BREADS2": "CHLEBY",
     "BREADS5": "CHLEBÓW",
+    "CORPSE": "TRUPOWI",
+    "CORPSE1": "TRUP",
+    "CORPSES2": "TRUPY",
+    "CORPSES5": "TRUPÓW",
     "MIXTURE": "MIXTURKĘ",
     "MIXTURE1": "MIXTURKA",
     "KNIFE": "NÓŻ",
@@ -55,3 +59,4 @@ def translate(ang, number = 0):
 def l_pl(ang, number):
     global lang_PL
     return(lang_PL.get(ang+("" if number == 0 else "1" if number == 1 else "2" if number < 5 or number % 10 in [2, 3, 4] and number > 20 else "5"), ang))
+

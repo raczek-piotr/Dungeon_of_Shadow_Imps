@@ -85,14 +85,14 @@ def f_items(w, m, p, npos, stay):
             merge(p)
             update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+translate(i["values"][-1], i["values"][0])
+            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 1))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
             echo = translate("YOUR'S BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE ARE" if i["values"][0] > 1 else "HERE IS")+" "+str(i["values"][0])+"x "+translate(i["values"][-1], 0 if i["values"][0] == 1 else i["values"][0])
+        echo = translate("HERE ARE" if i["values"][0] > 1 else "HERE IS")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 1))
     return[True, echo, True]
 
 def f_weapons(w, m, p, npos, stay):
@@ -142,6 +142,8 @@ def terrain(w, m, p, npos, stay):
         case "-":
             return f_items(w, m, p, npos, stay)
         case "*":
+            return f_items(w, m, p, npos, stay)
+        case "?":
             return f_items(w, m, p, npos, stay)
         # # case "!":
         # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)

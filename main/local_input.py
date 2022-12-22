@@ -18,7 +18,7 @@ def item_menager(m, p):
     t1 = "\n\n\n\n\n\n\n\n\n\n\n\n\n       Equipted:\n   " + item(p["e_attack"], 9, p["strength"]) + "\n   " + item(p["e_hand"], 9, p["strength"]) + "\n   " + item(p["e_armor"], 9, p["strength"]) + "\n\n       Backpack:\n"
     for i in range(6):
         t1 += str(i+1)+": "+item(p["BP"], i, p["strength"]) + "\n"
-    print(t1, end="\nWhat do you want to do?:")
+    print((translate("STARVING") if p["starving"] else str(p["fullness"]))+t1, end="\nWhat do you want to do?:")
     gi = get_in()
     try:
         gi = int(gi)-1
@@ -30,12 +30,31 @@ def item_menager(m, p):
     match t["item"]:
         case "TORCH":
             t["values"][0] -= 1
-            p["torchtime"] = 350
+            p["torchtime"] = 300
             p["torch"] = True
             if t["values"][0] <= 0:
                 p["BP"].pop(gi)
                 update_BP_mask(p)
             return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
+        case "BREAD":
+            t["values"][0] -= 1
+            p["fullness"] = 500
+            p["starving"] = False
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU ATE A") + " " + translate("BREAD"), True]
+        case "POTION":
+            t["values"][0] -= 1
+            match randint(0,1):
+                case 0:
+                    p["hp"] = p["maxhp"]
+                case _:
+                    p["strength"] += 1
+            if t["values"][0] <= 0:
+                p["BP"].pop(gi)
+                update_BP_mask(p)
+            return[translate("YOU DRANK A") + " " + translate("POTION"), True]
         case _:
             return[translate("YOU CAN'T USE THAT"), False]
     return[translate("WRONG SLOT!"), True]

@@ -131,7 +131,7 @@ def output(w, m, p):
                     if t[tx] == "":
                         t[tx] = "!"
                     i = t[tx][0]
-                    if i in {"]","}",")","~","$","*","-"}:
+                    if i in {"]","}",")","~","$","*","-","?"}:
                         w.addstr(y, x, i, c.color_pair(2))
                     elif i == "#":
                         w.addstr(y, x, i, c.color_pair(5))
@@ -147,5 +147,9 @@ def output(w, m, p):
         w.addstr(0, 55, "=----------------------=", c.color_pair(4))
         w.addstr(2, 55, "=----------------------=", c.color_pair(4))
         w.addstr(10, 55, "=----------------------=", c.color_pair(4))
+        if p["starving"]:
+            w.addstr(12, 55, "S", c.color_pair(3))
+        if not p["torch"]:
+            w.addstr(13, 55, "L", c.color_pair(3))
         w.addstr(14, 55, "=----------------------=", c.color_pair(4))
         w.addstr(21, 55, "=----------------------=", c.color_pair(4))

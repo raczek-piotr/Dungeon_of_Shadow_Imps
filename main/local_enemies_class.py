@@ -158,7 +158,7 @@ def enemies_class_update(m, p, yx):
         if q["head"]+zero3(it+500) == m["r"][q["y"]][q["x"]][:4] and m["m"][q["y"]][q["x"]] < q["hear_range"]:
             if q["time_sleep"] == 0:
                 if m["m"][q["y"]][q["x"]] == 0:
-                    if enemies_class_clear_shot(m["r"], [q["y"], q["x"]], [p["y"], p["x"]], q["hear_range"]):
+                    if enemies_class_shot(m["r"], [q["y"], q["x"]], [p["y"], p["x"]], q["hear_range"]):
                         enemies_class_attack(p, q["head"], q["attack"])
                 else:
                     t.append(it)
@@ -202,7 +202,7 @@ def enemies_class_update(m, p, yx):
 
 # enemies attacks player
 
-def enemies_class_clear_shot(rmap, e, p, hear_range):
+def enemies_class_shot(rmap, e, p, hear_range):
     dire = [0, 0] # direction -PR-
     if p[0] < e[0]:
         dire[0] = 1
@@ -212,18 +212,11 @@ def enemies_class_clear_shot(rmap, e, p, hear_range):
         dire[1] = 1
     elif p[1] > e[1]:
         dire[1] = -1
-    if abs(p[0] - e[0]) + abs(p[1] - e[1]) <= hear_range and clear(rmap, e, p, dire):
+    if abs(p[0] - e[0]) + abs(p[1] - e[1]) <= hear_range:
         return True
     elif p[0]+dire[0] == e[0] and p[1]+dire[1] == e[1]:
         return True
     return False
-
-def clear(rmap, e, p, dire):
-    while p != e:
-        if rmap[p[0]][p[1]][0] not in [" ",",","."]:
-            return False
-        p[0], p[1] = p[0]+dire[0], p[1]+dire[1]
-    return True
 
 def enemies_class_attack(p,head, value):
     if randint(0, 1) == 0:

@@ -39,6 +39,10 @@ while p["hp"] > 0:
             p["torchtime"] -= 1
             if p["torchtime"] < 0:
                 p["torch"] = False
+        if not p["starving"]:
+            p["fullness"] -= 1
+            if p["fullness"] < 0:
+                p["starving"] = True
         while p["xp"] >= p["needxp"]:
             p["lw"] += 1
             p["needxp"] = (p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
@@ -61,7 +65,10 @@ while p["hp"] > 0:
             hpcounter += 1
             if hpcounter > p["hpcounter"]:
                 hpcounter -= p["hpcounter"]
-                p["hp"] += 1
+                if p["starving"]:
+                    p["hp"] -= 1
+                else:
+                    p["hp"] += 1
         if p["hp"] > p["maxhp"]:
             p["hp"] = p["maxhp"]
         if p["hp"] <= 0:
