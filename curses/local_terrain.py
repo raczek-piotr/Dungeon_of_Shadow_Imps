@@ -28,7 +28,7 @@ def merge(p): # polacz (PL) -PR-
                 j += 1
         i += 1
 
-def f_gold(w, m, p, npos, stay):
+def f_gold(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
@@ -41,21 +41,21 @@ def f_gold(w, m, p, npos, stay):
         echo = translate("HERE IS")+" "+str(i)+" "+translate("GOLD", i)
     return[True, echo, True]
 
-def f_door(w, m, p, npos, stay):
+def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
     m["r"][npy][npx] = ","
     m["v"][npy][npx] = ","
     echo = "Otworzyłeś drzwi"
     return[False, echo, True]
 
-def f_block(w, m, p, npos, stay):
+def f_block(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
     m["r"][npy][npx] = " "
     m["v"][npy][npx] = " "
     echo = translate("YOU DESTROYED WEEK WALL")
     return[False, echo, True]
 
-def f_arrows(w, m, p, npos, stay):
+def f_arrows(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
@@ -75,7 +75,7 @@ def f_arrows(w, m, p, npos, stay):
         echo = translate("HERE ARE")+" "+str(i["values"][0])+"x "+translate("ARROWS", 0 if i["values"][0] == 1 else i["values"][0])
     return[True, echo, True]
 
-def f_items(w, m, p, npos, stay):
+def f_items(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
@@ -85,7 +85,7 @@ def f_items(w, m, p, npos, stay):
             merge(p)
             update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 1))
+            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 0))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
@@ -95,7 +95,7 @@ def f_items(w, m, p, npos, stay):
         echo = translate("HERE ARE" if i["values"][0] > 1 else "HERE IS")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 1))
     return[True, echo, True]
 
-def f_weapons(w, m, p, npos, stay):
+def f_weapons(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
@@ -114,7 +114,7 @@ def f_weapons(w, m, p, npos, stay):
         echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+("["+str(i["values"][0])+"]" if i["ident"] else "[?]"))
     return[True, echo, True]
 
-def f_torch(w, m, p, npos, stay):
+def f_torch(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
@@ -134,31 +134,31 @@ def f_torch(w, m, p, npos, stay):
         echo = translate("HERE IS")+" "+translate("TORCH", 1)
     return[True, echo, True]
 
-def terrain(w, m, p, npos, stay):
+def terrain(m, p, npos, stay):
     # ramp, vmap, p, gold, baner, backpack, echo, moved
     match m["r"][npos[0]][npos[1]][0]:
         case "$":
-            return f_gold(w, m, p, npos, stay)
+            return f_gold(m, p, npos, stay)
         case "-":
-            return f_items(w, m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         case "*":
-            return f_items(w, m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         case "?":
-            return f_items(w, m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         # # case "!":
         # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "+":
-            return f_door(w, m, p, npos, stay)
+            return f_door(m, p, npos, stay)
         case ":":
-            return f_block(w, m, p, npos, stay)
+            return f_block(m, p, npos, stay)
         case "]":
-            return f_weapons(w, m, p, npos, stay)
+            return f_weapons(m, p, npos, stay)
         case "}":
-            return f_weapons(w, m, p, npos, stay)
+            return f_weapons(m, p, npos, stay)
         case ")":
-            return f_weapons(w, m, p, npos, stay)
+            return f_weapons(m, p, npos, stay)
         case "~":
-            return f_torch(w, m, p, npos, stay)
+            return f_torch(m, p, npos, stay)
         # case "?":
         #     return f_potion(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "=":

@@ -6,31 +6,34 @@ from local_enemies_class import enemies_class_init
 
 
 def regular_map_init(m, p, items, enemies, type_of_map, stairs):
-    hm = 5
-    sizey, sizex = 12, 19
+    hm = 20
+    minhm = 4 # 5 -PR-
     pokoje = []
-    m["sy"], m["sx"] = 25, 39
+    tryies = 0
+    sizey, sizex = 12, 20
+    m["sy"], m["sx"] = 25, 41
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-    while len(pokoje) < hm:
+    while len(pokoje) < minhm and tryies < hm:
         sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
         y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-        can = True
+        can, tryies = True, tryies + 1
         for i in pokoje:
-            if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy+1 and
-                 abs((i[1]+i[3])-(x+sx)) < i[3]+sx+1)):
+            if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
+                 abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
                 can = False
         if can:
             pokoje.append([y, x, sy, sx])
             continue
 
+    hm = len(pokoje)
     for it in range(hm):
         for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
             for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                 m["r"][y][x] = "|"
-    for it in range(hm):
-        Connect(m, pokoje[it-1].copy(), pokoje[it].copy())
+    for it in range(hm-1):
+        Connect(m, pokoje[it].copy(), pokoje[it+1].copy())
     for it in range(hm):
         for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
             for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):

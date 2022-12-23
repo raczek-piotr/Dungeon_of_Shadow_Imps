@@ -19,7 +19,7 @@ lang_PL = {
     "BREAD1": "CHLEB",
     "BREADS2": "CHLEBY",
     "BREADS5": "CHLEBÓW",
-    "CORPSE": "TRUPOWI",
+    "CORPSE": "TRUPA",
     "CORPSE1": "TRUP",
     "CORPSES2": "TRUPY",
     "CORPSES5": "TRUPÓW",

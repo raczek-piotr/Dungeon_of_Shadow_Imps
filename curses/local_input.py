@@ -29,6 +29,7 @@ def item_menager(w, m, p):
     w.addstr(13, 2, item(p["e_hand"], 9, p["strength"]), c.color_pair(5))
     w.addstr(14, 2, item(p["e_armor"], 9, p["strength"]), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
+    w.refresh()
     t1 = ''
     for i in range(6):
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p["strength"]), c.color_pair(5))
@@ -52,7 +53,7 @@ def item_menager(w, m, p):
             return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
         case "BREAD":
             t["values"][0] -= 1
-            p["fullness"] = 500
+            p["fullness"] = 400
             p["starving"] = False
             if t["values"][0] <= 0:
                 p["BP"].pop(gi)
@@ -60,7 +61,7 @@ def item_menager(w, m, p):
             return[translate("YOU ATE A") + " " + translate("BREAD"), True]
         case "CORPSE":
             t["values"][0] -= 1
-            p["fullness"] = 100
+            p["fullness"] = 200
             p["starving"] = False
             if t["values"][0] <= 0:
                 p["BP"].pop(gi)

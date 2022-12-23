@@ -15,10 +15,10 @@ def update_BP_mask(p): # is local_terrain
             BP_mask.append(i["item"])
 
 def item_menager(m, p):
-    t1 = "\n\n\n\n\n\n\n\n\n\n\n\n\n       Equipted:\n   " + item(p["e_attack"], 9, p["strength"]) + "\n   " + item(p["e_hand"], 9, p["strength"]) + "\n   " + item(p["e_armor"], 9, p["strength"]) + "\n\n       Backpack:\n"
+    t1 = "\n\n\n\n\n\n\n\n\n\n\n\n       Equipted:\n   " + item(p["e_attack"], 9, p["strength"]) + "\n   " + item(p["e_hand"], 9, p["strength"]) + "\n   " + item(p["e_armor"], 9, p["strength"]) + "\n\n       Backpack:\n"
     for i in range(6):
         t1 += str(i+1)+": "+item(p["BP"], i, p["strength"]) + "\n"
-    print((translate("STARVING") if p["starving"] else str(p["fullness"]))+t1, end="\nWhat do you want to do?:")
+    print(translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"]))+"\n"+translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"]))+t1, end="\nWhat do you want to do?:")
     gi = get_in()
     try:
         gi = int(gi)-1
@@ -38,7 +38,7 @@ def item_menager(m, p):
             return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
         case "BREAD":
             t["values"][0] -= 1
-            p["fullness"] = 500
+            p["fullness"] = 400
             p["starving"] = False
             if t["values"][0] <= 0:
                 p["BP"].pop(gi)

@@ -59,7 +59,7 @@ while p["hp"] > 0:
 
         enemies_class_update(m, p, [p["y"], p["x"]])
 
-        if p["hp"] == p["maxhp"]:
+        if p["hp"] == p["maxhp"] and not p["starving"]:
             hpcounter = 0
         else:
             hpcounter += 1

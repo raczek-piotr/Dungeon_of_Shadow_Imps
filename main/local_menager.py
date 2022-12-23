@@ -35,7 +35,7 @@ def prepare_map(m, p):
         h = p["camp"][p["id_camp"]][p["depth"]]
     item_class_clear()
     enemies_class_clear()
-    elist = [["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["g",5,2,2,1,7,True,[]],["g",5,2,1,2,7,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
+    elist = [["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["g",5,2,2,1,7,True,[]],["g",5,2,2,2,7,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
     for i in range(p["depth"]-2):
         elist.append(["o",8,2,2,1,7,False,[]])
     for i in range((p["depth"]-2)//5):
@@ -45,7 +45,7 @@ def prepare_map(m, p):
     ilist = []#"]" + zero3(item_class_init("]", {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": False, "grouping": False}))]
     for i in range(randint(0, 6)):
         ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
-    for i in range(randint(0, 1)):
+    for i in range(choice([0,0,1,2])):
         ilist.append("*" + zero3(item_class_init("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "ident": True, "grouping": True})))
     for i in range(randint(0, 2)):
         ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "ident": True, "grouping": True})))
@@ -88,7 +88,6 @@ def start_data():
         "attack": 1,
         "bow": 1,
         "armor": 0,
-        #"food": 200,
         "e_attack": {"item": "DAGGER [", "type": "]", "values": [4, 1, 10], "ident": True, "grouping": False},
         "e_hand": {"item": "SHORT BOW {", "type": "}", "values": [3, 1, 10], "ident": True, "grouping": False},
         "e_armor": {"item": "FUR (", "type": ")", "values": [1, 1, 9], "ident": True, "grouping": False},
@@ -114,7 +113,7 @@ def start_data():
         "id_camp": 0,
         "camp": [[["surface",0],[0,2],[0,3],"next"],#
                 ["next",[0,3],[0,1],["the-path",0]],
-                [["Manipure",0],[0,2],[0,3],[0,1]]],
+                [["Manipure",0],[2,2],[2,3],[2,1]]],
         }
     get_equip_values(p)
     return m, p, path
