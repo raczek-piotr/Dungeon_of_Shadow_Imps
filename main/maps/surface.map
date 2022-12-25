@@ -19,11 +19,11 @@ g 5 2 2 1 7 t
 $ 200 250
 o 8 2 2 1 7 ;
 -|ARROW||t|t|12;"ARROWS
-t 32 5 40 1 7 ;
+L 50 8 50 1 7 ;
 g 5 2 2 1 7 t
 g 5 2 2 1 7 t
 *|BREAD||t|t|2;"BREADS
 ~|TORCH||t|t|2;"TORCHES
-}|SHORT BOW {|}|t|;|3;1;10
+)|FUR (|)|t|;|1;1;11
 $ 20 20
 o 8 2 2 1 7 ;

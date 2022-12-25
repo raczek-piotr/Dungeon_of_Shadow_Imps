@@ -220,7 +220,9 @@ def enemies_class_shot(rmap, e, p, hear_range):
 
 def enemies_class_attack(p,head, value):
     if randint(0, 1) == 0:
-        value += randint(-value//2, value//2)
+        value += randint(-value//2, value//2)-p["armor"]
+        if value < 0:
+            value = 0
         p["hp"] -= value
         p["wasattackby"] += head
 
@@ -256,3 +258,4 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
             p["xp"] += q["xp"]
     else:
         p["echo"] = translate("YOU MISS IT")
+

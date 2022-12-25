@@ -6,8 +6,10 @@ from local_enemies_class import enemies_class_init
 
 
 def regular_map_init(m, p, items, enemies, type_of_map, stairs):
+    for _ in range(type_of_map-2):
+        enemies.append(["t",32,4,16,1,7,False,[]])
     hm = 20
-    minhm = 4 # 5 -PR-
+    minhm = 5 # 5 -PR-
     pokoje = []
     tryies = 0
     sizey, sizex = 12, 20
@@ -32,8 +34,8 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
         for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
             for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                 m["r"][y][x] = "|"
-    for it in range(hm-1):
-        Connect(m, pokoje[it].copy(), pokoje[it+1].copy())
+    for it in range(hm):
+        Connect(m, pokoje[it-1].copy(), pokoje[it].copy())
     for it in range(hm):
         for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
             for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
