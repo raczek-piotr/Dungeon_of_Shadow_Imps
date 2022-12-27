@@ -82,7 +82,7 @@ def item_menager(m, p):
             return[translate("YOU TAKE A") + " " + translate(t["item"]), True]
     return[translate("WRONG SLOT!"), False]
 
-def drop_menager(w, m, p):
+def drop_menager(m, p):
     t1 = "\n       Equipted:\n   " + item(p["e_attack"], 9, p["strength"]) + "\n   " + item(p["e_hand"], 9, p["strength"]) + "\n   " + item(p["e_armor"], 9, p["strength"]) + "\n\n       Backpack:\n"
     for i in range(6):
         t1 += str(i+1)+": "+item(p["BP"], i, p["strength"]) + "\n"
