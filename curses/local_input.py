@@ -110,7 +110,7 @@ def item_menager(w, m, p):
     return[translate("WRONG SLOT!"), False]
 
 def drop_menager(w, m, p):
-    c.init_pair(1, 231, 16)
+    c.init_pair(1, 231, 16)#mayby someday -PR-
     c.init_pair(2, 46, 16)
     c.init_pair(3, 5, 16)
     c.init_pair(4, 136, 16)
@@ -152,6 +152,36 @@ def shot_menager(w, m, p):
         return[translate("YOU DON'T HAVE ARROWS!"), False]
     return[translate("YOU CAN'T SHOT THERE!"), False]
 
+def pomoc(w, m, p): #not beautyful, but done -PR-
+    w.clear()
+    w.addstr(0, 0, "Tiles:", c.color_pair(4))
+    w.addstr(0, 58, "Version = curses_0.0.E", c.color_pair(1))
+    w.addstr(1, 2, "@ - you", c.color_pair(5))
+    w.addstr(2, 2, "# - wall", c.color_pair(5))
+    w.addstr(3, 2, "+ - closed door", c.color_pair(5))
+    w.addstr(4, 2, ", - open door", c.color_pair(5))
+    w.addstr(5, 2, ". - light tile", c.color_pair(5))
+    w.addstr(6, 2, '= - closed tile (You have to kill a Boss "B")', c.color_pair(5))
+    w.addstr(7, 2, "> - stairs down", c.color_pair(5))
+    w.addstr(8, 2, "< - stairs up", c.color_pair(5))
+    w.addstr(9, 2, "] - weapon", c.color_pair(5))
+    w.addstr(10, 2, "} - ranged weapon", c.color_pair(5))
+    w.addstr(11, 2, ") - armor", c.color_pair(5))
+    w.addstr(12, 2, "- - arrows", c.color_pair(5))
+    w.addstr(13, 2, "~ - torch", c.color_pair(5))
+    w.addstr(14, 2, "? - mixture", c.color_pair(5))
+    
+    w.addstr(16, 0, "Movement:", c.color_pair(4))
+    w.addstr(17, 4, "7 8 9", c.color_pair(1))
+    w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
+    w.addstr(19, 4, "1 2 3", c.color_pair(1))
+    w.addstr(21, 2, "- - use (backback)", c.color_pair(5))
+    w.addstr(22, 2, "0 - shot", c.color_pair(5))
+    w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
+    #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
+    #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
+    get_in(w)
+
 # def item_menager_keyin(m, p,key):
 
 def keyin(w, m, p, pos, key):
@@ -170,6 +200,9 @@ def keyin(w, m, p, pos, key):
             if m["r"][pos[0]][pos[1]][0] == "<":
                 return ["#U", False]
             return [translate("YOU CAN'T GO UP HERE"), False]
+        case "?":
+            pomoc(w, m, p)
+            return ["Press enter to continue", False]
         case _:
            # move a player? (but in where!?),
            #		echo, moved?

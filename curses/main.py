@@ -86,4 +86,4 @@ def mainloop(w):
     # c.init_pair(0, c.COLOR_BLUE, c.COLOR_BLACK)
     # s.clear()
     # s.addstr(1,1,"gh",c.color_pair(0))
-wrapper(mainloop) # MY curses is not working (but on linux curses is working AND IT WORKED) :) -PR-
+wrapper(mainloop) #linux curses is working :) -PR-
