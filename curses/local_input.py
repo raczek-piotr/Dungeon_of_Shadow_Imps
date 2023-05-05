@@ -9,6 +9,8 @@ from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values
 
 
+def sort(p): p["BP"].sort(reverse=True, key = lambda key: key["item"][::-1])
+
 def update_BP_mask(p): # is local_terrain too -PR-
     global BP_mask
     BP_mask = []
@@ -175,7 +177,7 @@ def pomoc(w, m, p): #not beautyful, but done -PR-
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
     w.addstr(19, 4, "1 2 3", c.color_pair(1))
-    w.addstr(20, 2, "- - use (mana)    + - use (backpack)", c.color_pair(5))
+    w.addstr(20, 2, "- - use (mana)    + - use (backpack)    / - sort (no turns used)", c.color_pair(5))
     w.addstr(21, 2, "0 - shot          , - drop (backpack)", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
@@ -202,6 +204,9 @@ def keyin(w, m, p, pos, key):
             if m["r"][pos[0]][pos[1]][0] == "<":
                 return ["#U", False]
             return [translate("YOU CAN'T GO UP HERE"), False]
+        case "/":
+            sort(p)
+            return [p["echo"], False]
         case "?":
             pomoc(w, m, p)
             return [p["echo"], False]
