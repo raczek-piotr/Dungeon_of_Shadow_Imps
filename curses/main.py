@@ -49,7 +49,7 @@ def mainloop(w):
                     p["starving"] = True
             while p["xp"] >= p["needxp"]:
                 p["lw"] += 1
-                p["needxp"] = (p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
+                p["needxp"] = 5 + p["lw"] + p["needxp"]#(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["maxhp"] += p["hpchange"]
                 p["hp"] += p["hpchange"]
             p["wasattackby"] = ""
@@ -74,13 +74,11 @@ def mainloop(w):
                 p["hp"] = p["maxhp"]
             if p["hp"] <= 0:
                 break
-    menager("#E", m, p)
-    w.clear()
-    output(w, m, p)#translator
-    w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-45))
-    w.getkey()
-# die - PR
-    # c.init_pair(0, c.COLOR_BLUE, c.COLOR_BLACK)
-    # s.clear()
-    # s.addstr(1,1,"gh",c.color_pair(0))
-wrapper(mainloop) # MY curses is not working (but on linux curses is working AND IT WORKED) :) -PR-
+    while True: # die - PR
+        menager("#E", m, p)
+        w.clear()
+        output(w, m, p)#translator
+        w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-25))
+        w.getkey()
+
+wrapper(mainloop) # MY curses is not working on linux :) -PR-

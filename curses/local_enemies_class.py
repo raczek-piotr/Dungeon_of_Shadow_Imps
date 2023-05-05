@@ -230,10 +230,11 @@ def enemies_class_attack(p,head, value):
 
 def enemies_class_is_shoted(m, p, dire, value):
     ty, tx = p["y"], p["x"]
+    r = 0
     while m["r"][ty][tx][0] in tlist:
-        ty, tx = ty+dire[0], tx+dire[1]
+        ty, tx, r = ty+dire[0], tx+dire[1], r+1
     p["BP"][p["arrows_id"]]["values"][0] -= 1
-    if m["r"][ty][tx][0] in exlist:
+    if r < 8 and m["r"][ty][tx][0] in exlist:
         it = int(m["r"][ty][tx][1:4])
         enemies_class_is_attacked(m, p, it, value, True)
         return ()
@@ -241,7 +242,8 @@ def enemies_class_is_shoted(m, p, dire, value):
 
 def enemies_class_is_attacked(m, p, it, value, ranged = False):
     if randint(0, 99) < (p["bow_acc"] if ranged else p["attack_acc"]):
-        value += randint(-value//2, value//2)
+        for _ in range((p["bow_attacks"] if ranged else p["attack_attacks"])):
+            value += randint(-value//2, value//2)
         if it >= 500:
             q = a[it-500]
         else:

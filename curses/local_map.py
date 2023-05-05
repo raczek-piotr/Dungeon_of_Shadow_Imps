@@ -10,6 +10,8 @@ def map_init_str(m, p, items, enemies, type_of_map):
     with open("maps/"+type_of_map+".map", "r") as rm: # readmap -PR-
         p["echo"] = "?!"
         rm = rm.read().split("\n")
+        while rm[-1] == "":
+            rm.pop(-1)
         ty, tx = rm.pop(0).split(" ")
         m["sy"], m["sx"] = int(ty), int(tx)
         ty, tx = rm.pop(0).split(" ")

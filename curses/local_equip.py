@@ -2,11 +2,13 @@ def get_equip_values(p):
     if p["e_attack"]["type"] == "]":
         p["attack"] = p["e_attack"]["values"][0]
         p["attack_acc"] = p["e_attack"]["values"][1]
+        p["attack_attacks"] = p["e_attack"]["values"][4]
     else:
         p["attact"] = 1
     if p["e_hand"]["type"] == "}":
         p["bow"] = p["e_hand"]["values"][0]
         p["bow_acc"] = p["e_hand"]["values"][1]
+        p["bow_attacks"] = p["e_hand"]["values"][4]
     else:
         p["bow"] = 1
     if p["e_armor"]["type"] == ")":

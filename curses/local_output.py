@@ -13,12 +13,12 @@ def item(item, arg=9, moreinfo=False): #if moreinfo != False then moreinfo = str
     if i["type"] in ["]", "}", ")"]:
         r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0]) + i["type"])
         if moreinfo:
-            r += "  "+str(i["values"][1])+"%"+translate("ACC")
+            r += "  "+str(i["values"][1])+"%"+translate("ACC")+" "+translate("attacks")+":"+str(i["values"][4])+" "
             if i["values"][2] > moreinfo:
-                r += ", "+translate("YOU NEED")+" "+str(i["values"][2] - moreinfo)+" "+translate("MORE STRENGTH TO EQUIP IT")
+                r += translate("YOU NEED")+" "+str(i["values"][2] - moreinfo)+" "+translate("MORE STRENGTH TO EQUIP IT")
                 # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             else:
-                r += ", "+translate("YOU CAN EQUIP IT")
+                r += translate("YOU CAN EQUIP IT")
         return r
     elif i["type"] == "|":
         return (translate(i["values"][0][:-2]) + i["values"][0][-2:] + ("+" if i["values"][1] >= 0 else "") + str(i["values"][1]) + i["type"])

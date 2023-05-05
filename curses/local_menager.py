@@ -9,22 +9,31 @@ from local_translator import translate
 
 
 item = [
+    #  values": [damage, acc, strengh, tier, attacks],
     #[")", {"item": "SOFT LEATHER (", "type": ")", "values": [2, 50, 12], "cost": True, "grouping": False}],
     #[")", {"item": "RING MAIL (", "type": ")", "values": [4, 40, 14], "cost": True, "grouping": False}],
-    ["]", {"item": "STAFF [", "type": "]", "values": [3, 80, 10], "cost": True, "grouping": False}],
-    ["]", {"item": "SMALL SWORD [", "type": "]", "values": [5, 60, 11], "cost": True, "grouping": False}],
-    ["]", {"item": "SWORD [", "type": "]", "values": [7, 60, 13], "cost": True, "grouping": False}],
-    ["]", {"item": "SPEAR [", "type": "]", "values": [10, 50, 15], "cost": True, "grouping": False}],
-    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": True, "grouping": True}],
-    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": True, "grouping": True}],
-    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": True, "grouping": True}],
+    ["]", {"item": "KNIFE [", "type": "]", "values": [2, 60, 4, 1, 1], "cost": 10, "grouping": False}],
+    ["]", {"item": "STAFF [", "type": "]", "values": [2, 80, 5, 1, 1], "cost": 5, "grouping": False}],
+    ["]", {"item": "DAGGER [", "type": "]", "values": [3, 60, 4, 2, 1], "cost": 15, "grouping": False}],
+    ["]", {"item": "SHORT SWORD [", "type": "]", "values": [5, 40, 5, 2, 1], "cost": 20, "grouping": False}],
+    ["]", {"item": "2 KNIFES [", "type": "]", "values": [2, 60, 5, 1, 2], "cost": 20, "grouping": False}],
+    ["]", {"item": "CLUB [", "type": "]", "values": [3, 80, 5, 2, 1], "cost": 5, "grouping": False}],
+    ["]", {"item": "MACE [", "type": "]", "values": [5, 60, 6, 3, 1], "cost": 30, "grouping": False}],
+    ["]", {"item": "2 DAGGERS [", "type": "]", "values": [3, 60, 6, 2, 2], "cost": 30, "grouping": False}],
+    ["]", {"item": "RAPIER [", "type": "]", "values": [7, 50, 6, 3, 1], "cost": 35, "grouping": False}],
+    ["]", {"item": "SWORD [", "type": "]", "values": [8, 60, 7, 4, 1], "cost": 45, "grouping": False}],
+    ["]", {"item": "SPEAR [", "type": "]", "values": [10, 50, 7, 4, 1], "cost": 45, "grouping": False}],
+    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 20, "grouping": True}],
+    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 20, "grouping": True}],
+    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 20, "grouping": True}],
     ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["}", {"item": "BOW {", "type": "}", "values": [5, 50, 11], "cost": 60, "grouping": False}],
-    ["}", {"item": "BOW {", "type": "}", "values": [5, 50, 11], "cost": 60, "grouping": False}],
-    ["}", {"item": "COMPOSIVE BOW {", "type": "}", "values": [4, 80, 12], "cost": 120, "grouping": False}],
-    ["}", {"item": "LONG BOW {", "type": "}", "values": [7, 50, 13], "cost": 100, "grouping": False}],    ]
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    ["}", {"item": "SLING {", "type": "}", "values": [1, 80, 4, 1, 2], "cost": 60, "grouping": False}],
+    ["}", {"item": "BOW {", "type": "}", "values": [3, 60, 5, 1, 1], "cost": 60, "grouping": False}]]
+    #["}", {"item": "BOW {", "type": "}", "values": [5, 50, 11], "cost": 60, "grouping": False}],
+    #["}", {"item": "COMPOSIVE BOW {", "type": "}", "values": [4, 80, 12], "cost": 120, "grouping": False}],
+    #["}", {"item": "LONG BOW {", "type": "}", "values": [7, 50, 13], "cost": 100, "grouping": False}],    ]
 
 def menager(command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command:
@@ -51,13 +60,24 @@ def prepare_map(m, p):
         h = p["camp"][p["id_camp"]][p["depth"]]
     item_class_clear()
     enemies_class_clear()
-    elist = [["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["r",4,2,1,1,7,False,[]],["g",5,2,2,1,7,True,[]],["g",5,2,2,2,7,True,[]]] # head "", hp, attack, xp, sleep, hear_range, archer T/F, drop []
-    for i in range(p["depth"]-2):
-        elist.append(["o",8,2,2,1,7,False,[]])
-    for i in range((p["depth"]-2)//5):
-        elist.append(["k",8,4,4,1,7,False,[]])
-    for i in range(1 if p["lw"] > 7 else 0):
-        elist.append(["t",32,4,16,1,7,False,[]])
+    enemies = [["r",3,1,1,1,7,False,[]], #0 rat
+             ["s",4,2,2,1,7,False,("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #1 scrapling
+             ["t",4,1,2,1,7,True,("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #2 scrapling trapper
+             ["g",6,2,4,1,7,False,[]], #3 goblin
+             ["S",3,3,3,4,4,False,[]], #4 small snake
+             ["o",9,2,6,1,7,False,[]], #5 orck
+             ["k",6,2,8,1,7,True,[]], #6 halfing
+             ["t",5,3,6,0,14,False,[]], #7 thief
+             ["c",18,2,12,1,7,False,[]], #8 crab
+             ] # head "", hp, attack, xp, sleep, hear_range, archer T/F,←work drop [], percent, armor?
+    elist, xp = [], 0
+    for i in range((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2):
+        elist.append(enemies[i])
+        xp += enemies[i][3]
+    while xp < (3+p["lw"]): #5-2=3 -PR-
+        i = randint((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2)
+        elist.append(enemies[i])
+        xp += enemies[i][3]
     i = randint(0, len(item)-1)
     ilist = [item[i][0] + zero3(item_class_init(item[i][0], item[i][1]))]
     for i in range(randint(0, 6)):
@@ -66,8 +86,8 @@ def prepare_map(m, p):
         ilist.append("*" + zero3(item_class_init("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True})))
     for i in range(randint(0, 2)):
         ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "cost": 5, "grouping": True})))
-    for i in range(randint(0, 2)):
-        ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 20, "grouping": True})))
+    for i in range(randint(0, 3)):
+        ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
     p["y"], p["x"] = map_init(m, p, ilist, elist, h[0], h[1]) # 0,1,2
 
 def start_data():
@@ -87,15 +107,15 @@ def start_data():
         "maxmana": 2,
         "mana": 2,
         "manacounter": 75,
-        "maxhp": 20,
-        "hp": 20,
-        "hpchange": 4,
+        "maxhp": 5,
+        "hp": 5,
+        "hpchange": 1,
         "hpcounter": 10,
-        "needxp": 10,
+        "needxp": 6,
         "xp": 0,
         "lw": 1,
         "depth": 0,
-        "strength": 10,
+        "strength": 4,
         "gold": 0,
         "attack": 1,
         "bow": 1,
@@ -103,17 +123,19 @@ def start_data():
         "attack_acc": 1,
         "bow_acc": 1,
         "armor_acc": 0,
-        "e_attack": {"item": "DAGGER [", "type": "]", "values": [4, 50, 9], "cost": 40, "grouping": False},
-        "e_hand": {"item": "SHORT BOW {", "type": "}", "values": [3, 50, 9], "cost": 40, "grouping": False},
-        "e_armor": {"item": "CLOTHES (", "type": ")", "values": [0, 50, 8], "cost": 15, "grouping": False},
+        "attack_attacks": 1,
+        "bow_attacks": 1,
+        "e_attack": {"item": "KNIFE [", "type": "]", "values": [2, 60, 4, 1, 1], "cost": 10, "grouping": False},
+        "e_hand": {"item": "SHOTING LEATHER {", "type": "}", "values": [1, 60, 4, 1, 1], "cost": 5, "grouping": False},
+        "e_armor": {"item": "CLOTHES (", "type": ")", "values": [0, 50, 3, 1, 1], "cost": 5, "grouping": False},
         "y": 0,
         "x": 0,
         "dy": 0, # direction y -PR-
         "dx": 0,
         "wasattackby": "",
         "echo": "",
-        "torch": False,
-        "torchtime": 0,
+        "torch": True,
+        "torchtime": 50,
         "starving": False,
         "fullness": 200,
         "arrows_id": -1,
@@ -130,7 +152,7 @@ def start_data():
         "time": 0,
         "moved": True,
         "id_camp": 0,
-        "camp": [[["surface",0],[0,2],[0,3],"next"],
+        "camp": [[["surface",0],[2,2],[2,3],[1,3],[0,3],[0,3],[0,3],[1,3],[2,3],[2,3],[2,3],[1,3],[0,3],[0,3],[1,3],[2,3],[1,3],[0,3],[0,3],[1,3],"next"],
                 ["next",[0,3],[0,1],["the-path",0]],
                 [["Manipure",0],[2,2],[2,3],[2,3],[2,3],"next","next"],
                 [["Manipure",0],[2,3],[2,3],[2,3],[2,3],[2,1],[0,2],[0,3],[0,1]]]
