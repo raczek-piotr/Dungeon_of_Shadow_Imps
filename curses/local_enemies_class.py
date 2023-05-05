@@ -219,7 +219,7 @@ def enemies_class_shot(rmap, e, p, hear_range):
     return False
 
 def enemies_class_attack(p,head, value):
-    if randint(0, 1) == 0:
+    if randint(0, 99) < p["armor_acc"]:
         value += randint(-value//2, value//2)-p["armor"]
         if value < 0:
             value = 0
@@ -240,7 +240,7 @@ def enemies_class_is_shoted(m, p, dire, value):
     p["echo"] = translate("YOU SHOT SOMEWERE")
 
 def enemies_class_is_attacked(m, p, it, value, ranged = False):
-    if randint(0, 1) == 0:
+    if randint(0, 99) < (p["bow_acc"] if ranged else p["attack_acc"]):
         value += randint(-value//2, value//2)
         if it >= 500:
             q = a[it-500]

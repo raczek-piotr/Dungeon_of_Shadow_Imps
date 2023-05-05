@@ -24,6 +24,6 @@ g 5 2 2 1 7 t
 g 5 2 2 1 7 t
 *|BREAD||t|t|2;"BREADS
 ~|TORCH||t|t|2;"TORCHES
-)|FUR (|)|t|;|1;1;11
+)|FUR (|)|t|;|1;50;11
 $ 20 20
 o 8 2 2 1 7 ;

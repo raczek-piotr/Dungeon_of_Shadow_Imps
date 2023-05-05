@@ -63,16 +63,13 @@ def mainloop(w):
 
             enemies_class_update(m, p, [p["y"], p["x"]])
 
-            if p["hp"] == p["maxhp"] and not p["starving"]:
-                hpcounter = 0
-            else:
-                hpcounter += 1
-                if hpcounter > p["hpcounter"]:
-                    hpcounter -= p["hpcounter"]
-                    if p["starving"]:
-                        p["hp"] -= 1
-                    else:
-                        p["hp"] += 1
+            hpcounter += 1
+            if hpcounter > p["hpcounter"]:
+                hpcounter -= p["hpcounter"]
+                if p["starving"]:
+                    p["hp"] -= 1
+                else:
+                    p["hp"] += 1
             if p["hp"] > p["maxhp"]:
                 p["hp"] = p["maxhp"]
             if p["hp"] <= 0:
@@ -80,10 +77,10 @@ def mainloop(w):
     menager("#E", m, p)
     w.clear()
     output(w, m, p)#translator
-    w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-50))
+    w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-45))
     w.getkey()
 # die - PR
     # c.init_pair(0, c.COLOR_BLUE, c.COLOR_BLACK)
     # s.clear()
     # s.addstr(1,1,"gh",c.color_pair(0))
-wrapper(mainloop) #linux curses is working :) -PR-
+wrapper(mainloop) # MY curses is not working (but on linux curses is working AND IT WORKED) :) -PR-

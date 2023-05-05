@@ -1,14 +1,17 @@
 def get_equip_values(p):
     if p["e_attack"]["type"] == "]":
         p["attack"] = p["e_attack"]["values"][0]
+        p["attack_acc"] = p["e_attack"]["values"][1]
     else:
         p["attact"] = 1
     if p["e_hand"]["type"] == "}":
         p["bow"] = p["e_hand"]["values"][0]
+        p["bow_acc"] = p["e_hand"]["values"][1]
     else:
         p["bow"] = 1
     if p["e_armor"]["type"] == ")":
         p["armor"] = p["e_armor"]["values"][0]
+        p["armor_acc"] = p["e_armor"]["values"][1]
     else:
         p["armor"] = 0
     to_delate = []

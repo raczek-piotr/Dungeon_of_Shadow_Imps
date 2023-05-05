@@ -8,20 +8,22 @@ from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values
 
-def update_BP_mask(p): # is local_terrain
+
+def update_BP_mask(p): # is local_terrain too -PR-
     global BP_mask
     BP_mask = []
     for i in p["BP"]:
         if i["grouping"]:
             BP_mask.append(i["item"])
 
-def item_menager(w, m, p):
+def print_menager(w, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     c.init_pair(1, 231, 16)
     c.init_pair(2, 46, 16)
     c.init_pair(3, 5, 16)
     c.init_pair(4, 136, 16)
     c.init_pair(5, 245, 16)#148 :) -PR-
     w.clear()
+    w.addstr(3, 0, "Mana: " + str(p["mana"]) + "/" + str(p["maxmana"]), c.color_pair(4))
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
     w.addstr(11, 0,"Equipted:", c.color_pair(4))
@@ -31,16 +33,34 @@ def item_menager(w, m, p):
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh()
     t1 = ''
+    for i in range(len(p["spells"])):
+        w.addstr(4+i, 2, str(i+1)+": "+str(p["spells"][i][0]), c.color_pair(cm))
     for i in range(6):
-        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p["strength"]), c.color_pair(5))
+        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p["strength"]), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
+    
+def mana_menager(w, m, p):
+    print_menager(w, m, p, 2, 5)
+    it = get_in(w)
+    return[translate("YOU CAN'T CAST A SPELL!"), False]
+    #try:
+    #    it = int(it)-1
+    #    if it >= len(p["BP"]) or it < 0:
+    #        return["", False]
+    #except:
+    #    return["", False]
+    #t = p["BP"].pop(it)
+    #return[translate("YOU CAST A SPELL!"), True]
+
+def item_menager(w, m, p):
+    print_menager(w, m, p, 5, 2)
     it = get_in(w)
     try:
         it = int(it)-1
         if it >= len(p["BP"]) or it < 0:
-            return["", False]
+            return[p["echo"], False]
     except:
-        return["", False]
+        return[p["echo"], False]
     t = p["BP"][it]
     match t["item"]:
         case "TORCH":
@@ -73,11 +93,8 @@ def item_menager(w, m, p):
             return[translate("YOU ATE A") + " " + translate("CORPSE"), True]
         case "POTION":
             t["values"][0] -= 1
-            match randint(0,1):
-                case 0:
-                    p["hp"] = p["maxhp"]
-                case _:
-                    p["strength"] += 1
+            p["hp"] = p["maxhp"]
+            p["strength"] += 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
@@ -106,35 +123,18 @@ def item_menager(w, m, p):
             if no:
                 return[translate("YOU CAN'T USE THAT"), False]
             get_equip_values(p)
-            return[translate("YOU TAKE A") + " " + translate(t["item"]), True]
+            return[translate("YOU TAKE A") + " " + translate(t["item"][:-2]), True]
     return[translate("WRONG SLOT!"), False]
 
 def drop_menager(w, m, p):
-    c.init_pair(1, 231, 16)#mayby someday -PR-
-    c.init_pair(2, 46, 16)
-    c.init_pair(3, 5, 16)
-    c.init_pair(4, 136, 16)
-    c.init_pair(5, 245, 16)#148 :) -PR-
-    w.clear()
-    w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
-    w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
-    w.addstr(11, 0,"Equipted:", c.color_pair(4))
-    w.addstr(12, 2, item(p["e_attack"], 9, p["strength"]), c.color_pair(5))
-    w.addstr(13, 2, item(p["e_hand"], 9, p["strength"]), c.color_pair(5))
-    w.addstr(14, 2, item(p["e_armor"], 9, p["strength"]), c.color_pair(5))
-    w.addstr(16, 0, "Backpack:", c.color_pair(4))
-    w.refresh()
-    t1 = ''
-    for i in range(6):
-        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p["strength"]), c.color_pair(5))
-    w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
+    print_menager(w, m, p, 5, 3)
     it = get_in(w)
     try:
         it = int(it)-1
         if it >= len(p["BP"]) or it < 0:
-            return["", False]
+            return[p["echo"], False]
     except:
-        return["", False]
+        return[p["echo"], False]
     t = p["BP"].pop(it)
     return[translate("YOU FROWED IT AWAY"), True]
 
@@ -175,23 +175,25 @@ def pomoc(w, m, p): #not beautyful, but done -PR-
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
     w.addstr(19, 4, "1 2 3", c.color_pair(1))
-    w.addstr(21, 2, "- - use (backback)", c.color_pair(5))
-    w.addstr(22, 2, "0 - shot", c.color_pair(5))
+    w.addstr(20, 2, "- - use (mana)    + - use (backpack)", c.color_pair(5))
+    w.addstr(21, 2, "0 - shot          , - drop (backpack)", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     get_in(w)
 
-# def item_menager_keyin(m, p,key):
+# def item_menager_keyin(m, p, key):
 
 def keyin(w, m, p, pos, key):
     match key:
         case "-":
+             return mana_menager(w, m, p)
+        case "+":
              return item_menager(w, m, p)
+        case ",":
+             return drop_menager(w, m, p)
         case "0":
              return shot_menager(w, m, p)
-        case "d":
-             return drop_menager(w, m, p)
         case ">":
             if m["r"][pos[0]][pos[1]][0] == ">":
                 return ["#D", False]
@@ -202,7 +204,7 @@ def keyin(w, m, p, pos, key):
             return [translate("YOU CAN'T GO UP HERE"), False]
         case "?":
             pomoc(w, m, p)
-            return ["Press enter to continue", False]
+            return [p["echo"], False]
         case _:
            # move a player? (but in where!?),
            #		echo, moved?

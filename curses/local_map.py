@@ -7,84 +7,47 @@ from local_regular_map import regular_map_init
 
 
 def map_init_str(m, p, items, enemies, type_of_map):
-    if type_of_map == "surface":
-        with open("maps/surface.map", "r") as rm: # readmap -PR-
-            p["echo"] = "?!"
-            rm = rm.read().split("\n")
-            ty, tx = rm.pop(0).split(" ")
-            m["sy"], m["sx"] = int(ty), int(tx)
-            ty, tx = rm.pop(0).split(" ")
+    with open("maps/"+type_of_map+".map", "r") as rm: # readmap -PR-
+        p["echo"] = "?!"
+        rm = rm.read().split("\n")
+        ty, tx = rm.pop(0).split(" ")
+        m["sy"], m["sx"] = int(ty), int(tx)
+        ty, tx = rm.pop(0).split(" ")
+        if type_of_map[:3] == "sur":
             m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
-            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            l = 0
-            for y in range(m["sy"]-2):
-                t = rm[y].split(";")
-                for x in range(m["sx"]-2):
-                    m["r"][y+1][x+1] = t[x]
-                    if m["r"][y+1][x+1] == "_":
-                        m["r"][y+1][x+1] += "."
-                    elif m["r"][y+1][x+1][0] == "_":
-                        if m["r"][y+1][x+1][1] == "i":
-                            l -= 1
-                            it = rm[l].split(" ")
-                            e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
-                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                        elif m["r"][y+1][x+1][1] == "w":
-                            l -= 1
-                            it = rm[l].split("|")
-                            e = it[-1].split(";")
-                            for i in range(len(e)):
-                                if e[i][0] == '"':
-                                    e[i] = e[i][1:]
-                                else:
-                                    e[i] = int(e[i])
-                            e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
-                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                    elif m["r"][y+1][x+1][0] == "e":
-                        l -= 1
-                        e = rm[l].split(" ")
-                        it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
-                        m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
-    else:
-        with open("maps/"+type_of_map+".map", "r") as rm:
-            p["echo"] = "?!"
-            rm = rm.read().split("\n")
-            ty, tx = rm.pop(0).split(" ")
-            m["sy"], m["sx"] = int(ty), int(tx)
-            ty, tx = rm.pop(0).split(" ")
+        else:
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
-            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            l = 0
-            for y in range(m["sy"]-2):
-                t = rm[y].split(";")
-                for x in range(m["sx"]-2):
-                    m["r"][y+1][x+1] = t[x]
-                    if m["r"][y+1][x+1] == "_":
-                        m["r"][y+1][x+1] += "."
-                    elif m["r"][y+1][x+1][0] == "_":
-                        if m["r"][y+1][x+1][1] == "i":
-                            l -= 1
-                            it = rm[l].split(" ")
-                            e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
-                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                        elif m["r"][y+1][x+1][1] == "w":
-                            l -= 1
-                            it = rm[l].split("|")
-                            e = it[-1].split(";")
-                            for i in range(len(e)):
-                                if e[i][0] == '"':
-                                    e[i] = e[i][1:]
-                                else:
-                                    e[i] = int(e[i])
-                            e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
-                            m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                    elif m["r"][y+1][x+1][0] == "e":
+        m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+        m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+        l = 0
+        for y in range(m["sy"]-2):
+            t = rm[y].split(";")
+            for x in range(m["sx"]-2):
+                m["r"][y+1][x+1] = t[x]
+                if m["r"][y+1][x+1] == "_":
+                    m["r"][y+1][x+1] += "."
+                elif m["r"][y+1][x+1][0] == "_":
+                    if m["r"][y+1][x+1][1] == "i":
                         l -= 1
-                        e = rm[l].split(" ")
-                        it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
-                        m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
+                        it = rm[l].split(" ")
+                        e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
+                        m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                    elif m["r"][y+1][x+1][1] == "w":
+                        l -= 1
+                        it = rm[l].split("|")
+                        e = it[-1].split(";")
+                        for i in range(len(e)):
+                            if e[i][0] == '"':
+                                e[i] = e[i][1:]
+                            else:
+                                e[i] = int(e[i])
+                        e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
+                        m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                elif m["r"][y+1][x+1][0] == "e":
+                    l -= 1
+                    e = rm[l].split(" ")
+                    it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
+                    m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
     return(int(ty), int(tx))
 
 
@@ -337,3 +300,4 @@ def open_doors(rmap, vmap):
             else:
                 if len(rmap[y][x]) > 1 and rmap[y][x][1] == "=":
                     rmap[y][x] = rmap[y][x][0] + rmap[y][x][2:]
+

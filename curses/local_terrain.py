@@ -55,26 +55,6 @@ def f_block(m, p, npos, stay):
     echo = translate("YOU DESTROYED WEEK WALL")
     return[False, echo, True]
 
-def f_arrows(m, p, npos, stay):
-    npy, npx = npos
-    i = int(m["r"][npy][npx][1:4])
-    i = item_class_get(i)
-    if stay:
-        if len(p["BP"]) < 6 or i["item"] in BP_mask:
-            p["BP"].append(i)
-            merge(p)
-            update_BP_mask(p)
-            get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+translate("ARROWS", i["values"][0])
-            m["r"][npy][npx] = m["r"][npy][npx][4:]
-            m["v"][npy][npx] = m["r"][npy][npx]
-        else:
-            echo = translate("YOUR'S BACKPACK IS FULL!")
-            return[False, echo, False]
-    else:
-        echo = translate("HERE ARE")+" "+str(i["values"][0])+"x "+translate("ARROWS", 0 if i["values"][0] == 1 else i["values"][0])
-    return[True, echo, True]
-
 def f_items(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
@@ -104,34 +84,14 @@ def f_weapons(m, p, npos, stay):
             p["BP"].append(i)
             update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+("["+str(i["values"][0])+"]" if i["ident"] else "[?]"))
+            echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+i["type"]))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
             echo = translate("YOUR'S BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+("["+str(i["values"][0])+"]" if i["ident"] else "[?]"))
-    return[True, echo, True]
-
-def f_torch(m, p, npos, stay):
-    npy, npx = npos
-    i = int(m["r"][npy][npx][1:4])
-    i = item_class_get(i)
-    if stay:
-        if len(p["BP"]) < 6 or i["item"] in BP_mask:
-            p["BP"].append(i)
-            merge(p)
-            update_BP_mask(p)
-            get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+translate("TORCH")
-            m["r"][npy][npx] = m["r"][npy][npx][4:]
-            m["v"][npy][npx] = m["r"][npy][npx]
-        else:
-            echo = translate("YOUR'S BACKPACK IS FULL!")
-            return[False, echo, False]
-    else:
-        echo = translate("HERE IS")+" "+translate("TORCH", 1)
+        echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+i["type"]))
     return[True, echo, True]
 
 def terrain(m, p, npos, stay):
@@ -145,6 +105,8 @@ def terrain(m, p, npos, stay):
             return f_items(m, p, npos, stay)
         case "?":
             return f_items(m, p, npos, stay)
+        case "~":
+            return f_items(m, p, npos, stay)
         # # case "!":
         # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "+":
@@ -157,8 +119,6 @@ def terrain(m, p, npos, stay):
             return f_weapons(m, p, npos, stay)
         case ")":
             return f_weapons(m, p, npos, stay)
-        case "~":
-            return f_torch(m, p, npos, stay)
         # case "?":
         #     return f_potion(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "=":

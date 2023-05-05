@@ -2,7 +2,7 @@ import curses as c
 from local_translator import translate
 
 
-def item(item, arg=9, moreinfo=False):
+def item(item, arg=9, moreinfo=False): #if moreinfo != False then moreinfo = strength -PR-
     if arg == 9:
         i = item
     else:
@@ -11,12 +11,9 @@ def item(item, arg=9, moreinfo=False):
         except:
             return ("")
     if i["type"] in ["]", "}", ")"]:
-        if i["ident"]:
-            r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0]) + i["type"])
-        else:
-            r = (translate(i["item"][:-2]) + i["item"][-2:] + "?" + i["type"])
+        r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0]) + i["type"])
         if moreinfo:
-            r += "  "+str(i["values"][1])+"-"+translate("TIER")
+            r += "  "+str(i["values"][1])+"%"+translate("ACC")
             if i["values"][2] > moreinfo:
                 r += ", "+translate("YOU NEED")+" "+str(i["values"][2] - moreinfo)+" "+translate("MORE STRENGTH TO EQUIP IT")
                 # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
@@ -24,18 +21,11 @@ def item(item, arg=9, moreinfo=False):
                 r += ", "+translate("YOU CAN EQUIP IT")
         return r
     elif i["type"] == "|":
-        if i["ident"]:
-            return (translate(i["values"][0][:-2]) + i["values"][0][-2:] + ("+" if i["values"][1] >= 0 else "") + str(i["values"][1]) + i["type"])
-        else:
-            return (translate(i["item"][:-2]) + i["item"][-2:] + ("+" if i["values"][1] >= 0 else "") + str(i["values"][1]) + i["type"])
+        return (translate(i["values"][0][:-2]) + i["values"][0][-2:] + ("+" if i["values"][1] >= 0 else "") + str(i["values"][1]) + i["type"])
     elif not i["grouping"]: # no identifity for (normal) items -PR-
-        #if i["ident"]:
         return (i["item"]  + str(i["values"][0]))
-        #else:
-        #    return (i["item"] + str(i["values"][0]))
     else:
         return (str(i["values"][0]) + "x " + translate((i["values"][1] if i["values"][0] > 1 else i["item"]), i["values"][0]))
-        #return (str(i["values"][0]) + "x " + i["item"] + " " + (i["type"] if i["ident"] else "?"))
 
 
 def playerdata(y, p):
@@ -99,7 +89,7 @@ def output(w, m, p):
                 i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
                 if m["o"][i[0]][i[1]] == " ":
                     m["o"][i[0]][i[1]] = "."
-    q = """    j = ""
+    """    j = ""
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:
