@@ -48,8 +48,8 @@ def mainloop(w):
                 if p["fullness"] < 0:
                     p["starving"] = True
             while p["xp"] >= p["needxp"]:
+                p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["lw"] += 1
-                p["needxp"] = 5 + p["lw"] + p["needxp"]#(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["maxhp"] += p["hpchange"]
                 p["hp"] += p["hpchange"]
             p["wasattackby"] = ""

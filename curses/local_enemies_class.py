@@ -3,13 +3,14 @@ from local_zero3 import zero3
 from local_translator import translate
 
 def enemies_class_clear():
-    global c, a, mhr, tlist, exlist # c - class, mhr - max hear range -PR-
+    global c, a, tlist, exlist, heads # c - class, exlist - tlist + heads -PR-
     tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">"}
     exlist = tlist.copy()
-    c, a, mhr = [], [], 1
+    heads = set()
+    c, a = [], []
 
-def enemies_class_init(head, y, x, hp = 8, attack = 2, xp = 1, time_sleep = 1, hear_range = 5, ranged = False, carring = []):
-    global c, a, mhr, exlist
+def enemies_class_init(head, y, x, hp, attack, xp, time_sleep = 1, hear_range = 7, ranged = False, carring = []): #carring is not used now -PR-
+    global c, a, exlist, heads
     if ranged:
         a.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
             "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
@@ -18,20 +19,19 @@ def enemies_class_init(head, y, x, hp = 8, attack = 2, xp = 1, time_sleep = 1, h
         c.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
             "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
         it = len(c)
-    if mhr < hear_range-1:
-        mhr = hear_range-1
     if head not in exlist:
         exlist.add(head)
+        heads.add(head)
     return(it-1)  # return id -PR-
 
 def enemies_class_update(m, p, yx):
-    global c, a, mhr, tlist, exlist
+    global c, a, tlist, exlist
     m["m"] = [[-1 for _ in range(m["sx"])] for _ in range(m["sy"])]
     w, k = yx[0], yx[1] # row kolumn -PR-
     q = [[w, k, -1]]
     while q != []:
         p1 = q.pop(0)
-        if p1[2] <= mhr:
+        if p1[2] <= 7:
             w, k = p1[0], p1[1]
             if (m["r"][w][k][0] in exlist) and m["m"][w][k] == -1:
                 q.append([w, k, p1[2] + 1])
@@ -121,7 +121,7 @@ def enemies_class_update(m, p, yx):
             w, k = w +i[0], k +i[1]
     while q != []:
         p1 = q.pop(0)
-        if p1[2] <= mhr:
+        if p1[2] <= 7:
             w, k = p1[0], p1[1]
             if (m["r"][w][k][0] in exlist) and m["m"][w][k] == -2:
                 q.append([w, k, p1[2] + 1])
@@ -202,20 +202,23 @@ def enemies_class_update(m, p, yx):
 
 # enemies attacks player
 
-def enemies_class_shot(rmap, e, p, hear_range):
+def enemies_class_shot(rmap, e, p, hear_range = 7):
+    global heads
     dire = [0, 0] # direction -PR-
-    if p[0] < e[0]:
+    if p[0] > e[0]:
         dire[0] = 1
-    elif p[0] > e[0]:
+    elif p[0] < e[0]:
         dire[0] = -1
-    if p[1] < e[1]:
+    if p[1] > e[1]:
         dire[1] = 1
-    elif p[1] > e[1]:
+    elif p[1] < e[1]:
         dire[1] = -1
-    if abs(p[0] - e[0]) + abs(p[1] - e[1]) <= hear_range:
-        return True
-    elif p[0]+dire[0] == e[0] and p[1]+dire[1] == e[1]:
-        return True
+    for i in range(7): # 7 is range of range attack -PR-
+        e = [e[0] + dire[0], e[1] + dire[1]]
+        if e[0] == p[0] and e[1] == p[1]:
+            return True
+        elif rmap[e[0]][e[1]][0] in heads:
+            return False
     return False
 
 def enemies_class_attack(p,head, value):
@@ -241,18 +244,21 @@ def enemies_class_is_shoted(m, p, dire, value):
     p["echo"] = translate("YOU SHOT SOMEWERE")
 
 def enemies_class_is_attacked(m, p, it, value, ranged = False):
-    if randint(0, 99) < (p["bow_acc"] if ranged else p["attack_acc"]):
-        for _ in range((p["bow_attacks"] if ranged else p["attack_attacks"])):
-            value += randint(-value//2, value//2)
+    at_value = 0
+    acc = (p["bow_acc"] if ranged else p["attack_acc"])
+    for _ in range((p["bow_attacks"] if ranged else p["attack_attacks"])):
+        at_value += (randint(0, 99) < acc) * (value + randint(-value//2, value//2))
+    if at_value != 0:
         if it >= 500:
             q = a[it-500]
         else:
             q = c[it]
-        q["hp"] -= value
+        q["hp"] -= at_value
+        q["time_sleep"], q["hear_range"] = 0, q["hear_range"] if q["hear_range"] > 7 else q["hear_range"] # fast wake up -PR- and alarmed
         if ranged:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
+            p["echo"] = translate("YOU HIT IT") +" |"+str(at_value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
         else:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
+            p["echo"] = translate("YOU HIT IT") +" |"+str(at_value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
         if q["hp"] <= 0:
             m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
             if m["v"][q["y"]][q["x"]][0] == q["head"]:

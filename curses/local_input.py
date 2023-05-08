@@ -206,6 +206,7 @@ def keyin(w, m, p, pos, key):
             return [translate("YOU CAN'T GO UP HERE"), False]
         case "/":
             sort(p)
+            get_equip_values(p)
             return [p["echo"], False]
         case "?":
             pomoc(w, m, p)
