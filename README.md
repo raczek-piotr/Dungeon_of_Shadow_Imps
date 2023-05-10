@@ -3,20 +3,15 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Errors in curses](#Errors-in-curses)
+* [Errors in curses](#errors-in-curses)
 * [Contact](#contact)
 * [Authors](#authors)
 
 ## General info
 Roguelike game with simple interface played in console.
+The polish translation is on default, so disable it in "local_translator.py" # lang = "" -PR-
 	
 ## Technologies
-Project is created with (main):
-* Python 3.10
-* Libraries: getch in linux or msvcrt in windows; Different versions of libraries will not mater
-* Size(x,y): 80x25
-* FontSize: What do you like!
-
 Project with curses is created with (curses):
 * Python 3.10
 * Libraries: curses
@@ -24,8 +19,7 @@ Project with curses is created with (curses):
 * FontSize: What do you like!
 	
 ## Setup
-The program with no curses uses only getch and you have to had it. You could run the program eather in editors console
-To run this project with curses, run terminal or cmd in windows, and run the file "main.py" is (in main dictionary); To run it, type command "python main.py".
+To run this project with curses, run terminal or cmd in windows, and run the file "main.py" is (in main dictionary); To run it, type command "python3 main.py".
 	
 ## Errors in curses
 Errors:
@@ -36,10 +30,10 @@ Errors:
     search the internet or change OS (on Ubuntu with pyton3,10 it will work)
 
   3. "_curses.error: setupterm: could not find terminal"
-    you had ran it in editor's terminal, but it has it be the terminal/cmd (ctrl + t in thonny, to run in the terminal)
+    you had ran it in editor's terminal, but it has it be the terminal/cmd (ctrl + t in thonny, to run it in the terminal)
 
 ## Contact
 * email raczek.piotr@o2.pl
 
 ## Authors
-By: Piotr Raczek
+By: Piotr Raczek # -PR-
