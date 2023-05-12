@@ -25,34 +25,21 @@ def print_menager(w, m, p, cm, bc): # m is'n needed, but for formality it is -PR
     c.init_pair(4, 136, 16)
     c.init_pair(5, 245, 16)#148 :) -PR-
     w.clear()
-    w.addstr(3, 0, "Mana: " + str(p["mana"]) + "/" + str(p["maxmana"]), c.color_pair(4))
+    w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
     w.addstr(11, 0,"Equipted:", c.color_pair(4))
-    w.addstr(12, 2, item(p["e_attack"], 9, p["strength"]), c.color_pair(5))
-    w.addstr(13, 2, item(p["e_hand"], 9, p["strength"]), c.color_pair(5))
-    w.addstr(14, 2, item(p["e_armor"], 9, p["strength"]), c.color_pair(5))
+    w.addstr(12, 2, item(p["e_attack"], 9, p), c.color_pair(5))
+    w.addstr(13, 2, item(p["e_hand"], 9, p), c.color_pair(5))
+    w.addstr(14, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh()
     t1 = ''
     for i in range(len(p["spells"])):
         w.addstr(4+i, 2, str(i+1)+": "+str(p["spells"][i][0]), c.color_pair(cm))
     for i in range(6):
-        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p["strength"]), c.color_pair(bc))
+        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
-    
-def mana_menager(w, m, p):
-    print_menager(w, m, p, 2, 5)
-    it = get_in(w)
-    return[translate("YOU CAN'T CAST A SPELL!"), False]
-    #try:
-    #    it = int(it)-1
-    #    if it >= len(p["BP"]) or it < 0:
-    #        return["", False]
-    #except:
-    #    return["", False]
-    #t = p["BP"].pop(it)
-    #return[translate("YOU CAST A SPELL!"), True]
 
 def item_menager(w, m, p):
     print_menager(w, m, p, 5, 2)
@@ -97,27 +84,26 @@ def item_menager(w, m, p):
             t["values"][0] -= 1
             p["hp"] = p["maxhp"]
             p["strength"] += 1
+            p["dexterity"] += 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
             return[translate("YOU DRANK A") + " " + translate("POTION"), True]
         case _:
             no = True
-            match t["type"]:
-                case "]":
-                    if p["BP"][it]["values"][2] <= p["strength"]:
+            if p["BP"][it]["values"][2][0] <= p["strength"] and p["BP"][it]["values"][2][1] <= p["dexterity"]:
+                match t["type"]:
+                    case "]":
                         t = p["BP"].pop(it)
                         p["BP"].append(p["e_attack"])
                         p["e_attack"] = t
                         no = False
-                case "}":
-                    if p["BP"][it]["values"][2] <= p["strength"]:
+                    case "}":
                         t = p["BP"].pop(it)
                         p["BP"].append(p["e_hand"])
                         p["e_hand"] = t
                         no = False
-                case ")":
-                    if p["BP"][it]["values"][2] <= p["strength"]:
+                    case ")":
                         t = p["BP"].pop(it)
                         p["BP"].append(p["e_armor"])
                         p["e_armor"] = t
@@ -150,14 +136,14 @@ def shot_menager(w, m, p):
         enemies_class_is_shoted(m, p, [dy, dx], p["bow"])
         get_equip_values(p)
         return[p["echo"], True]
-    if p["arrows_id"] == -1:
+    elif p["arrows_id"] == -1: # return ↑ but... -PR-
         return[translate("YOU DON'T HAVE ARROWS!"), False]
     return[translate("YOU CAN'T SHOT THERE!"), False]
 
 def pomoc(w, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
-    w.addstr(0, 58, "Version = curses_0.0.E", c.color_pair(1))
+    w.addstr(0, 58, "Version = curses_0.0.F", c.color_pair(1))
     w.addstr(1, 2, "@ - you", c.color_pair(5))
     w.addstr(2, 2, "# - wall", c.color_pair(5))
     w.addstr(3, 2, "+ - closed door", c.color_pair(5))
@@ -188,8 +174,8 @@ def pomoc(w, m, p): #not beautyful, but done -PR-
 
 def keyin(w, m, p, pos, key):
     match key:
-        case "-":
-             return mana_menager(w, m, p)
+        #case "-":
+        #     pass
         case "+":
              return item_menager(w, m, p)
         case ",":
@@ -212,6 +198,6 @@ def keyin(w, m, p, pos, key):
             pomoc(w, m, p)
             return [p["echo"], False]
         case _:
-           # move a player? (but in where!?),
+           # move a player? (but in where!?), -PR- ?
            #		echo, moved?
             return ["? - for help", False]

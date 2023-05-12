@@ -50,8 +50,8 @@ def f_door(m, p, npos, stay):
 
 def f_block(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = " "
-    m["v"][npy][npx] = " "
+    m["r"][npy][npx] = m["r"][npy][npx][1:]
+    m["v"][npy][npx] = m["v"][npy][npx][1:]
     echo = translate("YOU DESTROYED WEEK WALL")
     return[False, echo, True]
 
@@ -84,14 +84,14 @@ def f_weapons(m, p, npos, stay):
             p["BP"].append(i)
             update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+i["type"]))
+            echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+"x"+str(i["values"][4])+i["type"]))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
             echo = translate("YOUR'S BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+i["type"]))
+        echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+"x"+str(i["values"][4])+i["type"]))
     return[True, echo, True]
 
 def terrain(m, p, npos, stay):
@@ -128,6 +128,10 @@ def terrain(m, p, npos, stay):
         case ",":
             return [True, "", True]
         case " ":
+            if m["r"][npos[0]][npos[1]] == "  ":
+                if p["torch"]:
+                    return [False, translate("HERE IS A DIVIDE!"), False]
+                return [True, "#D!", True]
             return [True, "", True]
         case "^":
             return [False, translate("HERE IS A VERY STEP HILL, YOU CAN'T GET HERE"), False]

@@ -31,8 +31,8 @@ def mainloop(w):
                 p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
         else:
             p["echo"], p["moved"] = keyin(w, m, p, [p["y"], p["x"]], gi)
-            if p["echo"][:1] == "#": # it could be "" -PR-
-                menager(p["echo"], m, p)
+        if p["echo"][:1] == "#": # it could be "" -PR-
+            menager(p["echo"], m, p)
         test_room(m, [p["y"], p["x"]])
         # if t1:
         # else:
@@ -53,13 +53,6 @@ def mainloop(w):
                 p["maxhp"] += p["hpchange"]
                 p["hp"] += p["hpchange"]
             p["wasattackby"] = ""
-            if p["mana"] == p["maxmana"]:
-                manacounter = 0
-            else:
-                manacounter += 1
-                if manacounter > p["manacounter"]:
-                    manacounter -= p["manacounter"]
-                    p["mana"] += 1
 
             enemies_class_update(m, p, [p["y"], p["x"]])
 

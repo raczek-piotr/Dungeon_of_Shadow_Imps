@@ -2,7 +2,7 @@ import curses as c
 from local_translator import translate
 
 
-def item(item, arg=9, moreinfo=False): #if moreinfo != False then moreinfo = strength -PR-
+def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
     if arg == 9:
         i = item
     else:
@@ -11,11 +11,13 @@ def item(item, arg=9, moreinfo=False): #if moreinfo != False then moreinfo = str
         except:
             return ("")
     if i["type"] in ["]", "}", ")"]:
-        r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0]) + i["type"])
-        if moreinfo:
-            r += "  "+str(i["values"][1])+"%"+translate("ACC")+" "+translate("attacks")+":"+str(i["values"][4])+" "
-            if i["values"][2] > moreinfo:
-                r += translate("YOU NEED")+" "+str(i["values"][2] - moreinfo)+" "+translate("MORE STRENGTH TO EQUIP IT")
+        r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])
+        if p:
+            r += "  "+str(i["values"][1])+"%"+translate("ACC")+" "
+            i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
+            i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
+            if i[0] > 0 or i[1] > 0:
+                r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
                 # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             else:
                 r += translate("YOU CAN EQUIP IT")
@@ -33,23 +35,23 @@ def playerdata(y, p):
         case 1:
             return " "+p["playertype"]
         case 3:
-            return " mana: " + str(p["mana"]) + "/" + str(p["maxmana"])
-        case 4:
             return " hp: " + str(p["hp"]) + "/" + str(p["maxhp"])
-        case 5:
+        case 4:
             return " xp: " + str(p["xp"])
-        case 6:
+        case 5:
             return " lw: " + str(p["lw"])
-        case 7:
+        case 6:
             return " depth: " + str(p["depth"])
+        case 7:
+            return " str|dex"
         case 8:
-            return " strength: " + str(p["strength"])
+            return " "*(4-len(str(p["strength"])))+str(p["strength"])+"|"+str(p["dexterity"])
         case 9:
             return " gold: " + str(p["gold"])
         case 11:
             return " attack: " + str(p["attack"])
         case 12:
-            return "    bow: " + str(p["bow"])
+            return "  range: " + str(p["bow"])
         case 13:
             return "  armor: " + str(p["armor"])
         case 15:

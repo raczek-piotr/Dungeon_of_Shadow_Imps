@@ -1,5 +1,5 @@
 from random import randint
-from local_zero3 import zero3
+from local_scripts import zero3, dire, shot
 from local_translator import translate
 
 def enemies_class_clear():
@@ -86,27 +86,7 @@ def enemies_class_update(m, p, yx):
                   [m["m"][q["y"]+1][q["x"]], q["y"]+1, q["x"]],
                   [m["m"][q["y"]+1][q["x"]+1], q["y"]+1, q["x"]+1],
                   ]
-        p_min = m["m"][q["y"]][q["x"]]
-        direction = [m["m"][q["y"]][q["x"]], q["y"], q["x"]] # stay -PR-
-
-        while t_mmap != []:
-            i = t_mmap.pop(randint(0, len(t_mmap)-1))
-            if i[0] >= 0 and i[0] <= p_min:
-                p_min = i[0]
-                direction = i
-        m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-        #if m["r"][q["y"]][q["x"]] == "":
-        #    m["r"][q["y"]][q["x"]] = " "
-        #    print("CUT OFF WORNING, I DON'T KNOW WHY")
-        if m["v"][q["y"]][q["x"]][0] != " ":
-            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-        if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
-            q["y"], q["x"] = direction[1:]
-        m["r"][q["y"]][q["x"]] = q["head"]+zero3(it)+m["r"][q["y"]][q["x"]]
-        if m["r"][q["y"]][q["x"]][-1] != " ":
-            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-
-
+        move_enemie(m, p, t_mmap, q, it)
 
     for y in range(len(m["m"])): # time for archers -PR-
         for x in range(len(m["m"][0])):
@@ -177,49 +157,42 @@ def enemies_class_update(m, p, yx):
                   [m["m"][q["y"]+1][q["x"]], q["y"]+1, q["x"]],
                   [m["m"][q["y"]+1][q["x"]+1], q["y"]+1, q["x"]+1],
                   ]
-        p_min = m["m"][q["y"]][q["x"]]
-        direction = [m["m"][q["y"]][q["x"]], q["y"], q["x"]] # stay -PR-
+        move_enemie(m, p, t_mmap, q, it, 500)
 
-        while t_mmap != []:
-            i = t_mmap.pop(randint(0, len(t_mmap)-1))
-            if i[0] >= 0 and i[0] <= p_min:
-                p_min = i[0]
-                direction = i
-        m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-        #if m["r"][q["y"]][q["x"]] == "":
-        #    m["r"][q["y"]][q["x"]] = " "
-        #    print("CUT OFF WORNING, I DON'T KNOW WHY")
-        if m["v"][q["y"]][q["x"]][0] != " ":
-            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-        if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
+def move_enemie(m, p, t_mmap, q, it, plus_it = 0):
+    p_min = m["m"][q["y"]][q["x"]]
+    direction = [m["m"][q["y"]][q["x"]], q["y"], q["x"]] # stay -PR-
+    while t_mmap != []:
+        i = t_mmap.pop(randint(0, len(t_mmap)-1))
+        if i[0] >= 0 and i[0] <= p_min:
+            p_min = i[0]
+            direction = i
+    m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
+    #if m["r"][q["y"]][q["x"]] == "":
+    #    m["r"][q["y"]][q["x"]] = " "
+    #    print("CUT OFF WORNING, I DON'T KNOW WHY")
+    if m["v"][q["y"]][q["x"]][0] != " ": # if viewmap is unseen -PR-
+        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+    if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
+        if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
             q["y"], q["x"] = direction[1:]
-        m["r"][q["y"]][q["x"]] = q["head"]+zero3(it+500)+m["r"][q["y"]][q["x"]]
-        if m["r"][q["y"]][q["x"]][-1] != " ":
+        else:
+            q["hp"] = 0
+    m["r"][q["y"]][q["x"]] = q["head"]+zero3(it+plus_it)+m["r"][q["y"]][q["x"]]
+    if m["r"][q["y"]][q["x"]][-1] != " ":
+        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+    if q["hp"] == 0: # no xp for the player who did NOT kill him -PR-
+        m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
+        if m["v"][q["y"]][q["x"]][0] == q["head"]:
             m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-    #for y in range(len(m["m"])):
-    #    for x in range(len(m["m"][0])):
-    #        m["m"][y][x] = str(m["m"][y][x])[0]
 
 # enemies attacks player
 
-def enemies_class_shot(rmap, e, p, hear_range = 7):
-    global heads
-    dire = [0, 0] # direction -PR-
-    if p[0] > e[0]:
-        dire[0] = 1
-    elif p[0] < e[0]:
-        dire[0] = -1
-    if p[1] > e[1]:
-        dire[1] = 1
-    elif p[1] < e[1]:
-        dire[1] = -1
-    for i in range(7): # 7 is range of range attack -PR-
-        e = [e[0] + dire[0], e[1] + dire[1]]
-        if e[0] == p[0] and e[1] == p[1]:
-            return True
-        elif rmap[e[0]][e[1]][0] in heads:
-            return False
-    return False
+def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
+    global tlist
+    d = dire(e, p)
+    p = shot(rmap, p, d, tlist, (hear_range if hear_range <= 7 else 7))
+    return p == e
 
 def enemies_class_attack(p,head, value):
     if randint(0, 99) < p["armor_acc"]:
@@ -232,12 +205,11 @@ def enemies_class_attack(p,head, value):
 # player attack enemies
 
 def enemies_class_is_shoted(m, p, dire, value):
-    ty, tx = p["y"], p["x"]
-    r = 0
-    while m["r"][ty][tx][0] in tlist:
-        ty, tx, r = ty+dire[0], tx+dire[1], r+1
+    global tlist, heads
+    tx = p["y"], p["x"] # it is NOT x'pos -PR-
+    ty, tx = shot(m["r"], tx, dire, tlist)
     p["BP"][p["arrows_id"]]["values"][0] -= 1
-    if r < 8 and m["r"][ty][tx][0] in exlist:
+    if m["r"][ty][tx][0] in heads:
         it = int(m["r"][ty][tx][1:4])
         enemies_class_is_attacked(m, p, it, value, True)
         return ()

@@ -1,6 +1,6 @@
 from random import randint, choice
 
-from local_zero3 import zero3
+from local_scripts import zero3
 from local_item_class import item_class_init
 from local_enemies_class import enemies_class_init
 from local_regular_map import regular_map_init
@@ -55,10 +55,10 @@ def map_init_str(m, p, items, enemies, type_of_map):
 
 
 def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are_all = True):
-    proby = 0
+    proby = 0 #tries done -PR-
     while len(pokoje) < minhm or proby < hm:
         sy, sx = randint(min_room_size, max_room_size)/2, randint(min_room_size, max_room_size)/2
-        y, x = randint(1, m["sy"]-2 - 2 * sy), randint(1, m["sx"]-2 - 2 * sx)
+        y, x = randint(1, m["sy"]-3 -2*sy), randint(1, m["sx"]-3 -2*sx) # one was out of the map -2→-3 -PR-
         can, proby = True, proby + 1
         for i in pokoje:
             if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy+space and
@@ -96,7 +96,150 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
 
     match type_of_map:
         case 1:
-            m["r"] = [[choice(["#","#","#",":",":"]) for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
+            locate_a_room(m, pokoje, 3, 3, 5, 3, 1, False)
+            ran = len(pokoje) #first rooms with no light
+            locate_a_room(m, pokoje, 20, 5, 3, 3, 1)
+            l_pokoje = len(pokoje)
+            for i in range(ran):
+                j = pokoje[i]
+                for y in range(j[0]-1, j[0]+j[2]+1):
+                    for x in range(j[1]-1, j[1]+j[3]+1):
+                        m["r"][y][x] = "|"
+            flor = "_."
+            for i in range(l_pokoje):
+                j = pokoje[i]
+                if i == ran:
+                    flor = " "
+                for y in range(j[0], j[0]+j[2]):
+                    for x in range(j[1], j[1]+j[3]):
+                        m["r"][y][x] = flor
+            pokojen = [] #no -PR-
+            for i in pokoje:
+                pokojen.append(i)
+            pokojeok = [pokojen.pop(1)] #ok -PR-
+            while pokojen != []:
+                n_minodl = 0
+                o_minodl = 0
+                minodl = m["sy"]**2 + m["sx"]**2
+                for id_n in range(len(pokojen)):
+                    n = pokojen[id_n]
+                    modl = m["sy"]**2 + m["sx"]**2
+                    o_modl = -1
+                    for id_o in range(len(pokojeok)):
+                        o = pokojeok[id_o]
+                        odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
+                        if odl < modl:
+                            modl = odl
+                            o_modl = id_o
+                    if modl < minodl:
+                        minodl = modl
+                        n_minodl = id_n
+                        o_minodl = o_modl
+                p2 = pokojeok[o_minodl]
+                p1 = pokojen[n_minodl]
+                p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
+                p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
+                middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
+                if m["r"][middle2[0]][middle2[1]][0] != "#":
+                    middle2[0] -= 1
+                    middle2[1] -= 1
+                middle1 = [middle2[0], middle2[1]]
+                Connect(m, p2, middle2)
+                Connect(m, p1, middle1, True)
+                pokojeok.append(pokojen.pop(n_minodl))
+            for i in range(ran):
+                j = pokoje[i]
+                for y in range(j[0]-1, j[0]+j[2]+1):
+                    for x in range(j[1]-1, j[1]+j[3]+1):
+                        if m["r"][y][x] == "|":
+                            m["r"][y][x] = "#"
+            l_pokoje = l_pokoje-1
+            i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
+            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+            for k in items:
+                while m["r"][j[0]][j[1]] != " ":
+                    i = randint(1, l_pokoje)
+                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                m["r"][j[0]][j[1]] = k+" "
+            if stairs > 1:
+                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
+            if stairs % 2 == 1:
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
+            for k in enemies:
+                i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
+                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
+                    i = randint(1, l_pokoje)
+                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                if m["r"][j[0]][j[1]] != " ":
+                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                    m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
+                else:
+                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                    m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
+        case 2:
+            locate_a_room(m, pokoje, 3, 3, 1, 1, 1)
+            #ran = len(pokoje) #len(special_rooms) (<>@) -PR-
+            locate_a_room(m, pokoje, 20, 10, 3, 3, 1, True)
+            for i in range(len(pokoje)):
+                j = pokoje[i]
+                for y in range(j[0], j[0]+j[2]):
+                    for x in range(j[1], j[1]+j[3]):
+                        m["r"][y][x] = " "
+            pokojen = []
+            for i in pokoje:
+                pokojen.append(i)
+            pokojeok = [pokojen.pop(1)]
+            while pokojen != []:
+                n_minodl = 0
+                o_minodl = 0
+                minodl = m["sy"]**2 + m["sx"]**2
+                for id_n in range(len(pokojen)):
+                    n = pokojen[id_n]
+                    modl = m["sy"]**2 + m["sx"]**2
+                    o_modl = -1
+                    for id_o in range(len(pokojeok)):
+                        o = pokojeok[id_o]
+                        odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
+                        if odl > modl and odl < 20:
+                            modl = odl
+                            o_modl = id_o
+                    if modl > minodl:
+                        minodl = modl
+                        n_minodl = id_n
+                        o_minodl = o_modl
+                p2 = pokojeok[o_minodl]
+                p1 = pokojen[n_minodl]
+                p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
+                p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
+                middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
+                middle1 = [middle2[0], middle2[1]]
+                Connect(m, p2, middle2)
+                Connect(m, p1, middle1, True)
+                pokojeok.append(pokojen.pop(n_minodl))
+            if stairs > 1:
+                m["r"][pokoje[1][0]+pokoje[1][2]//2][pokoje[1][1]+pokoje[-1][3]//2] = "> "
+            if stairs % 2 == 1:
+                m["r"][pokoje[2][0]+pokoje[2][2]//2][pokoje[2][1]+pokoje[-2][3]//2] = "< "
+            l_pokoje = len(pokoje)-1 #-3
+            i = randint(3, l_pokoje) #ran=3 -PR-
+            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+            for k in items:
+                while m["r"][j[0]][j[1]] != " ":
+                    i = randint(3, l_pokoje) #ran=3 -PR-
+                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                m["r"][j[0]][j[1]] = k+" "
+            for k in enemies:
+                i = randint(3, l_pokoje) #ran=3 -PR-
+                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                while m["r"][j[0]][j[1]] != " ":
+                    i = randint(3, l_pokoje) #ran=3 -PR-
+                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+                m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
+        case 3:
+            m["r"] = [[choice(["#","#",": "]) for _ in range(m["sx"])] for _ in range(m["sy"])]
             for i in range(m["sx"]):
                 m["r"][0][i] = "#"
                 m["r"][-1][i] = "#"
@@ -104,8 +247,8 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 m["r"][i][0] = "#"
                 m["r"][i][-1] = "#"
             locate_a_room(m, pokoje, 3, 3, 5, 3, 1, False)
-            ran = len(pokoje)
-            locate_a_room(m, pokoje, 5, 8, 3, 3, 1)
+            ran = 3 # len(pokoje) # always 3 -PR-
+            locate_a_room(m, pokoje, 20, 8, 3, 3, 1)
             l_pokoje = len(pokoje)
             for i in range(ran):
                 j = pokoje[i]
@@ -161,19 +304,22 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
+                        else:
+                            if randint(0, 7) == 0:
+                                m["r"][y][x] = "_:."
             l_pokoje = l_pokoje-1
-            i = randint(ran, l_pokoje)
+            i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
                 while m["r"][j[0]][j[1]] != " ":
-                    i = randint(ran, l_pokoje)
+                    i = randint(1, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
             for k in enemies:
-                i = randint(2, l_pokoje)
+                i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
                 j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
-                    i = randint(2, l_pokoje)
+                    i = randint(1, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 if m["r"][j[0]][j[1]] != " ":
                     e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
@@ -182,69 +328,10 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
                     m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
             if stairs > 1:
-                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "_>."
-            if stairs % 2 == 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_<."
-        case 2:
-            locate_a_room(m, pokoje, 1, 1, 1, 1, 1, False)
-            locate_a_room(m, pokoje, 5, 6, 3, 3, 3, False)
-            locate_a_room(m, pokoje, 2, 8, 1, 1, 1)
-            for i in range(len(pokoje)):
-                j = pokoje[i]
-                for y in range(j[0], j[0]+j[2]):
-                    for x in range(j[1], j[1]+j[3]):
-                        m["r"][y][x] = " "
-            pokojen = []
-            for i in pokoje:
-                pokojen.append(i)
-            pokojeok = [pokojen.pop(1)]
-            while pokojen != []:
-                n_minodl = 0
-                o_minodl = 0
-                minodl = m["sy"]**2 + m["sx"]**2
-                for id_n in range(len(pokojen)):
-                    n = pokojen[id_n]
-                    modl = m["sy"]**2 + m["sx"]**2
-                    o_modl = -1
-                    for id_o in range(len(pokojeok)):
-                        o = pokojeok[id_o]
-                        odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
-                        if odl > modl and odl < 20:
-                            modl = odl
-                            o_modl = id_o
-                    if modl > minodl:
-                        minodl = modl
-                        n_minodl = id_n
-                        o_minodl = o_modl
-                p2 = pokojeok[o_minodl]
-                p1 = pokojen[n_minodl]
-                p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
-                p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
-                middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
-                middle1 = [middle2[0], middle2[1]]
-                Connect(m, p2, middle2)
-                Connect(m, p1, middle1, True)
-                pokojeok.append(pokojen.pop(n_minodl))
-            if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
-            l_pokoje = len(pokoje)-3
-            i = randint(1, l_pokoje)
-            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-            for k in items:
-                while m["r"][j[0]][j[1]] != " ":
-                    i = randint(1, l_pokoje)
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                m["r"][j[0]][j[1]] = k+" "
-            for k in enemies:
-                i = randint(1, l_pokoje)
-                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != " ":
-                    i = randint(1, l_pokoje)
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
+            m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "_."
 
         case _:
             return regular_map_init(m, p, items, enemies, type_of_map, stairs)
@@ -254,7 +341,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
 
 def Connect(m, p_end, p_start, clear = False):
     direction = randint(0, 1)
-    goal = True
+    goal = True # Do we have a goal? Or it is "done"?
     while goal:
         if direction == 0:
             if p_start[0] < p_end[0]:
@@ -292,7 +379,7 @@ def Connect(m, p_end, p_start, clear = False):
                 if m["r"][i][j] == "d":
                     m["r"][i][j] = " "
 
-def open_doors(rmap, vmap):
+def open_doors(rmap, vmap): #Boss is killed -PR-
     for y in range(len(rmap)):
         for x in range(len(rmap[0])):
             if rmap[y][x][0] == "=":

@@ -1,13 +1,11 @@
 from random import randint, choice
 
-from local_zero3 import zero3
+from local_scripts import zero3
 from local_item_class import item_class_init
 from local_enemies_class import enemies_class_init
 
 
 def regular_map_init(m, p, items, enemies, type_of_map, stairs):
-    for _ in range(type_of_map-2):
-        enemies.append(["t",32,4,16,1,7,False,[]])
     hm = 20
     minhm = 5 # 5 -PR-
     pokoje = []
