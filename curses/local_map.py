@@ -109,7 +109,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
             flor = "_."
             for i in range(l_pokoje):
                 j = pokoje[i]
-                if i == ran:
+                if i == ran: #rest of rooms have no light
                     flor = " "
                 for y in range(j[0], j[0]+j[2]):
                     for x in range(j[1], j[1]+j[3]):
@@ -118,6 +118,36 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
             for i in pokoje:
                 pokojen.append(i)
             pokojeok = [pokojen.pop(1)] #ok -PR-
+#             while pokojen != []:
+#                 n_minodl = 0
+#                 o_minodl = 0
+#                 minodl = m["sy"]**2 + m["sx"]**2
+#                 for id_n in range(len(pokojen)):
+#                     n = pokojen[id_n]
+#                     modl = m["sy"]**2 + m["sx"]**2
+#                     o_modl = -1
+#                     for id_o in range(len(pokojeok)):
+#                         o = pokojeok[id_o]
+#                         odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
+#                         if odl < modl:
+#                             modl = odl
+#                             o_modl = id_o
+#                     if modl < minodl:
+#                         minodl = modl
+#                         n_minodl = id_n
+#                         o_minodl = o_modl
+#                 p2 = pokojeok[o_minodl]
+#                 p1 = pokojen[n_minodl]
+#                 p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
+#                 p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
+#                 middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
+#                 if m["r"][middle2[0]][middle2[1]][0] != "#":
+#                     middle2[0] -= 1
+#                     middle2[1] -= 1
+#                 middle1 = [middle2[0], middle2[1]]
+#                 Connect(m, p2, middle2)
+#                 Connect(m, p1, middle1, True)
+#                 pokojeok.append(pokojen.pop(n_minodl))
             while pokojen != []:
                 n_minodl = 0
                 o_minodl = 0
@@ -129,10 +159,10 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     for id_o in range(len(pokojeok)):
                         o = pokojeok[id_o]
                         odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
-                        if odl < modl:
+                        if odl > modl and odl < 20:
                             modl = odl
                             o_modl = id_o
-                    if modl < minodl:
+                    if modl > minodl:
                         minodl = modl
                         n_minodl = id_n
                         o_minodl = o_modl
@@ -141,11 +171,10 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
                 p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
                 middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
-                if m["r"][middle2[0]][middle2[1]][0] != "#":
-                    middle2[0] -= 1
-                    middle2[1] -= 1
-                middle1 = [middle2[0], middle2[1]]
+                middle1 = middle2.copy()
+                middle0 = middle2.copy()
                 Connect(m, p2, middle2)
+                Connect(m, middle0, [m["sx"]//2, m["sy"]//2])
                 Connect(m, p1, middle1, True)
                 pokojeok.append(pokojen.pop(n_minodl))
             for i in range(ran):
@@ -154,6 +183,8 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
+                        elif m["r"][y][x] == "+":
+                            m["r"][y][x] = ":."
             l_pokoje = l_pokoje-1
             i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
@@ -214,8 +245,10 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
                 p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
                 middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
-                middle1 = [middle2[0], middle2[1]]
+                middle1 = middle2.copy()
+                middle0 = middle2.copy()
                 Connect(m, p2, middle2)
+                Connect(m, middle0, [m["sx"]//2, m["sy"]//2])
                 Connect(m, p1, middle1, True)
                 pokojeok.append(pokojen.pop(n_minodl))
             if stairs > 1:
@@ -258,7 +291,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
             flor = "_."
             for i in range(l_pokoje):
                 j = pokoje[i]
-                if i == ran:
+                if i == ran: #rest of rooms have no light
                     flor = " "
                 for y in range(j[0], j[0]+j[2]):
                     for x in range(j[1], j[1]+j[3]):
@@ -294,7 +327,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 if m["r"][middle2[0]][middle2[1]][0] != "#":
                     middle2[0] -= 1
                     middle2[1] -= 1
-                middle1 = [middle2[0], middle2[1]]
+                middle1 = middle2.copy()
                 Connect(m, p2, middle2)
                 Connect(m, p1, middle1, True)
                 pokojeok.append(pokojen.pop(n_minodl))
@@ -304,6 +337,8 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
+                        elif m["r"][y][x] == "+":
+                            m["r"][y][x] = ":."
                         else:
                             if randint(0, 7) == 0:
                                 m["r"][y][x] = "_:."
@@ -352,7 +387,7 @@ def Connect(m, p_end, p_start, clear = False):
                 k = p_start[0]
                 direction += 1
             if m["r"][p_start[0]][p_start[1]] == "|":
-                m["r"][p_start[0]][p_start[1]] = "_."
+                m["r"][p_start[0]][p_start[1]] = "+"
             elif m["r"][p_start[0]][p_start[1]] == "#":#{"#",":"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[0] = k
@@ -365,7 +400,7 @@ def Connect(m, p_end, p_start, clear = False):
                 k = p_start[1]
                 direction -= 1
             if m["r"][p_start[0]][p_start[1]] == "|":
-                m["r"][p_start[0]][p_start[1]] = "_."
+                m["r"][p_start[0]][p_start[1]] = "+"
             elif m["r"][p_start[0]][p_start[1]] == "#":#{"#",":"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[1] = k

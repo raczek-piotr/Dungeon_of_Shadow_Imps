@@ -59,7 +59,7 @@ def item_menager(w, m, p):
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " " + str(350) + " " + translate("TURNS"), True]
+            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 300 " + translate("TURNS"), True]
         case "BREAD":
             t["values"][0] -= 1
             p["fullness"] += 400

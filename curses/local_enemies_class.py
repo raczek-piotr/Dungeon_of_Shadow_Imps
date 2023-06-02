@@ -216,15 +216,20 @@ def enemies_class_is_shoted(m, p, dire, value):
     p["echo"] = translate("YOU SHOT SOMEWERE")
 
 def enemies_class_is_attacked(m, p, it, value, ranged = False):
+    if it >= 500:
+        q = a[it-500]
+    else:
+        q = c[it]
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
-    for _ in range((p["bow_attacks"] if ranged else p["attack_attacks"])):
+    attacks = (p["bow_attacks"] if ranged else p["attack_attacks"])
+    if q["time_sleep"] != 0:
+        at_value = value * attacks
+        acc = 100
+        q["time_sleep"] = 0
+    for _ in range(attacks):
         at_value += (randint(0, 99) < acc) * (value + randint(-value//2, value//2))
     if at_value != 0:
-        if it >= 500:
-            q = a[it-500]
-        else:
-            q = c[it]
         q["hp"] -= at_value
         q["time_sleep"], q["hear_range"] = 0, q["hear_range"] if q["hear_range"] > 7 else q["hear_range"] # fast wake up -PR- and alarmed
         if ranged:

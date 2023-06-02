@@ -12,6 +12,7 @@ item = [
     #  values": [damage, acc, strengh, tier, attacks],
     ["]", {"item": "KNIFE [", "type": "]", "values": [2, 60, [3,3], 1, 1], "cost": 10, "grouping": False}],
     ["]", {"item": "DAGGER [", "type": "]", "values": [3, 60, [3,4], 1, 1], "cost": 15, "grouping": False}],
+    ["]", {"item": "SICKLE [", "type": "]", "values": [4, 50, [4,4], 1, 1], "cost": 20, "grouping": False}],
     ["]", {"item": "PUGINALE [", "type": "]", "values": [4, 60, [5,3], 2, 1], "cost": 25, "grouping": False}],
     ["]", {"item": "SHORT SWORD [", "type": "]", "values": [6, 40, [5,4], 2, 1], "cost": 25, "grouping": False}],
     ["]", {"item": "SPEAR [", "type": "]", "values": [10, 40, [7,3], 3, 1], "cost": 40, "grouping": False}],
@@ -70,37 +71,48 @@ def prepare_map(m, p):
     while p["camp"][p["id_camp"]][p["depth"]] == "next":
         p["id_camp"] += 1
         h = p["camp"][p["id_camp"]][p["depth"]]
+    h[0] = choice(h[0])
     item_class_clear()
     enemies_class_clear()
-    enemies = [["r",4,1,1,1,7,False,[]], #0 rat
-             ["s",4,2,2,1,7,False,[]],#("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #1 scrapling
-             ["t",4,1,2,1,7,True,[]],#("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #2 scrapling trapper
-             ["g",6,2,4,1,7,False,[]], #3 goblin
-             ["S",4,3,3,4,4,False,[]], #4 small snake
-             ["o",9,2,6,1,7,False,[]], #5 orck
-             ["k",6,2,8,1,7,True,[]], #6 halfing
-             ["t",5,3,6,0,14,False,[]], #7 thief
-             ["c",18,2,12,1,7,False,[]], #8 crab
-             ] # head "", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
-    elist, xp = [], 0
-    for i in range((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2):
-        elist.append(enemies[i])
-        xp += enemies[i][3]
-    while xp < (5+p["depth"]): #5-2=3 -PR-
-        i = randint((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2)
-        elist.append(enemies[i])
-        xp += enemies[i][3]
+    enemies_likes_light = [
+        ["r",4,1,1,1,7,False,[]], #0 rat
+        ["s",4,2,2,1,7,False,[]],#("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #2 scrapling
+        ["t",4,1,2,1,7,True,[]],#("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #3 scrapling trapper
+        ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+    enemies_half_light = [
+        ["h",3,2,1,2,7,False,[]], #0 hobbit
+        ["c",8,1,1,4,4,False,[]], #1 crab
+        ["t",4,1,2,1,7,True,[]],#("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True}, 20)], #3 scrapling trapper
+        ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+    enemies_not_light = [
+        ["s",3,3,1,4,4,False,[]], #0 small snake
+        ["c",8,1,1,4,4,False,[]], #1 crab
+        ["g",6,2,4,1,7,False,[]], #2 goblin
+        ["o",9,2,6,1,7,False,[]], #3 orck
+        ["k",6,2,8,1,7,True,[]], #4 halfing
+        ["t",5,3,6,0,14,False,[]], #5 thief
+        ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
     i = randint(0, len(item)-1)
-    ilist = [item[i][0] + zero3(item_class_init(item[i][0], item[i][1]))]
-    for i in range(randint(0, 6)):
-        ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
-    for i in range(choice([0,0,1,2])):
-        ilist.append("*" + zero3(item_class_init("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True})))
-    for i in range(randint(0, 2)):
-        ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "cost": 5, "grouping": True})))
-    for i in range(randint(0, 3)):
-        ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
-    p["y"], p["x"] = map_init(m, p, ilist, elist, h[0], h[1]) # 0,1,2
+    elist, ilist, xp = [], [item[i][0] + zero3(item_class_init(item[i][0], item[i][1]))], 0
+    if type(h[0]) == int:
+        enemies = [enemies_likes_light, enemies_not_light, enemies_not_light, enemies_half_light]
+        enemies = enemies[h[0]]
+        for i in range((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2):
+            elist.append(enemies[i])
+            xp += enemies[i][3]
+        while xp < (5+p["depth"]): #5-2=3 -PR-
+            i = randint((p["depth"]//2-2 if p["depth"]//2-2 > 0 else 0), p["depth"]//2)
+            elist.append(enemies[i])
+            xp += enemies[i][3]
+        for i in range(randint(0, 6)):
+            ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
+        for i in range(choice([0,0,1,2])):
+            ilist.append("*" + zero3(item_class_init("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True})))
+        for i in range(randint(0, 2)):
+            ilist.append("-" + zero3(item_class_init("-", {"item": "ARROW", "type": "", "values": [randint(2, 5), "ARROWS"], "cost": 5, "grouping": True})))
+        for i in range(randint(0, 3)):
+            ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
+    p["y"], p["x"] = map_init(m, p, ilist, elist, h[0], h[1]) # 0,1,2,3
 
 def start_data():
     path = "data/"
@@ -163,7 +175,7 @@ def start_data():
         "time": 0,
         "moved": True,
         "id_camp": 0,
-        "camp": [[["surface",0],[1,2],[0,3],[0,3],[1,3],[2,3],[2,3],[1,3],[2,3],[2,3],[2,3],[1,3],[0,3],[0,3],[1,3],[2,3],[1,3],[0,3],[0,3],[1,3],"next"],
+        "camp": [[[["surface"],0],[[0,1],2],[[0],3],[[0,1],3],[[1],3],[[1,2],3],[[2],3],[[2,3],3],[[3],3],[[2,3],3],[[1,2],3],[[1],3],[[0,1],3],[[0,1],3],[[1],3],[[2],3],[[1],3],[[0],3],[[0],3],[[1],3],"next"],
         #        ["next",[0,3],[0,1],["the-path",0]],
         #        [["Manipure",0],[2,2],[2,3],[2,3],[2,3],"next","next"],
                 [["Manipure",0],[2,3],[2,3],[2,3],[2,3],[2,1],[0,2],[0,3],[0,1]]]

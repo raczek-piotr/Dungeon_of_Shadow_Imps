@@ -49,9 +49,9 @@ def playerdata(y, p):
         case 9:
             return " gold: " + str(p["gold"])
         case 11:
-            return " attack: " + str(p["attack"])
+            return " attack: [" + str(p["attack"])+"x"+str(p["attack_attacks"])+"] "+str(p["attack_acc"])+"%"
         case 12:
-            return "  range: " + str(p["bow"])
+            return "  range: {" + str(p["bow"])+"x"+str(p["bow_attacks"])+"} "+str(p["bow_acc"])+"%"
         case 13:
             return "  armor: " + str(p["armor"])
         case 15:
