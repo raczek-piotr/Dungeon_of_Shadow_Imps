@@ -22,3 +22,18 @@ def zero3(i):
     while len(i) < 3:
         i = "0" + i
     return i
+
+def is_boss_killed(m, p, head): #Boss is killed (if)-PR-
+    if head == "B":
+        p["strength"] += 1
+        p["dexterity"] += 1
+        rmap, vmap = m["r"], m["v"]
+        for y in range(len(rmap)):
+            for x in range(len(rmap[0])):
+                if rmap[y][x][0] == "=":
+                    rmap[y][x] = rmap[y][x][1:]
+                    if vmap[y][x][0] == "=":
+                        vmap[y][x] = rmap[y][x]
+                else:
+                    if len(rmap[y][x]) > 1 and rmap[y][x][1] == "=":
+                        rmap[y][x] = rmap[y][x][0] + rmap[y][x][2:]

@@ -40,11 +40,11 @@ def mainloop(w):
         if p["moved"]:
             p["time"] += 1  # for the player, not for me (not now) -PR-
             if p["torch"]:
-                p["torchtime"] -= 1
+                p["torchtime"] -= p["normal_level"] #on Boss_levels player do not need to eat and... -PR-
                 if p["torchtime"] < 0:
                     p["torch"] = False
             if not p["starving"]:
-                p["fullness"] -= 1
+                p["fullness"] -= p["normal_level"]
                 if p["fullness"] < 0:
                     p["starving"] = True
             while p["xp"] >= p["needxp"]:
@@ -74,4 +74,4 @@ def mainloop(w):
         w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-25))
         w.getkey()
 
-wrapper(mainloop) # MY curses is not working on linux :) -PR-
+wrapper(mainloop) # MY curses IS working on linux :) -PR-

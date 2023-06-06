@@ -35,8 +35,6 @@ def print_menager(w, m, p, cm, bc): # m is'n needed, but for formality it is -PR
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh()
     t1 = ''
-    for i in range(len(p["spells"])):
-        w.addstr(4+i, 2, str(i+1)+": "+str(p["spells"][i][0]), c.color_pair(cm))
     for i in range(6):
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
@@ -63,8 +61,8 @@ def item_menager(w, m, p):
         case "BREAD":
             t["values"][0] -= 1
             p["fullness"] += 400
-            if p["fullness"] > 500:
-                p["fullness"] = 500
+            if p["fullness"] > 1000:
+                p["fullness"] = 1000
             p["starving"] = False
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
@@ -73,8 +71,8 @@ def item_menager(w, m, p):
         case "CORPSE":
             t["values"][0] -= 1
             p["fullness"] += 200
-            if p["fullness"] > 500:
-                p["fullness"] = 500
+            if p["fullness"] > 1000:
+                p["fullness"] = 1000
             p["starving"] = False
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
@@ -143,7 +141,7 @@ def shot_menager(w, m, p):
 def pomoc(w, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
-    w.addstr(0, 58, "Version = curses_0.0.F", c.color_pair(1))
+    w.addstr(0, 57, "Version = curses_0.0.F+", c.color_pair(1))
     w.addstr(1, 2, "@ - you", c.color_pair(5))
     w.addstr(2, 2, "# - wall", c.color_pair(5))
     w.addstr(3, 2, "+ - closed door", c.color_pair(5))
@@ -163,8 +161,8 @@ def pomoc(w, m, p): #not beautyful, but done -PR-
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
     w.addstr(19, 4, "1 2 3", c.color_pair(1))
-    w.addstr(20, 2, "- - use (mana)    + - use (backpack)    / - sort (no turns used)", c.color_pair(5))
-    w.addstr(21, 2, "0 - shot          , - drop (backpack)", c.color_pair(5))
+    w.addstr(20, 2, "+ - use (backpack)     / - sort (no turns used)    ? - help", c.color_pair(5))
+    w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))

@@ -11,7 +11,7 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
     pokoje = []
     tryies = 0
     sizey, sizex = 12, 20
-    m["sy"], m["sx"] = 25, 41
+    m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -33,7 +33,7 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
             for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                 m["r"][y][x] = "|"
     for it in range(hm):
-        Connect(m, pokoje[it-1].copy(), pokoje[it].copy())
+        RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
     for it in range(hm):
         for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
             for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
@@ -66,11 +66,11 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
 
     return(pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2)
 
-def Connect(m, p_end, p_start):
+def RegularConnect(m, p_end, p_start):
     p_end[0], p_end[1] = p_end[0] + 2 * randint(0,p_end[2]//2), p_end[1] + 2 * randint(0,p_end[3]//2)
     p_start[0], p_start[1] = p_start[0] + 2 * randint(0,p_start[2]//2), p_start[1] + 2 * randint(0,p_start[3]//2)
     direction = randint(0, 1)
-    goal = True
+    goal = True # I have the goal -PR-
     while goal:
         if direction == 0:
             if p_start[0] < p_end[0]:
@@ -108,5 +108,3 @@ def Connect(m, p_end, p_start):
             goal = False
         if randint(0, 99) < 20:
             direction = (direction+1) % 2
-        
-    

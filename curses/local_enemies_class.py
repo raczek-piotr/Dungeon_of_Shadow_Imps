@@ -1,6 +1,7 @@
 from random import randint
 from local_scripts import zero3, dire, shot
 from local_translator import translate
+from local_scripts import is_boss_killed
 
 def enemies_class_clear():
     global c, a, tlist, exlist, heads # c - class, exlist - tlist + heads -PR-
@@ -182,6 +183,7 @@ def move_enemie(m, p, t_mmap, q, it, plus_it = 0):
     if m["r"][q["y"]][q["x"]][-1] != " ":
         m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
     if q["hp"] == 0: # no xp for the player who did NOT kill him -PR-
+        is_boss_killed(m, p, q["head"]) # but It was a Boss?
         m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
         if m["v"][q["y"]][q["x"]][0] == q["head"]:
             m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
@@ -241,5 +243,6 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
             if m["v"][q["y"]][q["x"]][0] == q["head"]:
                 m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
             p["xp"] += q["xp"]
+            is_boss_killed(m, p, q["head"])
     else:
         p["echo"] = translate("YOU MISS IT")
