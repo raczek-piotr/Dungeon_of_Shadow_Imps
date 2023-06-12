@@ -1,15 +1,15 @@
 # Characters
 ## Characters
 
-###Human:
+### Human:
 -  Warrior
 -  Bandit
 -  Duelist
 -  Rogue
 -  Archer
 
-###Other:
+### Other:
 -  will be in next commit
 
-###Owner:
+### Owner:
 -  PR
