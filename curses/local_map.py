@@ -4,7 +4,7 @@ from local_scripts import zero3
 from local_item_class import item_class_init
 from local_enemies_class import enemies_class_init
 from local_regular_map import regular_map_init
-from local_boss_map import map_init_boss
+from local_boss_map import boss_map_init
 
 
 def map_init_str(m, p, items, enemies, type_of_map):
@@ -82,7 +82,7 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
 
 def map_init(m, p, items, enemies, type_of_map = 0, stairs = 3):
     if type(type_of_map) == type(0):
-        return map_init_int(m, p, items, enemies, type_of_map, stairs) if type_of_map < 100 else map_init_boss(m, p, items, enemies, type_of_map, stairs)
+        return map_init_int(m, p, items, enemies, type_of_map, stairs) if type_of_map < 100 else boss_map_init(m, p, items, enemies, type_of_map, stairs)
     else:
         return map_init_str(m, p, items, enemies, type_of_map)
 

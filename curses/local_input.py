@@ -1,4 +1,4 @@
-import curses as c
+#import curses as c
 from random import randint
 
 from local_output import output, item
@@ -18,12 +18,7 @@ def update_BP_mask(p): # is local_terrain too -PR-
         if i["grouping"]:
             BP_mask.append(i["item"])
 
-def print_menager(w, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
-    c.init_pair(1, 231, 16)
-    c.init_pair(2, 46, 16)
-    c.init_pair(3, 5, 16)
-    c.init_pair(4, 136, 16)
-    c.init_pair(5, 245, 16)#148 :) -PR-
+def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
@@ -33,14 +28,14 @@ def print_menager(w, m, p, cm, bc): # m is'n needed, but for formality it is -PR
     w.addstr(13, 2, item(p["e_hand"], 9, p), c.color_pair(5))
     w.addstr(14, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
-    w.refresh()
+    w.refresh() # ? -PR-
     t1 = ''
     for i in range(6):
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
 
-def item_menager(w, m, p):
-    print_menager(w, m, p, 5, 2)
+def item_menager(w, c, m, p):
+    print_menager(w, c, m, p, 5, 2)
     it = get_in(w)
     try:
         it = int(it)-1
@@ -112,8 +107,8 @@ def item_menager(w, m, p):
             return[translate("YOU TAKE A") + " " + translate(t["item"][:-2]), True]
     return[translate("WRONG SLOT!"), False]
 
-def drop_menager(w, m, p):
-    print_menager(w, m, p, 5, 3)
+def drop_menager(w, c, m, p):
+    print_menager(w, c, m, p, 5, 3)
     it = get_in(w)
     try:
         it = int(it)-1
@@ -124,9 +119,9 @@ def drop_menager(w, m, p):
     t = p["BP"].pop(it)
     return[translate("YOU FROWED IT AWAY"), True]
 
-def shot_menager(w, m, p):
+def shot_menager(w, c, m, p):
     w.clear()
-    output(w, m, p)
+    output(w, c, m, p)
     w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"))
     it = get_in(w)
     dy, dx, t1 = player_move(it)
@@ -138,7 +133,7 @@ def shot_menager(w, m, p):
         return[translate("YOU DON'T HAVE ARROWS!"), False]
     return[translate("YOU CAN'T SHOT THERE!"), False]
 
-def pomoc(w, m, p): #not beautyful, but done -PR-
+def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
     w.addstr(0, 57, "Version = curses_0.0.F+", c.color_pair(1))
@@ -170,16 +165,16 @@ def pomoc(w, m, p): #not beautyful, but done -PR-
 
 # def item_menager_keyin(m, p, key):
 
-def keyin(w, m, p, pos, key):
+def keyin(w, c, m, p, pos, key):
     match key:
         #case "-":
         #     pass
         case "+":
-             return item_menager(w, m, p)
+             return item_menager(w, c, m, p)
         case ",":
-             return drop_menager(w, m, p)
+             return drop_menager(w, c, m, p)
         case "0":
-             return shot_menager(w, m, p)
+             return shot_menager(w, c, m, p)
         case ">":
             if m["r"][pos[0]][pos[1]][0] == ">":
                 return ["#D", False]
@@ -193,7 +188,7 @@ def keyin(w, m, p, pos, key):
             get_equip_values(p)
             return [p["echo"], False]
         case "?":
-            pomoc(w, m, p)
+            pomoc(w, c, m, p)
             return [p["echo"], False]
         case _:
            # move a player? (but in where!?), -PR- ?

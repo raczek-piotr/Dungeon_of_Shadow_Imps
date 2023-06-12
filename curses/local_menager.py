@@ -1,4 +1,5 @@
 from random import randint, choice
+#from time import sleep
 from local_scripts import zero3  # or "*" -PR-
 from local_map import map_init
 from local_item_class import item_class_init, item_class_clear
@@ -9,44 +10,61 @@ from local_translator import translate
 
 
 item = [
-    #  values": [damage, acc, strengh, tier, attacks],
-    ["]", {"item": "KNIFE [", "type": "]", "values": [2, 60, [3,3], 1, 1], "cost": 12, "grouping": False}],
+    #  values": [damage, acc, [str|dex], tier, attacks],
+    #["]", {"item": "KNIFE [", "type": "]", "values": [2, 60, [2,2], 1, 1], "cost": 12, "grouping": False}],
+    #["]", {"item": "2 KNIFES [", "type": "]", "values": [2, 60, [2,6], 1, 2], "cost": 24, "grouping": False}],
+
+    ["]", {"item": "LONG KNIFE [", "type": "]", "values": [3, 60, [2,5], 1, 1], "cost": 18, "grouping": False}], # Rogue -PR-
     ["]", {"item": "2 KNIFES [", "type": "]", "values": [2, 60, [3,5], 1, 2], "cost": 24, "grouping": False}],
-    ["]", {"item": "DAGGER [", "type": "]", "values": [5, 80, [4,6], 1, 1], "cost": 40, "grouping": False}],
-    ["]", {"item": "2 DAGGERS [", "type": "]", "values": [5, 80, [5,7], 1, 2], "cost": 80, "grouping": False}],
-    ["]", {"item": "ASSASIN BLADES [", "type": "]", "values": [8, 80, [6,8], 1, 2], "cost": 128, "grouping": False}],
+    ["]", {"item": "SHORT DAGGER [", "type": "]", "values": [4, 75, [4,6], 1, 1], "cost": 30, "grouping": False}],
+    ["]", {"item": "DAGGER [", "type": "]", "values": [5, 78, [5,7], 1, 1], "cost": 39, "grouping": False}],
+    ["]", {"item": "LONG DAGGER [", "type": "]", "values": [6, 80, [6,8], 1, 1], "cost": 48, "grouping": False}],
 
-    ["]", {"item": "SHORT SWORD [", "type": "]", "values": [7, 50, [5,5], 2, 1], "cost": 35, "grouping": False}],
-    ["]", {"item": "SWORD [", "type": "]", "values": [11, 50, [6,6], 3, 1], "cost": 55, "grouping": False}],
+    ["]", {"item": "CLUB [", "type": "]", "values": [7, 30, [4,3], 1, 1], "cost": 21, "grouping": False}], # Bandit base weapons -PR-
+    ["]", {"item": "WOODEN CLUB [", "type": "]", "values": [10, 33, [6,4], 1, 1], "cost": 33, "grouping": False}],
+    ["]", {"item": "MACE [", "type": "]", "values": [8, 30, [7,5], 1, 2], "cost": 48, "grouping": False}],
+    ["]", {"item": "FLAIL [", "type": "]", "values": [7, 30, [8,6], 1, 3], "cost": 63, "grouping": False}],
 
-    ["]", {"item": "PUGINALE [", "type": "]", "values": [4, 42, [5,3], 1, 1], "cost": 21, "grouping": False}],
-    ["]", {"item": "SPEAR [", "type": "]", "values": [18, 30, [7,5], 3, 1], "cost": 54, "grouping": False}],
-    ["]", {"item": "HAEVY SPEAR [", "type": "]", "values": [40, 30, [8,6], 4, 1], "cost": 120, "grouping": False}],
+    ["]", {"item": "SHOVEL [", "type": "]", "values": [3, 50, [4,2], 1, 1], "cost": 15, "grouping": False}], # for all  -PR-
+    ["]", {"item": "SICKLE [", "type": "]", "values": [2, 70, [2,4], 1, 1], "cost": 14, "grouping": False}],
 
-    ["]", {"item": "HAND AXE [", "type": "]", "values": [3, 60, [4,4], 1, 1], "cost": 18, "grouping": False}],
-    ["]", {"item": "AXE [", "type": "]", "values": [6, 58, [5,5], 2, 1], "cost": 35, "grouping": False}],
-    ["]", {"item": "HAEVY AXE [", "type": "]", "values": [9, 61, [6,6], 3, 1], "cost": 55, "grouping": False}],
-    ["]", {"item": "BATTLE AXE [", "type": "]", "values": [20, 65, [7,7], 4, 1], "cost": 130, "grouping": False}],
+    ["]", {"item": "PUGINALE [", "type": "]", "values": [6, 40, [6,2], 1, 1], "cost": 24, "grouping": False}], # Warrior base weapons -PR-
+    ["]", {"item": "SPEAR [", "type": "]", "values": [11, 30, [7,3], 1, 1], "cost": 33, "grouping": False}],
+    ["]", {"item": "PIKE [", "type": "]", "values": [16, 30, [8,4], 1, 1], "cost": 48, "grouping": False}],
+    ["]", {"item": "HALBEARD [", "type": "]", "values": [22, 30, [9,5], 1, 1], "cost": 66, "grouping": False}],
 
-    ["]", {"item": "SICKLE [", "type": "]", "values": [4, 50, [4,4], 1, 1], "cost": 20, "grouping": False}],
+    ["]", {"item": "HAND AXE [", "type": "]", "values": [3, 60, [5,2], 1, 1], "cost": 18, "grouping": False}], # help W+B -PR-
+    ["]", {"item": "AXE [", "type": "]", "values": [5, 60, [6,3], 2, 1], "cost": 30, "grouping": False}],
+    ["]", {"item": "HAEVY AXE [", "type": "]", "values": [8, 60, [7,4], 3, 1], "cost": 48, "grouping": False}],
+    ["]", {"item": "BROAD AXE [", "type": "]", "values": [10, 60, [8,5], 4, 1], "cost": 60, "grouping": False}],
+    ["]", {"item": "BATTLE AXE [", "type": "]", "values": [10, 60, [8,5], 4, 1], "cost": 60, "grouping": False}],
 
-    ["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
-    ["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    ["]", {"item": "SHORT SWORD [", "type": "]", "values": [8, 40, [6,3], 1, 1], "cost": 32, "grouping": False}], # help W+B -PR-
+    ["]", {"item": "SWORD [", "type": "]", "values": [12, 40, [7,4], 2, 1], "cost": 48, "grouping": False}],
+    ["]", {"item": "LONG SWORD [", "type": "]", "values": [15, 40, [8,5], 3, 1], "cost": 60, "grouping": False}],
+    ["]", {"item": "GREAT SWORD [", "type": "]", "values": [16, 40, [9,5], 4, 1], "cost": 64, "grouping": False}],
+
+    ["]", {"item": "FOIL [", "type": "]", "values": [2, 60, [4,4], 1, 2], "cost": 24, "grouping": False}], # Duelist -PR-
+    ["]", {"item": "SWORD [", "type": "]", "values": [2, 55, [5,5], 1, 3], "cost": 33, "grouping": False}],
+    ["]", {"item": "LONG SWORD [", "type": "]", "values": [3, 50, [6,6], 1, 3], "cost": 45, "grouping": False}],
+    ["]", {"item": "GREAT SWORD [", "type": "]", "values": [7, 40, [7,7], 2, 2], "cost": 56, "grouping": False}],
+
+    #["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
+    #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
 
     #["}", {"item": "SLING {", "type": "}", "values": [2, 60, [3,4], 1, 1], "cost": 15, "grouping": False}],
-    ["}", {"item": "SHORT BOW {", "type": "}", "values": [3, 60, [4,4], 1, 1], "cost": 18, "grouping": False}],
-    ["}", {"item": "HAND CROSBOW {", "type": "}", "values": [4, 30, [5,3], 1, 1], "cost": 12, "grouping": False}],
-    ["}", {"item": "BOW {", "type": "}", "values": [4, 70, [5,5], 2, 1], "cost": 28, "grouping": False}],
-    ["}", {"item": "LIGHT CROSBOW {", "type": "}", "values": [6, 30, [6,4], 2, 1], "cost": 18, "grouping": False}],
-    ["}", {"item": "LONGBOW {", "type": "}", "values": [5, 60, [5,7], 3, 1], "cost": 35, "grouping": False}],
-    ["}", {"item": "CROSBOW {", "type": "}", "values": [12, 30, [7,5], 3, 1], "cost": 36, "grouping": False}],
-    [")", {"item": "HELMET (", "type": ")", "values": [1, 50, [6,4], 1, 1], "cost": 10, "grouping": False},],
-    [")", {"item": "SHIELD (", "type": ")", "values": [2, 50, [8,6], 2, 1], "cost": 20, "grouping": False},],
+    ["}", {"item": "SHORT BOW {", "type": "}", "values": [3, 60, [2,6], 1, 1], "cost": 18, "grouping": False}], # Archer -PR-
+    ["}", {"item": "BOW {", "type": "}", "values": [5, 60, [3,7], 2, 1], "cost": 30, "grouping": False}],
+    ["}", {"item": "REFLEXIVE BOW {", "type": "}", "values": [8, 60, [4,8], 3, 1], "cost": 48, "grouping": False}],
+    ["}", {"item": "LONGBOW {", "type": "}", "values": [11, 60, [5,9], 4, 1], "cost": 66, "grouping": False}],
+    ["}", {"item": "HAND CROSBOW {", "type": "}", "values": [3, 40, [5,3], 1, 1], "cost": 12, "grouping": False}],
+    ["}", {"item": "CROSBOW {", "type": "}", "values": [8, 40, [7,7], 4, 1], "cost": 32, "grouping": False}],
+
     #[")", {"item": "SOFT LEATHER (", "type": ")", "values": [2, 50, 12], "cost": True, "grouping": False}],
     #[")", {"item": "RING MAIL (", "type": ")", "values": [4, 40, 14], "cost": True, "grouping": False}],
     #["]", {"item": "2 DAGGERS [", "type": "]", "values": [3, 60, 6, 2, 2], "cost": 30, "grouping": False}],
@@ -77,7 +95,7 @@ enemies_not_light = [
     ["o",9,2,6,1,7,False,[]], #4 orck
     ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
 
-def menager(command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
+def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
         case "#E":
             p["echo"] = translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))
@@ -97,20 +115,91 @@ def menager(command = "#R", m = {}, p = {}): # #E - end game #R - try to reload 
                 p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#R":
             m, p, path = start_data() # only here the data in needed to give it back -PR-
+            c.init_pair(1, 231, 16)
+            c.init_pair(2, 46, 16)
+            c.init_pair(3, 5, 16)
+            c.init_pair(4, 136, 16)
+            c.init_pair(5, 245, 16)#148 :) -PR-
+            character(w, c, p)
             prepare_map(m, p)
             return m, p, path
 
+def character(w, c, p):
+    w.clear() # ? -PR-
+    w.addstr(0, 33, "DUNGEON OF IMPS", c.color_pair(2))
+    w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
+    #sleep(0.5)
+    #w.refresh() # w.getkey() makes the same + ... -PR-
+    w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
+    w.addstr(5, 2, "2 - HUMAN BANDIT", c.color_pair(1))
+    w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
+    w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
+    w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
+    w.addstr(9, 2, "6 - ELF WARRIOR", c.color_pair(2))
+    #w.addstr(8, 2, "5 - ELF SERGEANT", c.color_pair(2))
+    #w.addstr(9, 2, "6 - ELF ROUGE", c.color_pair(2))
+    w.addstr(10, 2, "7 - HALFING WARRIOR", c.color_pair(3))
+    #w.addstr(11, 2, "8 - HALFING SERGEANT", c.color_pair(3))
+    #w.addstr(12, 2, "9 - HALFING ROUGE", c.color_pair(3))
+    w.addstr(13, 2, "/ - FUDIT WARRIOR", c.color_pair(4))
+    w.addstr(14, 2, "* - FUDIT SERGEANT", c.color_pair(4))
+    #w.addstr(15, 2, "- - FUDIT ROUGE", c.color_pair(4))
+    w.addstr(16, 2, "+ - HOBBIT WARRIOR", c.color_pair(5))
+    #.addstr(17, 2, ", - HOBBIT SERGEANT", c.color_pair(5))
+    #w.addstr(18, 2, "0 - HOBBIT ROUGE", c.color_pair(5))
+    while True:
+        match w.getkey():
+            case "1":
+                p["strength"] = 6
+                p["dexterity"] = 2
+                p["playertype"] = "HUMAN WARRIOR"
+                break
+            case "2":
+                p["strength"] = 5
+                p["dexterity"] = 3
+                p["playertype"] = "HUMAN BANDIT"
+                break
+            case "3":
+                #p["playertype"] = "HUMAN DUELIST"
+                break
+            case "4":
+                p["strength"] = 3
+                p["dexterity"] = 5
+                p["playertype"] = "HUMAN ROUGE"
+                break
+            case "5":
+                p["strength"] = 2
+                p["dexterity"] = 6
+                p["playertype"] = "HUMAN ARCHER"
+                p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
+                break
+            case _:
+                pass
+    global item
+    i = 0
+    while i < len(item):
+        t = item[i][1]["values"][2]
+        if t[0] > p["strength"]+3 or t[1] > p["dexterity"]+3:
+            item.pop(i)
+        else:
+            i += 1
 
 def prepare_map(m, p):
-    h = p["camp"][p["id_camp"]][p["depth"]]
-    while h == "next":
+    h = p["camp"][p["id_camp"]][p["depth"]].copy()
+    while h == "next": # not used -PR-
         p["id_camp"] += 1
         h = p["camp"][p["id_camp"]][p["depth"]]
-    h[0] = choice(h[0])
+    if h[0] == "?":
+        h[0] = p["type"]
+        i = randint(-1, 1)
+        if p["type"] + i in {0,1,2,3}:
+            p["type"] += i
     item_class_clear()
     enemies_class_clear()
-    i = randint(0, len(item)-1)
-    elist, ilist, xp = [], [item[i][0] + zero3(item_class_init(item[i][0], item[i][1]))], 0
+    elist, ilist, xp = [], [], 0
+    for _ in range(randint(0, 5)):
+        i = randint(0, len(item)-1)
+        ilist.append(item[i][0] + zero3(item_class_init(item[i][0], item[i][1].copy())))
     if type(h[0]) == int:
         p["normal_level"] = h[0] < 100 # needs are disable/enable -PR-
         if p["normal_level"]:
@@ -125,7 +214,7 @@ def prepare_map(m, p):
                 i = randint(t, p["depth"]//2)
                 elist.append(enemies[i])
                 xp += enemies[i][3]
-            for i in range(randint(0, 6)):
+            for i in range(randint(0, 5)):
                 ilist.append("$" + zero3(item_class_init("$", randint(1, 39))))
             for i in range(choice([0,0,1,2])):
                 ilist.append("*" + zero3(item_class_init("*", {"item": "CORPSE", "type": "", "values": [1, "CORPSES"], "cost": 5, "grouping": True})))
@@ -148,14 +237,13 @@ def start_data():
         "sx": 5,
         }
     p = {
-        "playertype": "Human Powder Monkey",
+        "playertype": "Human Duelist",
         "specials": "", # not used -PR-
         "normal_level": True,
-        "name": "qwe",
-        "manacounter": 75,
-        "maxhp": 10,
-        "hp": 10,
-        "hpchange": 1,
+        #"name": "qwe",#at the death
+        "maxhp": 1000000,
+        "hp": 1000000,
+        "hpchange": 2,
         "hpcounter": 10,
         "needxp": 20,
         "xp": 0,
@@ -172,9 +260,9 @@ def start_data():
         "armor_acc": 0,
         "attack_attacks": 1,
         "bow_attacks": 1,
-        "e_attack": {"item": "KNIFE [", "type": "]", "values": [2, 60, [3,3], 1, 1], "cost": 10, "grouping": False},
-        "e_hand": {"item": "GLOVE {", "type": "}", "values": [1, 60, [3,3], 1, 1], "cost": 5, "grouping": False},
-        "e_armor": {"item": "CLOTHES (", "type": ")", "values": [0, 50, [3,3], 1, 1], "cost": 5, "grouping": False},
+        "e_attack": {"item": "KNIFE [", "type": "]", "values": [2, 60, [2,2], 1, 1], "cost": 12, "grouping": False},
+        "e_hand": {"item": "SLING {", "type": "}", "values": [1, 60, [2,2], 1, 1], "cost": 6, "grouping": False},
+        "e_armor": {"item": "CLOTHES (", "type": ")", "values": [0, 50, [2,2], 1, 1], "cost": 10, "grouping": False},
         "y": 0,
         "x": 0,
         "dy": 0, # direction y -PR-
@@ -195,7 +283,8 @@ def start_data():
         "time": 0,
         "moved": True,
         "id_camp": 0,
-        "camp": [[[["surface"],0],[[0,1],2],[[0],3],[[0,1],3],[[1],3],[[1,2],3],[[2],3],[[2,3],3],[[3],3],[[2,3],3],[[100],3],[[1],3],[[0,1],3],[[0,1],3],[[1],3],[[2],3],[[1],3],[[0],3],[[0],3],[[1],3],"next"],
+        "type": 1, # type of dungeon -PR-
+        "camp": [[["surface",0],["?",2],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],[[100],3],["?",3],["?",3],["?",3],["?",3],["?",3]],
         #        ["next",[0,3],[0,1],["the-path",0]],
         #        [["Manipure",0],[2,2],[2,3],[2,3],[2,3],"next","next"],
                 [["Manipure",0],[2,3],[2,3],[2,3],[2,3],[2,1],[0,2],[0,3],[0,1]]]

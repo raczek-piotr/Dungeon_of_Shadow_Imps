@@ -1,4 +1,4 @@
-import curses as c
+#import curses as c
 from local_translator import translate
 
 
@@ -78,24 +78,24 @@ def playerdata(y, p):
         case 13:
             return "  armor: " + str(p["armor"])
         case 15:
-            return " " + item(p["BP"], 0)
+            return item(p["BP"], 0)
         case 16:
-            return " " + item(p["BP"], 1)
+            return item(p["BP"], 1)
         case 17:
-            return " " + item(p["BP"], 2)
+            return "" + item(p["BP"], 2)
         case 18:
-            return " " + item(p["BP"], 3)
+            return "" + item(p["BP"], 3)
         case 19:
-            return " " + item(p["BP"], 4)
+            return "" + item(p["BP"], 4)
         case 20:
-            return " " + item(p["BP"], 5)
+            return "" + item(p["BP"], 5)
         case 22:
             return " attack by:"
         case _:
             return ""
 
 
-def output(w, m, p):
+def output(w, c, m, p):
     if p["torch"] == 1:
         for y in range(-1, 2):  # In the future I will make it better !!!
             for x in range(-1, 2):
@@ -130,12 +130,6 @@ def output(w, m, p):
                     i += " "
             w.addstr(y, 0, i + "| " + playerdata(y, p))
         w.addstr(y, 53, "| " + playerdata(y, p))"""
-    #c.init_pair(1, c.COLOR_RED, c.COLOR_WHITE)
-    c.init_pair(1, 231, 16)
-    c.init_pair(2, 46, 16)
-    c.init_pair(3, 5, 16)
-    c.init_pair(4, 136, 16)
-    c.init_pair(5, 245, 16)#148 :) -PR-
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:

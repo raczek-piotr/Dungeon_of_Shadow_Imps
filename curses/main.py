@@ -1,4 +1,4 @@
-#import curses as c
+import curses as c
 from curses import wrapper
 from local_output import output
 # update
@@ -13,13 +13,13 @@ from local_terrain import terrain
 
 from local_menager import menager
 def mainloop(w):
-    m, p, path = menager()
+    m, p, path = menager(w, c)
     hpcounter, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
 
     while p["hp"] > 0:
         w.clear()
-        output(w, m, p)
+        output(w, c, m, p)
         w.addstr(23, 0, p["echo"]+":") # curses worked normally on linux -PR-
         w.refresh()
         p["wasattackby"] = ""
@@ -30,9 +30,9 @@ def mainloop(w):
             if move:
                 p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
         else:
-            p["echo"], p["moved"] = keyin(w, m, p, [p["y"], p["x"]], gi)
+            p["echo"], p["moved"] = keyin(w, c, m, p, [p["y"], p["x"]], gi)
         if p["echo"][:1] == "#": # it could be "" -PR-
-            menager(p["echo"], m, p)
+            menager(w, c, p["echo"], m, p)
         test_room(m, [p["y"], p["x"]])
         # if t1:
         # else:
@@ -68,9 +68,9 @@ def mainloop(w):
             if p["hp"] <= 0:
                 break
     while True: # die - PR
-        menager("#E", m, p)
+        menager(w, c, "#E", m, p)
         w.clear()
-        output(w, m, p)#translator
+        output(w, c, m, p)#translator
         w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-25))
         w.getkey()
 

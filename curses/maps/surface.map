@@ -22,7 +22,7 @@ h 4 2 2 1 7 f
 a 4 2 3 1 7 t
 r 4 1 1 1 7 f
 *|BREAD||t|t|2;"BREADS
-~|TORCH||t|t|2;"TORCHES
-*|BREAD||t|t|1;"BREADS
+~|TORCH||t|t|5;"TORCHES
+*|BREAD||t|t|2;"BREADS
 $ 20 20
 h 4 2 2 1 7 f
