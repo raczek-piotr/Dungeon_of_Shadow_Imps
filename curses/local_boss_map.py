@@ -8,7 +8,7 @@ from local_enemies_class import enemies_class_init
 def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list of list -PR-
     print("boos map init")
     pokoje = []
-    sizey, sizex = 12, 64
+    sizey, sizex = 12, 20
     m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -54,7 +54,7 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
     print("regular rooms done")
 '''
 
-    # caves, not rooms, no connect -PR-
+    # big rooms -PR-
     tryes = 0
     while tryes < 10:
         sy, sx = 1+2*randint(3,3), 1+2*randint(2,3)
@@ -66,6 +66,27 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
                 can = False
         if can:
             xy = str(sx)+"x"+str(sy)
+            with open("maps/"+xy+"/"+xy+".cfg", "r") as txt:
+                cfg = txt.read().split("\n")
+            while cfg[-1] == "":
+                cfg.pop(-1)
+            print("can")
+            t = choice([chr(z+65) for z in range(len(cfg))])
+
+            pokoje.append([y, x, sy, sx, [xy, t]])
+
+    # small rooms -PR-
+    tryes = 0
+    while tryes < 25 or len(pokoje) < 3:
+        sy, sx = 3,5
+        y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
+        can, tryes = True, tryes + 1
+        for i in pokoje:
+            if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
+                 abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
+                can = False
+        if can:
+            xy = "5x3"
             with open("maps/"+xy+"/"+xy+".cfg", "r") as txt:
                 cfg = txt.read().split("\n")
             while cfg[-1] == "":
@@ -128,8 +149,8 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
         m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."'''
 
     e_id = enemies_class_init("B", pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2,
-                              20, 9, 45, 1, 20, False, [])
-    m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "_"+"B"+zero3(e_id)+" "
+                              12, 5, 15, 1, 30, False, [])
+    m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "B"+zero3(e_id)+" "
     print("enemid")
 
     if stairs > 1:

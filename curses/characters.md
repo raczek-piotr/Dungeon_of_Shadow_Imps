@@ -1,6 +1,5 @@
-# Characters
+# Dungeons of Shadow Imps
 ## Characters
-
 ### Human:
 -  Warrior
 -  Bandit
@@ -11,5 +10,8 @@
 ### Other:
 -  will be in next commit
 
-### Owner:
--  PR
+### Owner and Designer:
+-  Piotr Raczek (PR)
+-  https://github.com/raczek-piotr/
+-  email → raczek.piotr@o2.pl
+-  webpage → soon
