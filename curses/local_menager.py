@@ -126,8 +126,9 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
 
 def character(w, c, p):
     w.clear() # ? -PR-
-    w.addstr(0, 33, "DUNGEON OF IMPS", c.color_pair(2))
+    w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
+    w.addstr(2, 37, "0.0.G", c.color_pair(4))
     #sleep(0.5)
     #w.refresh() # w.getkey() makes the same + ... -PR-
     w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
@@ -135,18 +136,22 @@ def character(w, c, p):
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
     w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
-    w.addstr(9, 2, "6 - ELF WARRIOR", c.color_pair(2))
+    #w.addstr(9, 2, "6 - ELF WARRIOR", c.color_pair(2))
     #w.addstr(8, 2, "5 - ELF SERGEANT", c.color_pair(2))
     #w.addstr(9, 2, "6 - ELF ROUGE", c.color_pair(2))
-    w.addstr(10, 2, "7 - HALFING WARRIOR", c.color_pair(3))
+    #w.addstr(10, 2, "7 - HALFING WARRIOR", c.color_pair(3))
     #w.addstr(11, 2, "8 - HALFING SERGEANT", c.color_pair(3))
     #w.addstr(12, 2, "9 - HALFING ROUGE", c.color_pair(3))
-    w.addstr(13, 2, "/ - FUDIT WARRIOR", c.color_pair(4))
-    w.addstr(14, 2, "* - FUDIT SERGEANT", c.color_pair(4))
+    #w.addstr(13, 2, "/ - FUDIT WARRIOR", c.color_pair(4))
+    #w.addstr(14, 2, "* - FUDIT SERGEANT", c.color_pair(4))
     #w.addstr(15, 2, "- - FUDIT ROUGE", c.color_pair(4))
-    w.addstr(16, 2, "+ - HOBBIT WARRIOR", c.color_pair(5))
+    #w.addstr(16, 2, "+ - HOBBIT WARRIOR", c.color_pair(5))
     #.addstr(17, 2, ", - HOBBIT SERGEANT", c.color_pair(5))
     #w.addstr(18, 2, "0 - HOBBIT ROUGE", c.color_pair(5))
+    if w.getmaxyx() != (24,80):
+        w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(2))
+        w.addstr(22, 79, "|", c.color_pair(3))
+        w.addstr(23, 71, "point ->", c.color_pair(3))
     while True:
         match w.getkey():
             case "1":
@@ -172,6 +177,7 @@ def character(w, c, p):
                 p["dexterity"] = 6
                 p["playertype"] = "HUMAN ARCHER"
                 p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
+                p["arrows_id"] = 1
                 break
             case _:
                 pass

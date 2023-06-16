@@ -52,6 +52,8 @@ def f_block(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
     m["r"][npy][npx] = m["r"][npy][npx][1:]
     m["v"][npy][npx] = m["v"][npy][npx][1:]
+    if m["r"][npy][npx] == "":
+        m["v"][npy][npx] = " "
     echo = translate("YOU DESTROYED WEEK WALL")
     return[False, echo, True]
 

@@ -8,19 +8,22 @@ from local_enemies_class import enemies_class_update
 from local_input_key import get_in, player_move
 from local_input import keyin
 from local_terrain import terrain
-# from takein import takein
 
 
 from local_menager import menager
 def mainloop(w):
-    m, p, path = menager(w, c)
+    c.initscr()
+    c.noqiflush()
+    w.resize(24,80)
+    c.resize_term(24,80)
+    m, p, path = menager(w, c) # from there are imported maps and other things :) -PR-
     hpcounter, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
 
     while p["hp"] > 0:
         w.clear()
         output(w, c, m, p)
-        w.addstr(23, 0, p["echo"]+":") # curses worked normally on linux -PR-
+        w.addstr(23, 0, p["echo"]+":")
         w.refresh()
         p["wasattackby"] = ""
         gi = get_in(w)
@@ -31,12 +34,11 @@ def mainloop(w):
                 p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
         else:
             p["echo"], p["moved"] = keyin(w, c, m, p, [p["y"], p["x"]], gi)
-        if p["echo"][:1] == "#": # it could be "" -PR-
-            menager(w, c, p["echo"], m, p)
+        if p["echo"][:1] == "#": # it should't be "", but ... -PR-
+            menager(w, c, p["echo"], m, p) # next map? -PR-
+
         test_room(m, [p["y"], p["x"]])
-        # if t1:
-        # else:
-        #
+
         if p["moved"]:
             p["time"] += 1  # for the player, not for me (not now) -PR-
             if p["torch"]:
