@@ -14,6 +14,7 @@ from local_menager import menager
 def mainloop(w):
     c.initscr()
     c.noqiflush()
+    c.curs_set(0)
     w.resize(24,80)
     c.resize_term(24,80)
     m, p, path = menager(w, c) # from there are imported maps and other things :) -PR-

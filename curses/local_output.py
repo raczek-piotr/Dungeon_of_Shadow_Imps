@@ -141,15 +141,16 @@ def output(w, c, m, p):
                         t[tx] = "!"
                     i = t[tx][0]
                     if i in {"]","}",")","~","$","*","-","?"}:
-                        w.addstr(y, x, i, c.color_pair(2))
+                        col = 2
                     elif i == "#":
-                        w.addstr(y, x, i, c.color_pair(5))
+                        col = 5
                     elif i in {"<",">","+",",",":"}:
-                        w.addstr(y, x, i, c.color_pair(4))
+                        col = 4
                     elif i.upper() != i.lower():
-                        w.addstr(y, x, i, c.color_pair(3))
+                        col = 3
                     else:
-                        w.addstr(y, x, i, c.color_pair(1))
+                        col = 1
+                    w.addstr(y, x, i, c.color_pair(col))
         w.addstr(y, 53, "|", c.color_pair(4))
         w.addstr(y, 55, playerdata(y, p), c.color_pair(1))
         w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
@@ -162,3 +163,4 @@ def output(w, c, m, p):
             w.addstr(13, 55, "L", c.color_pair(3))
         w.addstr(14, 55, "=----------------------=", c.color_pair(4))
         w.addstr(21, 55, "=----------------------=", c.color_pair(4))
+        
