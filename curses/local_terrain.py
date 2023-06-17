@@ -96,7 +96,45 @@ def f_weapons(m, p, npos, stay):
         echo = translate("HERE IS")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+"x"+str(i["values"][4])+i["type"]))
     return[True, echo, True]
 
-def terrain(m, p, npos, stay):
+def f_trader(w, c, m, p, npos, stay):
+    from local_output import item
+    q = ""
+    ilist = [{"item": "SHOVEL [", "type": "]", "values": [3, 50, [4,2], 1, 1], "cost": 15, "grouping": False},
+             {"item": "SICKLE [", "type": "]", "values": [2, 70, [2,4], 1, 1], "cost": 14, "grouping": False},
+             {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 7, "grouping": True},
+             {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 5, "grouping": True}]
+    while True:
+        if q in {"0","1","2","3"}:
+            i = ilist[int(q)].copy()
+            if len(p["BP"]) < 6 and p["gold"] >= i["cost"]:
+                p["gold"] -= i["cost"]
+                p["BP"].append(i)
+                #update_BP_mask(p)
+                get_equip_values(p)
+                echo = translate("YOU BUY")+" "+translate(i["item"][:-2] if i["item"][-1] in {"[","{","("} else i["item"])
+                return[False, echo, True]
+            else:
+                if len(p["BP"]) < 6:
+                    echo = translate("YOU DON'T HAVE ENOUGH MONEY!")
+                else:
+                    echo = translate("YOUR'S BACKPACK IS FULL!")
+                return[False, echo, False]
+        elif q in {"PADENTER","\n", ","}:
+            return[False, p["echo"], False]
+        w.clear()
+        w.addstr(0, 37, "Trader:", c.color_pair(5))
+        w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
+        w.addstr(2, 0, "Items:", c.color_pair(5))
+        for i in range(len(ilist)):
+            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, p), c.color_pair(1))
+            t = str(ilist[i]["cost"])
+            w.addstr(i+3, 68, "COST:", c.color_pair(1))
+            w.addstr(i+3, 78-len(t), t, c.color_pair(1))
+        w.addstr(23, 62, "Esc: ',' or Enter", c.color_pair(5))
+        q = w.getkey()
+    return[True, echo, True]
+
+def terrain(w, c, m, p, npos, stay):
     # ramp, vmap, p, gold, baner, backpack, echo, moved
     match m["r"][npos[0]][npos[1]][0]:
         case "$":
@@ -140,9 +178,11 @@ def terrain(m, p, npos, stay):
         case "#":
             return [False, translate("HERE IS A WALL"), False]
         case ">":
-            return [True, "Tu są schody na dół", True]
+            return [True, translate("HERE ARE STAIRS DOWN"), True]
         case "<":
-            return [True, "Tu są schody do góry", True]
+            return [True, translate("HERE ARE STAIRS UP"), True]
+        case "@":
+            return f_trader(w, c, m, p, npos, stay)
         case _:
         # move a player?, echo, moved?
             it = int(m["r"][npos[0]][npos[1]][1:4])

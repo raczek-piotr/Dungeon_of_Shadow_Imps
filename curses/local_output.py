@@ -107,7 +107,7 @@ def output(w, c, m, p):
         m["o"][y] = m["v"][y].copy()
     #     for x in range(m["sx"]):
     #         m["o"][y][x] = m["v"][y][x]
-    m["o"][p["y"]][p["x"]] = "@"
+    #m["o"][p["y"]][p["x"]] = "@"
     if p["torch"] == 1:
         for y in range(-1, 2):
             for x in range(-1, 2):
@@ -140,7 +140,7 @@ def output(w, c, m, p):
                     if t[tx] == "":
                         t[tx] = "!"
                     i = t[tx][0]
-                    if i in {"]","}",")","~","$","*","-","?"}:
+                    if i in {"@","]","}",")","~","$","*","-","?"}:
                         col = 2
                     elif i == "#":
                         col = 5
@@ -163,4 +163,5 @@ def output(w, c, m, p):
             w.addstr(13, 55, "L", c.color_pair(3))
         w.addstr(14, 55, "=----------------------=", c.color_pair(4))
         w.addstr(21, 55, "=----------------------=", c.color_pair(4))
+        w.addstr(11, 26, "@", c.color_pair(1))
         

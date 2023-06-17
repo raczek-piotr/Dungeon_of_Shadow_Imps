@@ -181,6 +181,11 @@ def character(w, c, p):
                 break
             case _:
                 pass
+    w.clear()
+    w.addstr(5, 5, "The angel of the LORD came back a second time and touched you and said:", c.color_pair(5))
+    w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
+    w.addstr(23, 67, "1 KINGS 19:7", c.color_pair(5))
+    w.getkey()
     global item
     i = 0
     while i < len(item):

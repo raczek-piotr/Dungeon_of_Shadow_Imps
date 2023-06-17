@@ -46,6 +46,8 @@ def map_init_str(m, p, items, enemies, type_of_map):
                                 e[i] = int(e[i])
                         e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
                         m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                    elif m["r"][y+1][x+1][0] == "@": # for the future -PR-
+                        pass
                 elif m["r"][y+1][x+1][0] == "e":
                     l -= 1
                     e = rm[l].split(" ")
@@ -88,7 +90,6 @@ def map_init(m, p, items, enemies, type_of_map = 0, stairs = 3):
 
 
 def map_init_int(m, p, items, enemies, type_of_map, stairs):
-    print(type_of_map)
     pokoje = []
     m["sy"], m["sx"] = 32, 32
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]

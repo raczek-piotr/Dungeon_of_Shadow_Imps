@@ -27,10 +27,11 @@ def mainloop(w):
         w.addstr(23, 0, p["echo"]+":")
         w.refresh()
         p["wasattackby"] = ""
+        c.flushinp() # I want no flush -PR-
         gi = get_in(w)
         p["dy"], p["dx"], t1 = player_move(gi)
         if t1:
-            move, p["echo"], p["moved"] = terrain(m, p, [p["dy"] + p["y"], p["dx"] + p["x"]], (True if p["dy"] == 0 and p["dx"] == 0 else False))
+            move, p["echo"], p["moved"] = terrain(w, c, m, p, [p["dy"] + p["y"], p["dx"] + p["x"]], (True if p["dy"] == 0 and p["dx"] == 0 else False))
             if move:
                 p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
         else:
