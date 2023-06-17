@@ -22,4 +22,14 @@ def player_move(p):
             return [0, 0, False]
 
 def get_in(w):
-    return w.getkey()
+    q = w.getkey()
+    match q: # comment it on Linux (not necessary) -PR-
+        case "PADPLUS":
+            q = "+"
+        case "PADMINUS":
+            q = "-"
+        case "PADSTAR":
+            q = "*"
+        case "PADSLASH":
+            q = "/"
+    return q
