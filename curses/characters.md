@@ -8,10 +8,10 @@
 -  Archer
 
 ### Other:
--  will be in next commit
+-  will be someday
 
 ### Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/
 -  email → raczek.piotr@o2.pl
--  webpage → soon
+-  webpage → never I think

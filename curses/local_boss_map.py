@@ -5,10 +5,9 @@ from local_item_class import item_class_init
 from local_enemies_class import enemies_class_init
 
 
-def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list of list -PR-
-    print("boos map init")
-    pokoje = []
+def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list of list -PR-    pokoje = []
     sizey, sizex = 12, 20
+    pokoje = []
     m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -34,7 +33,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
         if can:
             pokoje.append([y, x, sy, sx])
             continue
-    print("big rooms done")
 
     hm = 15 # regular rooms -PR-
     minhm = 10
@@ -51,7 +49,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
             pokoje.append([y, x, sy, sx])
             continue
     hm = len(pokoje)
-    print("regular rooms done")
 '''
 
     # big rooms -PR-
@@ -96,16 +93,13 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
 
             pokoje.append([y, x, sy, sx, [xy, t]])
 
-    print("toMaskMaker")
     hm = len(pokoje)
     MaskMaker(m, pokoje, hm)
-    print("MaskMakered")
 
     #for it in range(hm):
     #    for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
     #        for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
     #            m["r"][y][x] = "|"
-    print("toconnect")
     Spokoje = sorted(pokoje.copy(), key = lambda p: p[1]) #Sort+pokoje -PR-
     for it in range(len(pokoje)):
         RegularConnect(m, Spokoje[it-1].copy(), Spokoje[it].copy())
@@ -118,7 +112,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
     #        for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
     #            if m["r"][y][x] == "|":
     #                m["r"][y][x] = "#"
-    print("connected")
     ContMaker(m, pokoje, hm)
     for it in range(hm):
         for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
@@ -163,7 +156,7 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
 def MaskMaker(m, pokoje, hm):
     for it in range(hm):
         xy, t = pokoje[it][4]
-        with open("maps/"+xy+"/"+t+".mask", "r") as q:
+        with open("maps/"+xy+"/"+t+"_mask.cfg", "r") as q:
             q = q.read().split("\n")
             while q[-1] == "":
                 q.pop(-1)
@@ -177,7 +170,7 @@ def MaskMaker(m, pokoje, hm):
 def ContMaker(m, pokoje, hm): #ContentMaker → room -PR-
     for it in range(hm):
         xy, t = pokoje[it][4]
-        with open("maps/"+xy+"/"+t+".cont", "r") as q: #(cont)ent
+        with open("maps/"+xy+"/"+t+"_cont.cfg", "r") as q: #(cont)ent
             q = q.read().split("\n")
             while q[-1] == "":
                 q.pop(-1)

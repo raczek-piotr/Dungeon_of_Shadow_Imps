@@ -14,7 +14,7 @@ item = [
     #["]", {"item": "KNIFE [", "type": "]", "values": [2, 60, [2,2], 1, 1], "cost": 12, "grouping": False}],
     #["]", {"item": "2 KNIFES [", "type": "]", "values": [2, 60, [2,6], 1, 2], "cost": 24, "grouping": False}],
 
-    ["]", {"item": "LONG KNIFE [", "type": "]", "values": [3, 60, [2,5], 1, 1], "cost": 18, "grouping": False}], # Rogue -PR-
+    ["]", {"item": "LONG KNIFE [", "type": "]", "values": [3, 60, [2,5], 1, 1], "cost": 18, "grouping": False}], # Rogue base weapons -PR-
     ["]", {"item": "2 KNIFES [", "type": "]", "values": [2, 60, [3,5], 1, 2], "cost": 24, "grouping": False}],
     ["]", {"item": "SHORT DAGGER [", "type": "]", "values": [4, 75, [4,6], 1, 1], "cost": 30, "grouping": False}],
     ["]", {"item": "DAGGER [", "type": "]", "values": [5, 78, [5,7], 1, 1], "cost": 39, "grouping": False}],
@@ -44,10 +44,10 @@ item = [
     ["]", {"item": "LONG SWORD [", "type": "]", "values": [15, 40, [8,5], 3, 1], "cost": 60, "grouping": False}],
     ["]", {"item": "GREAT SWORD [", "type": "]", "values": [16, 40, [9,5], 4, 1], "cost": 64, "grouping": False}],
 
-    ["]", {"item": "FOIL [", "type": "]", "values": [2, 60, [4,4], 1, 2], "cost": 24, "grouping": False}], # Duelist -PR-
-    ["]", {"item": "SWORD [", "type": "]", "values": [2, 55, [5,5], 1, 3], "cost": 33, "grouping": False}],
-    ["]", {"item": "LONG SWORD [", "type": "]", "values": [3, 50, [6,6], 1, 3], "cost": 45, "grouping": False}],
-    ["]", {"item": "GREAT SWORD [", "type": "]", "values": [7, 40, [7,7], 2, 2], "cost": 56, "grouping": False}],
+    ["]", {"item": "FOIL [", "type": "]", "values": [2, 60, [4,4], 1, 2], "cost": 24, "grouping": False}], # Duelist base weapons -PR-
+    ["]", {"item": "RAPIER [", "type": "]", "values": [2, 55, [5,5], 1, 3], "cost": 33, "grouping": False}],
+    ["]", {"item": "SABRE [", "type": "]", "values": [3, 50, [6,6], 1, 3], "cost": 45, "grouping": False}],
+    ["]", {"item": "KATANA [", "type": "]", "values": [7, 40, [7,7], 2, 2], "cost": 56, "grouping": False}],
 
     #["*", {"item": "BREAD", "type": "", "values": [1, "BREADS"], "cost": 50, "grouping": True}],
     #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
@@ -58,7 +58,7 @@ item = [
     #["?", {"item": "POTION", "type": "", "values": [1, "POTIONS"], "cost": 50, "grouping": True}],
 
     #["}", {"item": "SLING {", "type": "}", "values": [2, 60, [3,4], 1, 1], "cost": 15, "grouping": False}],
-    ["}", {"item": "SHORT BOW {", "type": "}", "values": [3, 60, [2,6], 1, 1], "cost": 18, "grouping": False}], # Archer -PR-
+    ["}", {"item": "SHORT BOW {", "type": "}", "values": [3, 60, [2,6], 1, 1], "cost": 18, "grouping": False}], # Archer base weapons -PR-
     ["}", {"item": "BOW {", "type": "}", "values": [5, 60, [3,7], 2, 1], "cost": 30, "grouping": False}],
     ["}", {"item": "REFLEXIVE BOW {", "type": "}", "values": [8, 60, [4,8], 3, 1], "cost": 48, "grouping": False}],
     ["}", {"item": "LONGBOW {", "type": "}", "values": [11, 60, [5,9], 4, 1], "cost": 66, "grouping": False}],
