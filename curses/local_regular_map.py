@@ -1,11 +1,10 @@
 from random import randint, choice
 
 from local_scripts import zero3
-from local_item_class import item_class_init
-from local_enemies_class import enemies_class_init
+from local_enemies_class import enemies_class_add
 
 
-def regular_map_init(m, p, items, enemies, type_of_map, stairs):
+def regular_map_init(m, p, items, type_od, stairs):
     hm = 25
     minhm = 4 # 5 -PR-
     pokoje = []
@@ -43,6 +42,10 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
             for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                 if m["r"][y][x] == "|":
                     m["r"][y][x] = "#"
+    if stairs > 1:
+        m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_>."
+    if stairs % 2 == 1:
+        m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "_<."
     l_pokoje = hm-2
     i = randint(0, l_pokoje)
     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
@@ -51,16 +54,15 @@ def regular_map_init(m, p, items, enemies, type_of_map, stairs):
             i = randint(0, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = "_"+k+"."
-    for k in enemies:
-        while m["r"][j[0]][j[1]] != "_.":
-            i = randint(0, l_pokoje)
+    more = True
+    for _ in enemies:
+        i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
+        j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
+            i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
+        e_id, more = enemies_class_add(type_of, p["depth"])
         m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
-    if stairs > 1:
-        m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_>."
-    if stairs % 2 == 1:
-        m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "_<."
 
     return(pokoje[-1][0]+pokoje[-1][2]//2, pokoje[-1][1]+pokoje[-1][3]//2)
 

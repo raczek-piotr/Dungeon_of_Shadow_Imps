@@ -9,7 +9,7 @@ from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values
 
 
-def sort(p): p["BP"].sort(reverse=True, key = lambda key: key["item"][::-1])
+def sort(p): p["BP"].sort(reverse=True, key = lambda key: key["item"][-2::-1])
 
 def update_BP_mask(p): # is local_terrain too -PR-
     global BP_mask
@@ -45,43 +45,83 @@ def item_menager(w, c, m, p):
         return[p["echo"], False]
     t = p["BP"][it]
     match t["item"]:
+
         case "TORCH":
-            t["values"][0] -= 1
-            p["torchtime"] = 300
+            p["torchtime"] = 3000
             p["torch"] = True
+            t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 300 " + translate("TURNS"), True]
+            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 3000 " + translate("TURNS"), True]
+
         case "BREAD":
-            t["values"][0] -= 1
-            p["fullness"] += 400
-            if p["fullness"] > 1000:
-                p["fullness"] = 1000
+            p["fullness"] += 5000
+            if p["fullness"] > 10000:
+                p["fullness"] = 10000
             p["starving"] = False
+            t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
             return[translate("YOU ATE A") + " " + translate("BREAD"), True]
+
         case "CORPSE":
-            t["values"][0] -= 1
             p["fullness"] += 200
-            if p["fullness"] > 1000:
-                p["fullness"] = 1000
+            if p["fullness"] > 10000:
+                p["fullness"] = 10000
             p["starving"] = False
+            t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
             return[translate("YOU ATE A") + " " + translate("CORPSE"), True]
-        case "POTION":
-            t["values"][0] -= 1
+
+        case "POTION OF HEALING":
             p["hp"] = p["maxhp"]
-            p["strength"] += 1
-            p["dexterity"] += 1
+            t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU DRANK A") + " " + translate("POTION"), True]
+            return[translate("YOU DRANK A") + " " + translate("POTION OF HEALING"), True]
+
+        case "POTION OF POISON":
+            p["hp"] -= p["mhp"]//2
+            t["values"][0] -= 1
+            if t["values"][0] <= 0:
+                p["BP"].pop(it)
+                update_BP_mask(p)
+            return[translate("YOU DRANK A") + " " + translate("POTION OF POISON"), True]
+
+        case "SCROLL OF TELEPORT":
+            mx, my = m["sx"]-2, m["sy"]-2
+            q = "#"
+            while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
+                x, y = randint(1, mx), randint(1, my)
+                q = m["r"][y][x]
+            t["values"][0] -= 1
+            p["x"], p["y"] = x, y
+            if t["values"][0] <= 0:
+                p["BP"].pop(it)
+                update_BP_mask(p)
+            return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
+
+        case "MAGIC MAPPING":
+            m["v"] = m["r"].copy() # .copy is needed (v - 1, r - 1) → r - 2 -PR-
+            t["values"][0] -= 1
+            if t["values"][0] <= 0:
+                p["BP"].pop(it)
+                update_BP_mask(p)
+            return[translate("YOU READ A") + " " + translate("MAGIC MAPPING"), True]
+
+        case "GAIN EXPERIENCE":
+            p["xp"] += p["xp"]//10 + 10
+            t["values"][0] -= 1
+            if t["values"][0] <= 0:
+                p["BP"].pop(it)
+                update_BP_mask(p)
+            return[translate("YOU READ A") + " " + translate("GAIN EXPERIENCE"), True]
+
         case _:
             no = True
             if p["BP"][it]["values"][2][0] <= p["strength"] and p["BP"][it]["values"][2][1] <= p["dexterity"]:
@@ -101,6 +141,7 @@ def item_menager(w, c, m, p):
                         p["BP"].append(p["e_armor"])
                         p["e_armor"] = t
                         no = False
+
             if no:
                 return[translate("YOU CAN'T USE THAT"), False]
             get_equip_values(p)

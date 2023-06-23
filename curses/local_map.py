@@ -1,14 +1,13 @@
 from random import randint, choice
 
 from local_scripts import zero3
-from local_item_class import item_class_init
-from local_enemies_class import enemies_class_init
+from local_enemies_class import enemies_class_add
 from local_regular_map import regular_map_init
 from local_boss_map import boss_map_init
 
 
-def map_init_str(m, p, items, enemies, type_of_map):
-    with open("maps/"+type_of_map+".map", "r") as rm: # readmap -PR-
+def map_init_str(m, p, items, type_of):
+    with open("maps/"+type_of+".map", "r") as rm: # readmap -PR-
         p["echo"] = "?!"
         rm = rm.read().split("\n")
         while rm[-1] == "":
@@ -16,7 +15,7 @@ def map_init_str(m, p, items, enemies, type_of_map):
         ty, tx = rm.pop(0).split(" ")
         m["sy"], m["sx"] = int(ty), int(tx)
         ty, tx = rm.pop(0).split(" ")
-        if type_of_map[:3] == "sur":
+        if type_of[:3] == "sur":
             m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
         else:
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -82,21 +81,21 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
             pokoje[i][3] = int(2*pokoje[i][3])
 
 
-def map_init(m, p, items, enemies, type_of_map = 0, stairs = 3):
-    if type(type_of_map) == type(0):
-        return map_init_int(m, p, items, enemies, type_of_map, stairs) if type_of_map < 100 else boss_map_init(m, p, items, enemies, type_of_map, stairs)
+def map_init(m, p, items, type_of = 0, stairs = 3):
+    if type(type_of) == type(0):
+        return map_init_int(m, p, items, type_of, stairs) if type_of < 100 else boss_map_init(m, p, items, type_of, stairs)
     else:
-        return map_init_str(m, p, items, enemies, type_of_map)
+        return map_init_str(m, p, items, type_of)
 
 
-def map_init_int(m, p, items, enemies, type_of_map, stairs):
+def map_init_int(m, p, items, type_of, stairs):
     pokoje = []
     m["sy"], m["sx"] = 32, 32
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
 
-    match type_of_map:
+    match type_of:
         case 1:
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
             locate_a_room(m, pokoje, 5, 3, 5, 3, 1, False)
@@ -119,37 +118,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
             pokojen = [] #no -PR-
             for i in pokoje:
                 pokojen.append(i)
-            pokojeok = [pokojen.pop(1)] #ok -PR-
-#             while pokojen != []:
-#                 n_minodl = 0
-#                 o_minodl = 0
-#                 minodl = m["sy"]**2 + m["sx"]**2
-#                 for id_n in range(len(pokojen)):
-#                     n = pokojen[id_n]
-#                     modl = m["sy"]**2 + m["sx"]**2
-#                     o_modl = -1
-#                     for id_o in range(len(pokojeok)):
-#                         o = pokojeok[id_o]
-#                         odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
-#                         if odl < modl:
-#                             modl = odl
-#                             o_modl = id_o
-#                     if modl < minodl:
-#                         minodl = modl
-#                         n_minodl = id_n
-#                         o_minodl = o_modl
-#                 p2 = pokojeok[o_minodl]
-#                 p1 = pokojen[n_minodl]
-#                 p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
-#                 p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
-#                 middle2 = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
-#                 if m["r"][middle2[0]][middle2[1]][0] != "#":
-#                     middle2[0] -= 1
-#                     middle2[1] -= 1
-#                 middle1 = [middle2[0], middle2[1]]
-#                 Connect(m, p2, middle2)
-#                 Connect(m, p1, middle1, True)
-#                 pokojeok.append(pokojen.pop(n_minodl))
+            pokojeok = [pokojen.pop(1)] #first ok -PR-
             while pokojen != []:
                 n_minodl = 0
                 o_minodl = 0
@@ -185,30 +154,19 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                             m["r"][y][x] = "#"
                         elif m["r"][y][x] == "+":
                             m["r"][y][x] = ":."
-            l_pokoje = l_pokoje-1
-            i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
-            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-            for k in items:
-                while m["r"][j[0]][j[1]] != " ":
-                    i = randint(1, l_pokoje)
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                m["r"][j[0]][j[1]] = k+" "
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
-            for k in enemies:
-                i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
-                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
-                    i = randint(1, l_pokoje)
+                m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
+            l_pokoje -= 1
+            j = [0, 0] # → "#" :) -PR-
+            for k in items:
+                while m["r"][j[0]][j[1]] != " ":
+                    i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                if m["r"][j[0]][j[1]] != " ":
-                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                    m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
-                else:
-                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                    m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
+                m["r"][j[0]][j[1]] = k+" "
         case 2:
             locate_a_room(m, pokoje, 3, 3, 1, 1, 1)
             #ran = len(pokoje) #len(special_rooms) (<>@) -PR-
@@ -249,10 +207,12 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 Connect(m, p1, middle.copy(), True)
                 pokojeok.append(pokojen.pop(n_minodl))
             if stairs > 1:
-                m["r"][pokoje[1][0]+pokoje[1][2]//2][pokoje[1][1]+pokoje[-1][3]//2] = "> "
+                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
             if stairs % 2 == 1:
-                m["r"][pokoje[2][0]+pokoje[2][2]//2][pokoje[2][1]+pokoje[-2][3]//2] = "< "
-            l_pokoje = len(pokoje)-1 #-3
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
+                m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
+            l_pokoje = len(pokoje)-1 # like l_pokoje -= 1 -PR-
             i = randint(3, l_pokoje) #ran=3 -PR-
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
@@ -260,14 +220,6 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     i = randint(3, l_pokoje) #ran=3 -PR-
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
-            for k in enemies:
-                i = randint(3, l_pokoje) #ran=3 -PR-
-                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != " ":
-                    i = randint(3, l_pokoje) #ran=3 -PR-
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
         case 3:
             m["r"] = [[choice(["#","#",": "]) for _ in range(m["sx"])] for _ in range(m["sy"])]
             for i in range(m["sx"]):
@@ -298,7 +250,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                 pokojen.append(i)
             pokojeok = [pokojen.pop(1)]
             while pokojen != []:
-                # if type_of_map != 0:
+                # if type_of != 0:
                 n_minodl = 0
                 o_minodl = 0
                 minodl = m["sy"]**2 + m["sx"]**2
@@ -338,7 +290,7 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                         else:
                             if randint(0, 7) == 0:
                                 m["r"][y][x] = "_:."
-            l_pokoje = l_pokoje-1
+            l_pokoje -= 1
             i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
@@ -346,27 +298,29 @@ def map_init_int(m, p, items, enemies, type_of_map, stairs):
                     i = randint(1, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
-            for k in enemies:
-                i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
-                j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
-                    i = randint(1, l_pokoje)
-                    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                if m["r"][j[0]][j[1]] != " ":
-                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                    m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
-                else:
-                    e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
-                    m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
+                m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
             m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "_."
 
         case _:
-            return regular_map_init(m, p, items, enemies, type_of_map, stairs)
+            return regular_map_init(m, p, items, enemies, type_of, stairs)
 
+    more = True # here are added enemies on "battle field" :) -PR-
+    while more:
+        i = randint(1, l_pokoje) # (1→ran) player with nonething in start_room -PR-
+        j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
+            i = randint(1, l_pokoje)
+            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        e_id, more = enemies_class_add(type_of, p["depth"])
+        if m["r"][j[0]][j[1]] != " ":
+            m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
+        else:
+            m["r"][j[0]][j[1]] = k[0]+zero3(e_id)+" "
     return(pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2)
         #rmap[i[0]+randint(1-sy, sy-1)][i[1]+randint(1-sx, sx-1)] = item
 

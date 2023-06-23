@@ -34,7 +34,7 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                     r += translate("YOU CAN EQUIP IT")
             return r
         case ")":
-            r = (translate(i["item"][:-2]) + " (" + str(i["values"][0])+"x"+str(i["values"][4]) + ") ")
+            r = translate(i["item"][:-2]) + " (" + str(i["values"][0])+"x"+str(i["values"][4]) + ") "
             if p:
                 i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
@@ -45,7 +45,11 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                     r += translate("YOU CAN EQUIP IT")
             return r
         case "|":
-            return (translate(i["values"][0][:-2]) + i["values"][0][-2:] + ("+" if i["values"][1] >= 0 else "") + str(i["values"][1]) + i["type"])
+            return (str(i["values"][0]) + "x " + translate((i["values"][1] if i["values"][0] > 1 else i["item"]), i["values"][0]))
+        case "!":
+            return (str(i["values"][0]) + "x " + translate((i["values"][1] if i["values"][0] > 1 else i["item"]), i["values"][0]))
+        case "?":
+            return (str(i["values"][0]) + "x " + translate((i["values"][1] if i["values"][0] > 1 else i["item"]), i["values"][0]))
         case _:
             if not i["grouping"]: # no identifity for (normal) items -PR-
                 return (i["item"]  + str(i["values"][0]))
@@ -140,7 +144,7 @@ def output(w, c, m, p):
                     if t[tx] == "":
                         t[tx] = "!"
                     i = t[tx][0]
-                    if i in {"@","]","}",")","~","$","*","-","?"}:
+                    if i in {"@","]","}",")","~","$","*","-","?","!"}:
                         col = 2
                     elif i == "#":
                         col = 5

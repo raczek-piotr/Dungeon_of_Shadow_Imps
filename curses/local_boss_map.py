@@ -1,11 +1,10 @@
 from random import randint, choice
 
 from local_scripts import zero3
-from local_item_class import item_class_init
-from local_enemies_class import enemies_class_init
+from local_enemies_class import enemies_class_add
 
 
-def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list of list -PR-    pokoje = []
+def boss_map_init(m, p, items, type_of_map, stairs): #enemies → list of list -PR-    pokoje = []
     sizey, sizex = 12, 20
     pokoje = []
     m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
@@ -67,7 +66,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
                 cfg = txt.read().split("\n")
             while cfg[-1] == "":
                 cfg.pop(-1)
-            print("can")
             t = choice([chr(z+65) for z in range(len(cfg))])
 
             pokoje.append([y, x, sy, sx, [xy, t]])
@@ -88,7 +86,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
                 cfg = txt.read().split("\n")
             while cfg[-1] == "":
                 cfg.pop(-1)
-            print("can")
             t = choice([chr(z+65) for z in range(len(cfg))])
 
             pokoje.append([y, x, sy, sx, [xy, t]])
@@ -131,7 +128,6 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = "_"+k+"."
-    print("itemd")
     for k in enemies:
         i = randint(1, l_pokoje)
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
@@ -141,10 +137,9 @@ def boss_map_init(m, p, items, enemies, type_of_map, stairs): #enemies → list 
         e_id = enemies_class_init(k[0], j[0], j[1], k[1], k[2], k[3], k[4], k[5], k[6], k[7])
         m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."'''
 
-    e_id = enemies_class_init("B", pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2,
-                              12, 5, 15, 1, 30, False, [])
-    m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "B"+zero3(e_id)+" "
-    print("enemid")
+    #e_id = enemies_class_init("B", pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2,
+    #                          12, 5, 15, 1, 30, False, [])
+    #m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "B"+zero3(e_id)+" "
 
     if stairs > 1:
         m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "_=>."
@@ -186,7 +181,6 @@ def RegularConnect(m, p_end, p_start):
     #p_start[0], p_start[1] = p_start[0] + 2*p_start[2]//4, p_start[1] + 2*p_start[3]//4
     direction = randint(0, 1)
     goal = True # I have the goal -PR-
-    print(p_start, p_end)
     while goal:
         if direction == 0:
             if p_start[0] < p_end[0]:

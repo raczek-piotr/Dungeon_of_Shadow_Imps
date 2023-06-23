@@ -3,27 +3,57 @@ from local_scripts import zero3, dire, shot
 from local_translator import translate
 from local_scripts import is_boss_killed
 
+
+enemies_likes_light = [
+    ["r",4,1,1,1,7,False,[]], #0 rat
+    ["h",4,2,2,1,7,False,[]],#1 hobbit
+    ["a",4,2,3,1,7,True,[]],#2 archer
+    ["k",8,2,4,1,7,False,[]], #3 kobold
+    ["t",5,5,6,1,7,False,[]], #4 thief
+    ]#"head", hp, attack, xp, Throw/Fight, sleep, hear_range, drop, max lw to give xp, min_depth,  max_depth, name, flag
+enemies_half_light = [
+    ["r",4,1,1,1,7,False,[]], #0 rat
+    ["c",8,1,2,1,7,False,[]], #1 crab
+    ["z",3,4,3,1,7,False,[]],#2 zombe
+    ["k",8,2,4,1,7,False,[]], #3 kobold
+    ["t",5,5,6,1,7,False,[]], #4 thief
+    ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+enemies_not_light = [
+    ["s",3,3,1,4,4,False,[]], #0 small snake
+    ["c",8,1,2,1,7,False,[]], #1 crab
+    ["z",3,4,3,1,7,False,[]],#2 zombe
+    ["g",6,2,4,1,7,True,[]], #3 goblin
+    ["o",9,2,6,1,7,False,[]], #4 orck
+    ]#"head", hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+
+all_enemies = [enemies_likes_light, enemies_half_light, enemies_not_light, enemies_half_light]
+
+
 def enemies_class_clear():
-    global c, a, tlist, exlist, heads # c - class, exlist - tlist + heads -PR-
+    global c, a, tlist, exlist, heads, elist # c - class, exlist - tlist + heads -PR-
     tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">"}
-    exlist = tlist.copy()
+    exlist = tlist.copy() # = tlist + heads -PR-
     heads = set()
     c, a = [], []
+    elist = [] # tmp list for enemies -PR-
 
-def enemies_class_init(head, y, x, hp, attack, xp, time_sleep = 1, hear_range = 7, ranged = False, carring = []): #carring is not used now -PR-
-    global c, a, exlist, heads
+def enemies_class_add(type_of, lw): #carring is not used now -PR-
+    #global enemies_likes_light, enemies_half_light, enemies_not_light
+    enemies = all_enemies[type_of%4]
+    global c, a, exlist, heads, elist
+    if elist == []:
+        for e in enemies:
+            if e[9] <= lw and e[10] >= lw:
+                elist.append(e)
     if ranged:
-        a.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
-            "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
-        it = len(a)+500
+        q, it = a, len(a)+500
     else:
-        c.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
-            "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
-        it = len(c)
+        q, it = c, len(c)
+    q.append(elist.pop(randint(0,len(elist)-1)).copy())
     if head not in exlist:
-        exlist.add(head)
-        heads.add(head)
-    return(it-1)  # return id -PR-
+        exlist.add(q[-1][0]) # head -PR-
+        heads.add(q[-1][0])
+    return it-1, elist != [] # return id -PR-
 
 def enemies_class_update(m, p, yx):
     global c, a, tlist, exlist

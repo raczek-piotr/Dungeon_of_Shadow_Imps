@@ -25,3 +25,25 @@ def get_equip_values(p):
             p["arrows_id"] = i
     for i in to_delate[::-1]:
         p["BP"].pop(i)
+
+def update_BP_mask(p): # is local_input
+    global BP_mask
+    BP_mask = []
+    for i in p["BP"]:
+        if i["grouping"]:
+            BP_mask.append(i["item"])
+
+def merge(p): # polacz (PL) -PR-
+    i = 0
+    while i < len(p["BP"]):
+        j = 1
+        while j < len(p["BP"]):
+            if i == j:
+                j += 1
+                continue
+            if p["BP"][i]["grouping"] and p["BP"][i]["item"] + " " + p["BP"][i]["type"] == p["BP"][j]["item"] + " " + p["BP"][j]["type"]:
+                t1 = p["BP"].pop(j)
+                p["BP"][i]["values"][0] += t1["values"][0]
+            else:
+                j += 1
+        i += 1
