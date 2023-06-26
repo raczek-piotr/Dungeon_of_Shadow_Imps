@@ -1,5 +1,4 @@
 lang_PL = {
-    " HP LEFT": "HP (zostało)",
     #"A MONSTER": "POTWORA",
     "AND IT WILL GIVE YOU LIGHT FOR": "I BĘDZIE TOBIE DAWAĆ ŚWIATŁO PRZEZ",
     "ARROW": "STRZAŁĘ",

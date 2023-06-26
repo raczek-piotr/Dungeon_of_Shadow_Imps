@@ -308,10 +308,10 @@ def map_init_int(m, p, items, type_of, stairs):
 
         case _: # 0 -PR-
             hm = 25
-            minhm = 4 # 5 -PR-
+            minhm = 9 # 5 -PR-
             pokoje = []
             tryes = 0
-            sizey, sizex = 12, 20
+            sizey, sizex = 17, 26
             m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
             m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]

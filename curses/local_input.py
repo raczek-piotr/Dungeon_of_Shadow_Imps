@@ -107,7 +107,7 @@ def item_menager(w, c, m, p):
             return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
 
         case "MAGIC MAPPING":
-            m["v"] = m["r"].copy() # .copy is needed (v - 1, r - 1) → r - 2 -PR-
+            m["v"] = m["r"].copy() # .copy is needed (v - 1, r - 1) → r - 2 -PR- you can see monsters too
             t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)

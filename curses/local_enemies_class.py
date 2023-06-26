@@ -5,31 +5,40 @@ from local_scripts import is_boss_killed
 
 
 enemies_likes_light = [
-    ["m",3,1,3,1,7,"drop","min_lw_to_give_xp",1,3,"MICE", 0],
-    ["f",1,1,1,1,7,"drop","min_lw_to_give_xp",1,3,"FLY", 0],
-    ["f",1,1,1,1,7,"drop","min_lw_to_give_xp",1,3,"FLY", 0],
-    ["f",1,1,1,1,7,"drop","min_lw_to_give_xp",1,3,"FLY", 0],
-    ["f",1,1,1,1,7,"drop","min_lw_to_give_xp",1,3,"FLY", 0],
-    ["f",1,1,1,1,7,"drop","min_lw_to_give_xp",1,3,"FLY", 0],
-    ["b",5,1,5,1,7,"drop","min_lw_to_give_xp",1,6,"BAT", 0],
-    ["U",8,2,16,1,7,"drop","min_lw_to_give_xp",2,6,"OLD ROBBER", 0],
-    ["U",10,2,30,1,7,"drop","min_lw_to_give_xp",6,6,"URCHIN", 1],
-    #["r",4,1,1,1,7,False,[]], #0 rat
-    #["h",4,2,2,1,7,False,[]],#1 hobbit
-    #["a",4,2,3,1,7,True,[]],#2 archer
-    #["k",8,2,4,1,7,False,[]], #3 kobold
-    #["t",5,5,6,1,7,False,[]], #4 thief
-    ]#0, hp, attack, xp, Throw/Fight, sleep, hear_range, drop, max lw to give xp, min_depth,  max_depth, name, flag
+    ["m",3,2,2,1,7,"drop","min_lw_to_give_xp",1,4,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","min_lw_to_give_xp",1,4,"MICE", 0],
+    ["f",3,1,1,1,7,"drop","min_lw_to_give_xp",1,4,"FLY", 0],
+    ["f",3,1,1,1,7,"drop","min_lw_to_give_xp",1,4,"FLY", 0],
+
+    ["a",3,2,3,1,7,"drop","min_lw_to_give_xp",3,10,"ANT THE ACID FROWER", 1],
+    ["a",3,2,3,1,7,"drop","min_lw_to_give_xp",3,10,"ANT THE ACID FROWER", 1],
+
+    ["b",8,3,8,1,7,"drop","min_lw_to_give_xp",5,20,"BAT", 0],
+    ["S",6,4,4,4,4,"drop","min_lw_to_give_xp",5,20,"SNAKE", 0],
+    ]
 enemies_half_light = [
-    ["m",3,1,3,1,4,"drop","min_lw_to_give_xp",1,3,"MICE", 0],
-    ["c",2,2,4,1,4,"drop","min_lw_to_give_xp",1,4,"CENTIPEDE", 0],
-    ["b",3,2,6,1,4,"drop","min_lw_to_give_xp",2,6,"BEETLE", 0],
-    ]#0, hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+    ["r",4,1,4,1,7,"drop","min_lw_to_give_xp",1,4,"RAT", 0],
+    ["m",3,2,2,1,7,"drop","min_lw_to_give_xp",1,4,"MICE", 0],
+    ["f",3,1,1,1,7,"drop","min_lw_to_give_xp",1,4,"FLY", 0],
+
+    ["f",3,1,1,1,7,"drop","min_lw_to_give_xp",3,10,"FLY", 0], # special fly -PR-
+    ["c",6,1,2,1,7,"drop","min_lw_to_give_xp",3,10,"CENTIPEDE", 0],
+    ["a",3,2,3,1,7,"drop","min_lw_to_give_xp",3,10,"ANT THE ACID FROWER", 1],
+
+    ["b",8,3,8,1,7,"drop","min_lw_to_give_xp",5,20,"BAT", 0],
+    ["S",6,4,4,4,4,"drop","min_lw_to_give_xp",5,20,"SNAKE", 0],
+    ]
 enemies_not_light = [
-    ["r",4,1,4,1,4,"drop","min_lw_to_give_xp",1,4,"RAT", 0],
-    ["c",2,2,4,1,4,"drop","min_lw_to_give_xp",1,4,"CENTIPEDE", 0],
-    ["b",3,2,6,1,4,"drop","min_lw_to_give_xp",2,6,"BEETLE", 0],
-    ]#0, hp, attack, xp, sleep, hear_range, archer Throw/Fight, (←work) max lw to give xp, drop([] percent), armor?
+    ["r",4,1,4,1,7,"drop","min_lw_to_give_xp",1,4,"RAT", 0],
+    ["r",4,1,4,1,7,"drop","min_lw_to_give_xp",1,4,"RAT", 0],
+
+    ["c",6,1,2,1,7,"drop","min_lw_to_give_xp",3,10,"CENTIPEDE", 0],
+    ["c",6,1,2,1,7,"drop","min_lw_to_give_xp",3,10,"CENTIPEDE", 0],
+    ["c",6,1,2,1,7,"drop","min_lw_to_give_xp",3,10,"CENTIPEDE", 0],
+
+    ["b",8,3,8,1,7,"drop","min_lw_to_give_xp",5,20,"BAT", 0],
+    ["S",6,4,4,4,4,"drop","min_lw_to_give_xp",5,20,"SNAKE", 0],
+    ]
 
 all_enemies = [enemies_likes_light, enemies_half_light, enemies_not_light, enemies_half_light]
 
@@ -49,7 +58,7 @@ def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
     if elist == []:
         for e in enemies:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(randint(1,2)):
+                for _ in range(randint(1,4)):
                     elist.append(e)
 
     e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-
@@ -275,7 +284,7 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
     if at_value != 0:
         q[1] -= at_value
         q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
-        p["echo"] = translate("YOU HIT A")+" "+translate(q[10]) +" "+str(q[1])+translate(" HP LEFT")
+        p["echo"] = translate("YOU HIT A")+" "+translate(q[10])
         if q[1] <= 0:
             m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
             if m["v"][q[9]][q[8]][0] == q[0]:

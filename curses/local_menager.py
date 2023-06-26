@@ -98,14 +98,15 @@ def prepare_map(m, p):
     if h[0] == "?":
         h[0] = p["type"]
         i = randint(-1, 1)
-        if p["type"] + i in {0,1,2,3}:
+        if p["type"] + i in {0,1,2}:
             p["type"] += i
+    p["type"] += p["shift_type_of"] # +"shift" -PR-
     enemies_class_clear()
     ilist, xp = [], 0
     if type(h[0]) == int:
         p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
         if p["normal_level"]:
-            ilist = randitem(h[0]+1) # +1 -PR-
+            ilist = randitem(h[0]+5) # +5 -PR-
             for i in range(randint(0, h[0])):
                 ilist.append("$" + zero3(randint(3, 35)))
             #for i in range(randint(0, randint(0, h[0]))):
@@ -115,6 +116,7 @@ def prepare_map(m, p):
             #for i in range(randint(0, 1)):
             #    ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
+    p["type"] -= p["shift_type_of"] # -"shift" -PR-
 
 def start_data():
     path = "data/"
@@ -128,13 +130,14 @@ def start_data():
         }
     p = {
         "playertype": "Human Duelist",
-        "specials": "", # not used -PR-
+        #"name": "qwe",#at the death -PR-
+        "specials": "", # not used now -PR-
         "normal_level": True,
-        #"name": "qwe",#at the death
+        "shift_type_of": 0,#at the death -PR-
         "maxhp": 10,
         "hp": 10,
         "hpchange": 2,
-        "hpcounter": 10,
+        "hpcounter": 5,
         "needxp": 100,
         "xp": 0,
         "lw": 1,
