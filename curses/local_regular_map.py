@@ -1,10 +1,9 @@
 from random import randint, choice
 
 from local_scripts import zero3
-from local_enemies_class import enemies_class_add
 
 
-def regular_map_init(m, p, items, type_od, stairs):
+def regular_map_init(m, p, items, type_of, stairs):
     hm = 25
     minhm = 4 # 5 -PR-
     pokoje = []
@@ -54,15 +53,6 @@ def regular_map_init(m, p, items, type_od, stairs):
             i = randint(0, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = "_"+k+"."
-    more = True
-    for _ in enemies:
-        i = randint(1, l_pokoje) # (1→ran) less monsters in rooms with lihgt
-        j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
-            i = randint(1, l_pokoje)
-            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        e_id, more = enemies_class_add(type_of, p["depth"])
-        m["r"][j[0]][j[1]] = "_"+k[0]+zero3(e_id)+"."
 
     return(pokoje[-1][0]+pokoje[-1][2]//2, pokoje[-1][1]+pokoje[-1][3]//2)
 

@@ -5,8 +5,7 @@ from local_item_class import get_item
 from local_equip import get_equip_values, update_BP_mask, merge
 
 
-
-traders = [{2,3,9,10,23,24},
+traders = [{2,3,23,24},
            {14,35,23,38},
            {9,10,11,12}]
 
@@ -16,6 +15,7 @@ def npc(w, c, m, p, it, stay):
         case 0:
             return trader(w, c, m, p, it, "Seller")
         case 1:
+            return[False, translate("- DO YOU JOB!"), False]
             return trader(w, c, m, p, it, "Mayor")
         case 2:
             return trader(w, c, m, p, it, "Blue The Robin")
@@ -24,9 +24,9 @@ def npc(w, c, m, p, it, stay):
         case _:
             return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- ASK BLUE ROBIN FOR HELP", "- WHAT A NICE DAY!", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- IF YOU HAVE NONETHING TO DO, GO TO THE DUNGEON"])), False]
 def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -PR-
-    q = ""
+    q = "-"
     ilist = [get_item(i) for i in traders[it]]
-    slots = {str(i) for i in range(it)}
+    slots = {str(i) for i in range(len(ilist))}
     while True:
         if q in slots:
             i = ilist[int(q)].copy()

@@ -15,7 +15,7 @@ def type_gold(i):
 def f_gold(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
-    i = item_class_get(i)
+    #i = item_class_get(i)
     if stay:
         m["r"][npy][npx] = m["r"][npy][npx][4:]
         m["v"][npy][npx] = m["r"][npy][npx]

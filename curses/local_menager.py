@@ -135,7 +135,7 @@ def start_data():
         "hp": 10,
         "hpchange": 2,
         "hpcounter": 10,
-        "needxp": 20,
+        "needxp": 100,
         "xp": 0,
         "lw": 1,
         "depth": 0,

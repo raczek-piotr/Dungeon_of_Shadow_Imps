@@ -53,7 +53,7 @@ def mainloop(w):
                     p["starving"] = True
                     c.beep() # alarm the player -PR-
             while p["xp"] >= p["needxp"]:
-                p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
+                p["needxp"] += 100 + 25*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["lw"] += 1
                 p["maxhp"] += p["hpchange"]
                 p["hp"] += p["hpchange"]
