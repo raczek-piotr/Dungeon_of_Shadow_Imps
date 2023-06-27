@@ -52,7 +52,7 @@ lang_PL = {
     }
 
 def translate(ang, number = 0):
-    lang = "PL"
+    lang = "none"
     match lang:
         case "PL":
             return(l_pl(ang, number))

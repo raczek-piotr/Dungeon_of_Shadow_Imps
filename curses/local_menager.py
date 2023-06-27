@@ -133,10 +133,10 @@ def start_data():
         #"name": "qwe",#at the death -PR-
         "specials": "", # not used now -PR-
         "normal_level": True,
-        "shift_type_of": 0,#at the death -PR-
+        "shift_type_of": 0,#at the depth -PR-
         "maxhp": 10,
         "hp": 10,
-        "hpchange": 2,
+        "hpchange": 5,
         "hpcounter": 5,
         "needxp": 100,
         "xp": 0,

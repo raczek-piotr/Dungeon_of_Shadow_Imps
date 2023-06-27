@@ -23,14 +23,16 @@ def npc(w, c, m, p, it, stay):
             return[False, translate("- HEY! I'M DOING MY TOILET, GO AWAY!"), False]
         case _:
             return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- ASK BLUE ROBIN FOR HELP", "- WHAT A NICE DAY!", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- IF YOU HAVE NONETHING TO DO, GO TO THE DUNGEON"])), False]
+
 def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -PR-
     q = "-"
     ilist = [get_item(i) for i in traders[it]]
     slots = {str(i) for i in range(len(ilist))}
     while True:
         if q in slots:
-            i = ilist[int(q)].copy()
-            if (len(p["BP"]) < 6 or i["item"] in BP_mask and i["grouping"]) and p["gold"] >= i["cost"]:
+            i = ilist[int(q)]
+            if (len(p["BP"]) < 6# or i["item"] in BP_mask # to repair -PR-
+                and i["grouping"]) and p["gold"] >= i["cost"]:
                 p["gold"] -= i["cost"]
                 p["BP"].append(i)
                 merge(p)

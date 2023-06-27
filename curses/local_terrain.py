@@ -6,9 +6,9 @@ from local_output import item # for f_weapons -PR-
 from local_npc import npc
 
 def type_gold(i):
-    if i < 9:
+    if i < 11:
         return "WORTH COPPER"
-    if i < 25:
+    if i < 26:
         return "WORTH SILVER"
     return "WORTH GOLD"
 

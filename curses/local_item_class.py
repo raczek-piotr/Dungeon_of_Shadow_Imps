@@ -53,17 +53,24 @@ item = [
 ["}", {'item': 'CROSBOW {', 'type': '}', 'values': [8, 40, [7, 7], 4, 1], 'cost': 1044, 'grouping': False}], #47
 ]
 
-def item_class_get(i):
-    global item
-    return(item[i][1])
+#def item_class_get(i):
+#    global item
+#    return item[i][1].copy()
+
+def item_class_get(it):
+    q = item[it][1].copy()
+    q["values"] = item[it][1]["values"].copy()
+    return q
 
 def get_item(it):
-    global item
-    return(item[it][1])
+    q = item[it][1].copy()
+    q["values"] = item[it][1]["values"].copy()
+    return q
 
 def get_item_more(it):
-    global item
-    return(item[it])
+    q = item[it].copy()
+    q[1]["values"] = item[it][1]["values"].copy()
+    return q
 
 def disable_disabled_weapons(s, d):
     global item
@@ -86,20 +93,3 @@ def randitem(hm): # how many -PR-
         q.append(item[r][0]+zero3(r))
     
     return q
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
