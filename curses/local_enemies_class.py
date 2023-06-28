@@ -1,32 +1,97 @@
-from random import randint
+from random import randint, choice
 from local_scripts import zero3, dire, shot
 from local_translator import translate
 from local_scripts import is_boss_killed
 
+
+def flag(f, n):
+    return f%(2*n)//n
+# flags
+# 1 - is a shooter
+# 2 - poison (armor penetration)
+# 4 - random movement 50% (always)
+# 8 - when not sleeping and there is no player in range, then random movement (seeks player)
+enemies_likes_light = [
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
+    ]
+enemies_half_light = [
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,12,"SNAKE", 6],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
+
+    #["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6],
+    #["C",5,8,12,4,4,"drop","max_lw_to_give_xp",13,20,"COBRA", 6],
+    #["M",5,10,15,4,4,"drop","max_lw_to_give_xp",13,20,"BLACK MAMBA", 6],
+    ]
+enemies_not_light = [
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],# more -PR-
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",9,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",17,20,"BAT", 8], # warning! from depth 11 -PR-
+    ]
+
+all_enemies = [enemies_likes_light, enemies_half_light, enemies_not_light, enemies_half_light]
+
+
 def enemies_class_clear():
-    global c, a, tlist, exlist, heads # c - class, exlist - tlist + heads -PR-
+    global c, a, tlist, exlist, heads, elist # c - class, exlist - tlist + heads -PR-
     tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">"}
-    exlist = tlist.copy()
+    exlist = tlist.copy() # = tlist + heads -PR-
     heads = set()
     c, a = [], []
+    elist = [] # tmp list for enemies -PR-
 
-def enemies_class_init(head, y, x, hp, attack, xp, time_sleep = 1, hear_range = 7, ranged = False, carring = []): #carring is not used now -PR-
-    global c, a, exlist, heads
-    if ranged:
-        a.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
-            "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
-        it = len(a)+500
+def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
+    #global enemies_likes_light, enemies_half_light, enemies_not_light
+    enemies = all_enemies[type_of%4]
+    global c, a, exlist, heads, elist
+    if elist == []:
+        for e in enemies:
+            if e[8] <= lw and e[9] >= lw:
+                for _ in range(2):#randint(2,2)):
+                    elist.append(e)
+
+    e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-
+    e[8], e[9] = x, y
+    if e[11]%2 == 1:
+        q, it = a, len(a)+500
     else:
-        c.append({"head": head, "y": y, "x": x, "mhp": hp, "hp": hp, "attack": attack, "xp": xp,
-            "time_sleep": time_sleep, "hear_range": hear_range, "carring": carring})
-        it = len(c)
+        q, it = c, len(c)
+    head = e[0]
     if head not in exlist:
-        exlist.add(head)
-        heads.add(head)
-    return(it-1)  # return id -PR-
+        exlist.add(head), heads.add(head)
+    q.append(e)
+    return head+zero3(it), elist != [] # return id -PR-
 
 def enemies_class_update(m, p, yx):
     global c, a, tlist, exlist
+    q = 0
+    while q != 0:
+        q -= 1
     m["m"] = [[-1 for _ in range(m["sx"])] for _ in range(m["sy"])]
     w, k = yx[0], yx[1] # row kolumn -PR-
     q = [[w, k, -1]]
@@ -63,31 +128,9 @@ def enemies_class_update(m, p, yx):
                 q.append([w+1, k+1, p1[2] + 1])
                 m["m"][w+1][k+1] = p1[2] + 1
 
-    t = []
     for it in range(len(c)):
         q = c[it]
-        if q["head"]+zero3(it) == m["r"][q["y"]][q["x"]][:4] and m["m"][q["y"]][c[it]["x"]] < q["hear_range"]: # q["hp"] > 0 he won't be on the map! -PR-
-            if q["time_sleep"] == 0:
-                if m["m"][q["y"]][q["x"]] == 0:
-                    enemies_class_attack(p, q["head"], q["attack"])
-                else:
-                    t.append(it)
-            else:
-                q["time_sleep"] -= 1
-    while t != []:
-        it = t.pop(randint(0, len(t)-1)) # it = id
-        q = c[it]
-        t_mmap = [[m["m"][q["y"]-1][q["x"]-1], q["y"]-1, q["x"]-1],
-                  [m["m"][q["y"]-1][q["x"]], q["y"]-1, q["x"]],
-                  [m["m"][q["y"]-1][q["x"]+1], q["y"]-1, q["x"]+1],
-                  [m["m"][q["y"]][q["x"]-1], q["y"], q["x"]-1],
-                  #[m["m"][q["y"]][q["x"]], q["y"], q["x"]], # stay -PR-
-                  [m["m"][q["y"]][q["x"]+1], q["y"], q["x"]+1],
-                  [m["m"][q["y"]+1][q["x"]-1], q["y"]+1, q["x"]-1],
-                  [m["m"][q["y"]+1][q["x"]], q["y"]+1, q["x"]],
-                  [m["m"][q["y"]+1][q["x"]+1], q["y"]+1, q["x"]+1],
-                  ]
-        move_enemie(m, p, t_mmap, q, it)
+        updete_enemie(m, p, q, it)
 
     for y in range(len(m["m"])): # time for archers -PR-
         for x in range(len(m["m"][0])):
@@ -133,60 +176,79 @@ def enemies_class_update(m, p, yx):
                 q.append([w+1, k+1, p1[2] + 1])
                 m["m"][w+1][k+1] = p1[2] + 1
 
-    t = []
     for it in range(len(a)):
         q = a[it]
-        if q["head"]+zero3(it+500) == m["r"][q["y"]][q["x"]][:4] and m["m"][q["y"]][q["x"]] < q["hear_range"]:
-            if q["time_sleep"] == 0:
-                if m["m"][q["y"]][q["x"]] == 0:
-                    if enemies_class_shot(m["r"], [q["y"], q["x"]], [p["y"], p["x"]], q["hear_range"]):
-                        enemies_class_attack(p, q["head"], q["attack"])
-                else:
-                    t.append(it)
-            else:
-                q["time_sleep"] -= 1
-    while t != []:
-        it = t.pop(randint(0, len(t)-1))
-        q = a[it]
-        t_mmap = [[m["m"][q["y"]-1][q["x"]-1], q["y"]-1, q["x"]-1],
-                  [m["m"][q["y"]-1][q["x"]], q["y"]-1, q["x"]],
-                  [m["m"][q["y"]-1][q["x"]+1], q["y"]-1, q["x"]+1],
-                  [m["m"][q["y"]][q["x"]-1], q["y"], q["x"]-1],
-                  #[m["m"][q["y"]][q["x"]], q["y"], q["x"]], # stay -PR-
-                  [m["m"][q["y"]][q["x"]+1], q["y"], q["x"]+1],
-                  [m["m"][q["y"]+1][q["x"]-1], q["y"]+1, q["x"]-1],
-                  [m["m"][q["y"]+1][q["x"]], q["y"]+1, q["x"]],
-                  [m["m"][q["y"]+1][q["x"]+1], q["y"]+1, q["x"]+1],
-                  ]
-        move_enemie(m, p, t_mmap, q, it, 500)
+        updete_enemie(m, p, q, it, plus_it = 0)
 
-def move_enemie(m, p, t_mmap, q, it, plus_it = 0):
-    p_min = m["m"][q["y"]][q["x"]]
-    direction = [m["m"][q["y"]][q["x"]], q["y"], q["x"]] # stay -PR-
+def updete_enemie(m, p, q, it, plus_it = 0):
+    if q[0]+zero3(it+plus_it) == m["r"][q[9]][q[8]][:4]: # could be updated -PR-
+        if q[4] == 0: # is not sleeping -PR-
+            #if flag(q[11], 4) and randint(0,1): # flag 4? -PR-
+            #    randmove()
+            #    return#break#continue
+            if m["m"][q[9]][q[8]] < q[5]:
+                if m["m"][q[9]][q[8]] == 0:
+                    if enemies_class_shot(m["r"], [q[9], q[8]], [p["y"], p["x"]], q[5]):
+                        enemies_class_attack(p, q[0], q[2])
+                else:
+                    move_enemie(m, p, q, it, flag(q[11], 2), plus_it)
+            #elif flag(q[11], 8): # not sleeping and can't hear the player
+            #    randmove()
+        elif m["m"][q[9]][q[8]] < q[5]: # is sleeping, but would it wake up? -PR-
+            q[4] -= 1
+
+def randmove(m, p, q, it):
+    direction = [randint(-1,1), randint(-1,1)]
+    if m["m"][q[9]+direction[0]][q[8]+direction[1]] in tlist:
+        q[9], q[8] = q[9]+direction[0], q[8]+direction[1]
+
+    m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
+    #if m["r"][q[9]][q[8]] == "":
+    #    m["r"][q[9]][q[8]] = " "
+    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is unseen -PR-
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
+        if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
+            q[9], q[8] = direction[1:]
+        else:
+            q[1] = 0
+    m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
+    if m["r"][q[9]][q[8]][-1] != " ":
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    if q[1] == 0: # no xp for the player who did NOT kill him -PR-
+        is_boss_killed(m, p, q[0]) # but if it was a Boss?
+        m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
+        if m["v"][q[9]][q[8]][0] == q[0]:
+            m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+
+def move_enemie(m, p, q, it, ap, plus_it):
+    t_mmap = [[m["m"][q[9]-1][q[8]-1], q[9]-1, q[8]-1], [m["m"][q[9]-1][q[8]], q[9]-1, q[8]], [m["m"][q[9]-1][q[8]+1], q[9]-1, q[8]+1], [m["m"][q[9]][q[8]-1], q[9], q[8]-1], [m["m"][q[9]][q[8]+1], q[9], q[8]+1], [m["m"][q[9]+1][q[8]-1], q[9]+1, q[8]-1], [m["m"][q[9]+1][q[8]], q[9]+1, q[8]], [m["m"][q[9]+1][q[8]+1], q[9]+1, q[8]+1],
+              ]
+    p_min = m["m"][q[9]][q[8]]
+    direction = [m["m"][q[9]][q[8]], q[9], q[8]] # stay -PR-
     while t_mmap != []:
         i = t_mmap.pop(randint(0, len(t_mmap)-1))
         if i[0] >= 0 and i[0] <= p_min:
             p_min = i[0]
             direction = i
-    m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-    #if m["r"][q["y"]][q["x"]] == "":
-    #    m["r"][q["y"]][q["x"]] = " "
-    #    print("CUT OFF WORNING, I DON'T KNOW WHY")
-    if m["v"][q["y"]][q["x"]][0] != " ": # if viewmap is unseen -PR-
-        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+    m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
+    #if m["r"][q[9]][q[8]] == "":
+    #    m["r"][q[9]][q[8]] = " "
+    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is unseen -PR-
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
-            q["y"], q["x"] = direction[1:]
+            q[9], q[8] = direction[1:]
         else:
-            q["hp"] = 0
-    m["r"][q["y"]][q["x"]] = q["head"]+zero3(it+plus_it)+m["r"][q["y"]][q["x"]]
-    if m["r"][q["y"]][q["x"]][-1] != " ":
-        m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-    if q["hp"] == 0: # no xp for the player who did NOT kill him -PR-
-        is_boss_killed(m, p, q["head"]) # but It was a Boss?
-        m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-        if m["v"][q["y"]][q["x"]][0] == q["head"]:
-            m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
+            q[1] = 0
+    m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
+    if m["r"][q[9]][q[8]][-1] != " ":
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    if q[1] == 0: # no xp for the player who did NOT kill him -PR-
+        is_boss_killed(m, p, q[0]) # but if it was a Boss?
+        m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
+        if m["v"][q[9]][q[8]][0] == q[0]:
+            m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
 # enemies attacks player
 
@@ -196,7 +258,7 @@ def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
     p = shot(rmap, p, d, tlist, (hear_range if hear_range <= 7 else 7))
     return p == e
 
-def enemies_class_attack(p,head, value):
+def enemies_class_attack(p, head, value):
     if randint(0, 99) < p["armor_acc"]:
         value += randint(-value//2, value//2)-p["armor"]
         if value < 0:
@@ -225,24 +287,22 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
     attacks = (p["bow_attacks"] if ranged else p["attack_attacks"])
-    if q["time_sleep"] != 0:
+    if q[4] != 0:
         at_value = value * attacks
         acc = 100
-        q["time_sleep"] = 0
+        q[4] = 0
     for _ in range(attacks):
         at_value += (randint(0, 99) < acc) * (value + randint(-value//2, value//2))
     if at_value != 0:
-        q["hp"] -= at_value
-        q["time_sleep"], q["hear_range"] = 0, q["hear_range"] if q["hear_range"] > 7 else q["hear_range"] # fast wake up -PR- and alarmed
-        if ranged:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(at_value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
-        else:
-            p["echo"] = translate("YOU HIT IT") +" |"+str(at_value)+"|"+(str(q["hp"]) if q["hp"] > 0 else "die")+"|"
-        if q["hp"] <= 0:
-            m["r"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]][4:]
-            if m["v"][q["y"]][q["x"]][0] == q["head"]:
-                m["v"][q["y"]][q["x"]] = m["r"][q["y"]][q["x"]]
-            p["xp"] += q["xp"]
-            is_boss_killed(m, p, q["head"])
+        q[1] -= at_value
+        q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
+        p["echo"] = translate("YOU HIT A")+" "+translate(q[10])
+        if q[1] <= 0:
+            m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
+            if m["v"][q[9]][q[8]][0] == q[0]:
+                m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+            p["xp"] += q[3]
+            p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
+            is_boss_killed(m, p, q[0])
     else:
-        p["echo"] = translate("YOU MISS IT")
+        p["echo"] = translate("YOU MISS A")+" "+translate(q[10])

@@ -22,16 +22,16 @@ def mainloop(w):
     test_room(m, [p["y"], p["x"]])
 
     while p["hp"] > 0:
+        c.flushinp() # I want no flush -PR-
         w.clear()
         output(w, c, m, p)
         w.addstr(23, 0, p["echo"]+":")
         w.refresh()
         p["wasattackby"] = ""
-        c.flushinp() # I want no flush -PR-
         gi = get_in(w)
         p["dy"], p["dx"], t1 = player_move(gi)
         if t1:
-            move, p["echo"], p["moved"] = terrain(w, c, m, p, [p["dy"] + p["y"], p["dx"] + p["x"]], (True if p["dy"] == 0 and p["dx"] == 0 else False))
+            move, p["echo"], p["moved"] = terrain(w, c, m, p, [p["dy"] + p["y"], p["dx"] + p["x"]], (p["dy"] == 0 and p["dx"] == 0))
             if move:
                 p["y"], p["x"] = p["dy"] + p["y"], p["dx"] + p["x"]
         else:
@@ -49,8 +49,9 @@ def mainloop(w):
                     p["torch"] = False
             if not p["starving"]:
                 p["fullness"] -= p["normal_level"]
-                if p["fullness"] < 0:
+                if p["fullness"] < 1:
                     p["starving"] = True
+                    c.beep() # alarm the player -PR-
             while p["xp"] >= p["needxp"]:
                 p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["lw"] += 1

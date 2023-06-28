@@ -1,5 +1,5 @@
 lang_PL = {
-    "A MONSTER": "POTWORA",
+    #"A MONSTER": "POTWORA",
     "AND IT WILL GIVE YOU LIGHT FOR": "I BĘDZIE TOBIE DAWAĆ ŚWIATŁO PRZEZ",
     "ARROW": "STRZAŁĘ",
     "ARROW1": "STRZAŁA",
@@ -43,16 +43,16 @@ lang_PL = {
     "YOU CAN'T GO DOWN HERE": "NIE MOŻESZ TUTAJ ZEJŚĆ NA DÓŁ",
     "YOU CAN'T GO UP HERE": "NIE MOŻESZ TUTAJ WEJŚĆ DO GÓRY",
     "YOU DRANK A": "WYPIŁEŚ",
-    "YOU HIT": "ZRANIŁEŚ",
-    "YOU KILL": "ZABIŁEŚ",
+    "YOU HIT A": "ZRANIŁEŚ",
+    "YOU KILL A": "ZABIŁEŚ",
     "YOU LIGHT A": "ZAPALIŁEŚ",
-    "YOU MISS": "SPUDŁOWAŁEŚ",
+    "YOU MISS A": "SPUDŁOWAŁEŚ",
     "YOU WENT DOWN": "ZSZEDŁEŚ W DÓŁ",
     "YOU WENT UP": "WSZEDŁEŚ DO GÓRY",
     }
 
 def translate(ang, number = 0):
-    lang = "PL"
+    lang = "none"
     match lang:
         case "PL":
             return(l_pl(ang, number))
