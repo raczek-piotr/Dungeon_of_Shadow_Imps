@@ -23,7 +23,7 @@ enemies_likes_light = [
     ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
     ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
     ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
-    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
+    ["F",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 14],
     ]
 enemies_half_light = [
     ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
@@ -34,7 +34,9 @@ enemies_half_light = [
     ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,12,"SNAKE", 6],
     ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
     ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
-    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["F",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 14],
 
     #["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6],
     #["C",5,8,12,4,4,"drop","max_lw_to_give_xp",13,20,"COBRA", 6],
@@ -178,38 +180,37 @@ def enemies_class_update(m, p, yx):
 
     for it in range(len(a)):
         q = a[it]
-        updete_enemie(m, p, q, it, plus_it = 0)
+        updete_enemie(m, p, q, it, 500)
 
 def updete_enemie(m, p, q, it, plus_it = 0):
     if q[0]+zero3(it+plus_it) == m["r"][q[9]][q[8]][:4]: # could be updated -PR-
-        if q[4] == 0: # is not sleeping -PR-
-            #if flag(q[11], 4) and randint(0,1): # flag 4? -PR-
-            #    randmove()
-            #    return#break#continue
-            if m["m"][q[9]][q[8]] < q[5]:
+        if q[4] == 0: # wake up -PR-
+            if flag(q[11], 4) and randint(0,1): # flag 4? -PR-
+                randmove(m, p, q, it, plus_it)
+                return#break#continue
+            if m["m"][q[9]][q[8]] < q[5] and m["m"][q[9]][q[8]] >= 0: # could hear?
                 if m["m"][q[9]][q[8]] == 0:
                     if enemies_class_shot(m["r"], [q[9], q[8]], [p["y"], p["x"]], q[5]):
-                        enemies_class_attack(p, q[0], q[2])
+                        enemies_class_attack(p, q[0], q[2]) #, flag(q[11], 2) -PR-
                 else:
-                    move_enemie(m, p, q, it, flag(q[11], 2), plus_it)
-            #elif flag(q[11], 8): # not sleeping and can't hear the player
-            #    randmove()
-        elif m["m"][q[9]][q[8]] < q[5]: # is sleeping, but would it wake up? -PR-
+                    move_enemie(m, p, q, it, plus_it)
+            else:# flag(q[11], 8): # not sleeping and can't hear the player, flag 8 -PR-
+                randmove(m, p, q, it, plus_it)
+        elif m["m"][q[9]][q[8]] < q[5] and m["m"][q[9]][q[8]] >= 0: # is sleeping, but would it wake up? -PR-
             q[4] -= 1
+    return # formal -PR-
 
-def randmove(m, p, q, it):
-    direction = [randint(-1,1), randint(-1,1)]
-    if m["m"][q[9]+direction[0]][q[8]+direction[1]] in tlist:
-        q[9], q[8] = q[9]+direction[0], q[8]+direction[1]
+def randmove(m, p, q, it, plus_it):
+    direction = [randint(-1,1)+q[9], randint(-1,1)+q[8]]
 
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
     #if m["r"][q[9]][q[8]] == "":
     #    m["r"][q[9]][q[8]] = " "
-    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is unseen -PR-
+    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is seen -PR-
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-    if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
-        if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
-            q[9], q[8] = direction[1:]
+    if m["r"][direction[0]][direction[1]][0] in tlist: # move an enemie? -PR-
+        if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
+            q[9], q[8] = direction
         else:
             q[1] = 0
     m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
@@ -221,7 +222,7 @@ def randmove(m, p, q, it):
         if m["v"][q[9]][q[8]][0] == q[0]:
             m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
-def move_enemie(m, p, q, it, ap, plus_it):
+def move_enemie(m, p, q, it, plus_it):
     t_mmap = [[m["m"][q[9]-1][q[8]-1], q[9]-1, q[8]-1], [m["m"][q[9]-1][q[8]], q[9]-1, q[8]], [m["m"][q[9]-1][q[8]+1], q[9]-1, q[8]+1], [m["m"][q[9]][q[8]-1], q[9], q[8]-1], [m["m"][q[9]][q[8]+1], q[9], q[8]+1], [m["m"][q[9]+1][q[8]-1], q[9]+1, q[8]-1], [m["m"][q[9]+1][q[8]], q[9]+1, q[8]], [m["m"][q[9]+1][q[8]+1], q[9]+1, q[8]+1],
               ]
     p_min = m["m"][q[9]][q[8]]

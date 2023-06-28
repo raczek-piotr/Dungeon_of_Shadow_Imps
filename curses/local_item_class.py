@@ -14,7 +14,7 @@ item = [
 ["-", {'item': 'ARROW', 'type': '', 'values': [5, 'ARROWS'], 'cost': 1, 'grouping': True}], #8
 ["!", {'item': 'POTION OF HEALING', 'type': '!', 'values': [1, 'POTIONS OF HEALING'], 'cost': 200, 'grouping': True}], #9
 ["?", {'item': 'SCROLL OF TELEPORT', 'type': '?', 'values': [1, 'SCROLLS OF TELEPORT'], 'cost': 40, 'grouping': True}], #10
-["?", {'item': 'SCROLL OF IDENTIFICATION', 'type': '?', 'values': [1, 'SCROLLS OF IDENTIFICATION'], 'cost': 50, 'grouping': True}], #11
+["?", {'item': 'IDENTIFICATION', 'type': '?', 'values': [1, 'IDENTIFICATION'], 'cost': 50, 'grouping': True}], #11
 ["?", {'item': 'MAGIC MAPPING', 'type': '?', 'values': [1, 'MAGIC MAPPING'], 'cost': 40, 'grouping': True}], #12
 ["?", {'item': 'GAIN EXPERIENCE', 'type': '?', 'values': [1, 'GAIN EXPERIENCE'], 'cost': 2500, 'grouping': True}], #13
 ["]", {'item': 'LONG KNIFE [', 'type': ']', 'values': [3, 60, [2, 5], 1, 1], 'cost': 324, 'grouping': False}], #14
@@ -78,12 +78,7 @@ def disable_disabled_weapons(s, d):
         if item[i][0] in {"]",")"}:
             t = item[i][1]["values"][2]
             if t[0] > s+3 or t[1] > d+3:
-                item[i] = [
-    ["-", {"item": "ARROW", "type": "", "values": [2, "ARROWS"], "cost": 1, "grouping": True}],
-    ["-", {"item": "ARROW", "type": "", "values": [3, "ARROWS"], "cost": 1, "grouping": True}],
-    ["-", {"item": "ARROW", "type": "", "values": [4, "ARROWS"], "cost": 1, "grouping": True}],
-    ["-", {"item": "ARROW", "type": "", "values": [5, "ARROWS"], "cost": 1, "grouping": True}]
-    ][i%4]
+                item[i] = item[(i%4+5)]
 
 def randitem(hm): # how many -PR-
     global item

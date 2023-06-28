@@ -6,17 +6,10 @@ from local_output import output, item
 from local_translator import translate
 from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
-from local_equip import get_equip_values
+from local_equip import get_equip_values, update_BP_mask#, merge, f_BP_mask # not needed -PR-
 
 
 def sort(p): p["BP"].sort(reverse=True, key = lambda key: key["item"][-2::-1])
-
-def update_BP_mask(p): # is local_terrain too -PR-
-    global BP_mask
-    BP_mask = []
-    for i in p["BP"]:
-        if i["grouping"]:
-            BP_mask.append(i["item"])
 
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
@@ -123,27 +116,22 @@ def item_menager(w, c, m, p):
             return[translate("YOU READ A") + " " + translate("GAIN EXPERIENCE"), True]
 
         case _:
-            no = True
-            if p["BP"][it]["values"][2][0] <= p["strength"] and p["BP"][it]["values"][2][1] <= p["dexterity"]:
-                match t["type"]:
-                    case "]":
-                        t = p["BP"].pop(it)
-                        p["BP"].append(p["e_attack"])
-                        p["e_attack"] = t
-                        no = False
-                    case "}":
-                        t = p["BP"].pop(it)
-                        p["BP"].append(p["e_hand"])
-                        p["e_hand"] = t
-                        no = False
-                    case ")":
-                        t = p["BP"].pop(it)
-                        p["BP"].append(p["e_armor"])
-                        p["e_armor"] = t
-                        no = False
-
-            if no:
-                return[translate("YOU CAN'T USE THAT"), False]
+            match t["type"]:
+                case "]":
+                    t = p["BP"].pop(it)
+                    p["BP"].append(p["e_attack"])
+                    p["e_attack"] = t
+                case "}":
+                    t = p["BP"].pop(it)
+                    p["BP"].append(p["e_hand"])
+                    p["e_hand"] = t
+                case ")":
+                    t = p["BP"].pop(it)
+                    p["BP"].append(p["e_armor"])
+                    p["e_armor"] = t
+                case _:
+                    return[translate("YOU CAN'T USE THAT"), False]
+            update_BP_mask(p)
             get_equip_values(p)
             return[translate("YOU TAKE A") + " " + translate(t["item"][:-2]), True]
     return[translate("WRONG SLOT!"), False]

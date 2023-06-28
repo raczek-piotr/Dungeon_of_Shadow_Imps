@@ -17,10 +17,7 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                 i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
                 if i[0] > 0 or i[1] > 0:
-                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
-                    # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
-                else:
-                    r += translate("YOU CAN EQUIP IT")
+                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "}":
             r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])+" "+str(i["values"][1])+"% "
@@ -28,10 +25,7 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                 i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
                 if i[0] > 0 or i[1] > 0:
-                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
-                    # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
-                else:
-                    r += translate("YOU CAN EQUIP IT")
+                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case ")":
             r = translate(i["item"][:-2]) + " (" + str(i["values"][0])+"x"+str(i["values"][4]) + ") "
