@@ -2,7 +2,6 @@ from random import randint, choice
 
 from local_scripts import zero3
 from local_enemies_class import enemies_class_add
-from local_regular_map import regular_map_init
 from local_boss_map import boss_map_init
 
 

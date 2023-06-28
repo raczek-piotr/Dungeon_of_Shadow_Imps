@@ -134,11 +134,11 @@ def start_data():
         "specials": "", # not used now -PR-
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
-        "maxhp": 10,
-        "hp": 10,
+        "maxhp": 20,
+        "hp": 20,
         "hpchange": 5,
-        "hpcounter": 5,
-        "needxp": 100,
+        "hpcounter": 10,
+        "needxp": 20,
         "xp": 0,
         "lw": 1,
         "depth": 0,
@@ -170,15 +170,12 @@ def start_data():
         "BP": [
             get_item(2),
             get_item(3),
-            #{"item": "POTION OF HEALING", "type": "!", "values": [1, "POTIONS OF HEALING"], "cost": 200, "grouping": True},
-            #{"item": "SCROLL OF TELEPORT", "type": "?", "values": [5, "SCROLLS OF TELEPORT"], "cost": 40, "grouping": True},
-            #{"item": "MAGIC MAPPING", "type": "?", "values": [1, "MAGIC MAPPING"], "cost": 40, "grouping": True},
-                ],
+            ],
         "time": 0,
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],[100,3],["?",3],["?",3],["?",3],["?",3],["?",3]],
+        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],[["surface"],3]],
                 ]
         }
     return m, p, path

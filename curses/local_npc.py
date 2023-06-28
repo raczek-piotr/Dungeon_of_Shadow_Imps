@@ -2,7 +2,7 @@ from random import randint, choice
 from local_translator import translate
 from local_output import item
 from local_item_class import get_item
-from local_equip import get_equip_values, update_BP_mask, merge
+from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
 
 
 traders = [{2,3,23,24},
@@ -31,8 +31,7 @@ def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -P
     while True:
         if q in slots:
             i = ilist[int(q)]
-            if (len(p["BP"]) < 6# or i["item"] in BP_mask # to repair -PR-
-                and i["grouping"]) and p["gold"] >= i["cost"]:
+            if (len(p["BP"]) < 6 or i["item"] in BP_mask and i["grouping"]) and p["gold"] >= i["cost"]:
                 p["gold"] -= i["cost"]
                 p["BP"].append(i)
                 merge(p)

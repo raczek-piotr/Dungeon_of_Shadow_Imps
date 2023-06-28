@@ -26,6 +26,11 @@ def get_equip_values(p):
     for i in to_delate[::-1]:
         p["BP"].pop(i)
 
+BP_mask = []
+
+def f_BP_mask():
+    return BP_mask
+
 def update_BP_mask(p): # is local_input
     global BP_mask
     BP_mask = []

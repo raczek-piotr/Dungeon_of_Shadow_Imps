@@ -12,50 +12,46 @@ def flag(f, n):
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
 enemies_likes_light = [
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,4,"MICE", 0],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,4,"MICE", 0],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,4,"FLY", 2],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,4,"FLY", 2],
-
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",3,12,"CENTIPEDE", 0],
-
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-
-    ["a",8,2,8,1,7,"drop","max_lw_to_give_xp",8,20,"ANT (the acid shoter)", 3], # warning! to depth 8 -PR-
-
-    ["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6], # warning! from depth 13 -PR-
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
     ]
 enemies_half_light = [
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,4,"RAT", 8],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,4,"MICE", 0],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,4,"FLY", 2],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
+    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,12,"SNAKE", 6],
+    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
+    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 3],
 
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",3,12,"CENTIPEDE", 0],
-
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-
-    ["a",8,2,8,1,7,"drop","max_lw_to_give_xp",8,20,"ANT (the acid shoter)", 3], # warning! to depth 8 -PR-
-
-    ["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6], # warning! from depth 13 -PR-
-
-    #["C",5,8,12,4,4,"drop","max_lw_to_give_xp",13,20,"COBRA", 6], # warning! from depth 13 -PR-
-    #["M",5,10,15,4,4,"drop","max_lw_to_give_xp",13,20,"BLACK MAMBA", 6], # warning! from depth 13 -PR-
+    #["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6],
+    #["C",5,8,12,4,4,"drop","max_lw_to_give_xp",13,20,"COBRA", 6],
+    #["M",5,10,15,4,4,"drop","max_lw_to_give_xp",13,20,"BLACK MAMBA", 6],
     ]
 enemies_not_light = [
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,4,"RAT", 8],
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,4,"RAT", 8],
-
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",3,12,"CENTIPEDE", 0],
-
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",5,12,"SNAKE", 6],
-
-    ["a",8,2,8,1,7,"drop","max_lw_to_give_xp",8,20,"ANT (the acid shoter)", 3], # warning! to depth 8 -PR-
-
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",11,20,"BAT", 8], # warning! from depth 11 -PR-
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",11,20,"BAT", 8], # warning! from depth 11 -PR-
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],# more -PR-
+    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",9,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
+    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",17,20,"BAT", 8], # warning! from depth 11 -PR-
     ]
 
 all_enemies = [enemies_likes_light, enemies_half_light, enemies_not_light, enemies_half_light]
@@ -76,7 +72,7 @@ def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
     if elist == []:
         for e in enemies:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(randint(1,4)):
+                for _ in range(2):#randint(2,2)):
                     elist.append(e)
 
     e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-

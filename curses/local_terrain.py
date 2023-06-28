@@ -1,7 +1,7 @@
 from local_translator import translate
 from local_item_class import item_class_get
 from local_enemies_class import enemies_class_is_attacked
-from local_equip import get_equip_values, update_BP_mask, merge
+from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
 from local_output import item # for f_weapons -PR-
 from local_npc import npc
 
@@ -46,7 +46,7 @@ def f_items(m, p, npos, stay):
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6 or i["item"] in BP_mask:
+        if len(p["BP"]) < 6 or i["item"] in f_BP_mask():
             p["BP"].append(i)
             merge(p)
             update_BP_mask(p)
@@ -66,7 +66,7 @@ def f_weapons(m, p, npos, stay):
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6:
+        if len(p["BP"]) < 6:# or i["item"] in f_BP_mask(): grouping = False -PR-
             p["BP"].append(i)
             update_BP_mask(p)
             get_equip_values(p)
