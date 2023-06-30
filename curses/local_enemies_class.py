@@ -16,7 +16,7 @@ e = [
     ["m",3,2,2,1,7,"drop",8,1,8,"MICE", 0], #1
     ["f",1,2,1,1,7,"drop",8,1,8,"FLY", 2], #2
     ["c",7,3,4,1,7,"drop",16,5,16,"CENTIPEDE", 0], #3
-    ["w",4,3,4,1,7,"drop",16,5,12,"WORM", 0], #4
+    ["w",4,3,4,1,7,"drop",12,5,12,"WORM", 0], #4
     ["S",8,5,6,4,4,"drop",16,9,16,"SNAKE", 6], #5
     ["a",4,2,4,1,7,"drop",16,9,16,"ANT (the acid shoter)", 3], #6
     ["Y",9,4,12,1,7,"drop",20,13,20,"YEEK", 8], #7
@@ -282,7 +282,7 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False):
             m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
             if m["v"][q[9]][q[8]][0] == q[0]:
                 m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-            p["xp"] += q[3]
+            p["xp"] += q[3] * (q[7] >= p["lw"])
             p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
             is_boss_killed(m, p, q[0])
     else:

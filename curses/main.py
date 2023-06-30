@@ -66,6 +66,7 @@ def mainloop(w):
                 hpcounter -= p["hpcounter"]
                 if p["starving"]:
                     p["hp"] -= 1
+                    c.beep() # alarm the player -PR-
                 else:
                     p["hp"] += 1
             if p["hp"] > p["maxhp"]:
