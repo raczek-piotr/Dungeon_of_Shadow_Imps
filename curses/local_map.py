@@ -175,7 +175,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     m["r"][j[0]][j[1]] = k+" "
                 else:
                     m["r"][j[0]][j[1]] = "_"+k+"."
-            pokoje[0] = pokoje[-1] # for good place player to start -PR-
+            pokoje[0],pokoje[-1] = pokoje[-1],pokoje[0] # for good place player to start -PR-
         case 2:
             locate_a_room(m, pokoje, 25, 10, 3, 3, 1, True)
             locate_a_room(m, pokoje, 15, 0, 1, 1, 0)
