@@ -11,50 +11,26 @@ def flag(f, n):
 # 2 - poison (armor penetration)
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
-enemies_likes_light = [
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
-    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
-    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
-    ["F",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 14],
+e = [
+    ["r",4,2,3,1,7,"drop",12,1,12,"RAT", 8], #0
+    ["m",3,2,2,1,7,"drop",8,1,8,"MICE", 0], #1
+    ["f",1,2,1,1,7,"drop",8,1,8,"FLY", 2], #2
+    ["c",7,3,4,1,7,"drop",16,5,16,"CENTIPEDE", 0], #3
+    ["w",4,3,4,1,7,"drop",16,5,12,"WORM", 0], #4
+    ["S",8,5,6,4,4,"drop",16,9,16,"SNAKE", 6], #5
+    ["a",4,2,4,1,7,"drop",16,9,16,"ANT (the acid shoter)", 3], #6
+    ["Y",9,4,12,1,7,"drop",20,13,20,"YEEK", 8], #7
+    ["b",11,3,6,0,7,"drop",20,13,20,"BAT", 12], #8
+    ["J",9,5,18,1,7,"drop",20,17,20,"JELLY-THING", 0], #9
+    ["F",3,10,12,1,7,10,20,17,20,"POISON DART FROG", 2], #10
     ]
-enemies_half_light = [
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
-    ["m",3,2,2,1,7,"drop","max_lw_to_give_xp",1,8,"MICE", 0],
-    ["f",2,1,1,1,7,"drop","max_lw_to_give_xp",1,12,"FLY", 2],
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,12,"SNAKE", 6],
-    ["S",5,4,6,4,4,"drop","max_lw_to_give_xp",9,20,"SNAKE", 6],
-    ["a",4,2,4,1,7,"drop","max_lw_to_give_xp",13,20,"ANT (the acid shoter)", 3],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
-    ["F",4,2,4,1,7,"drop","max_lw_to_give_xp",17,20,"POISON DART FROG", 14],
-
+enemies_likes_light = [e[1],e[1],e[1],e[1],e[1],e[2],e[2],e[3],e[3],e[4],e[5],e[5],e[5],e[6],e[6],e[6],e[7],e[7],e[7],e[9],e[9],e[10]]
+enemies_half_light = [e[0],e[0],e[1],e[1],e[2],e[2],e[3],e[3],e[4],e[5],e[5],e[6],e[6],e[6],e[7],e[7],e[7],e[8],e[9],e[10],e[10]]
     #["R",5,6,10,4,5,"drop","max_lw_to_give_xp",11,20,"RATTLESNAKE", 6],
     #["C",5,8,12,4,4,"drop","max_lw_to_give_xp",13,20,"COBRA", 6],
     #["M",5,10,15,4,4,"drop","max_lw_to_give_xp",13,20,"BLACK MAMBA", 6],
-    ]
-enemies_not_light = [
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
-    ["r",4,2,3,1,7,"drop","max_lw_to_give_xp",1,8,"RAT", 8],
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",5,12,"CENTIPEDE", 0],
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],# more -PR-
-    ["c",6,2,4,1,7,"drop","max_lw_to_give_xp",9,12,"CENTIPEDE", 0],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",9,20,"BAT", 8],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",13,20,"BAT", 8],
-    ["b",7,2,5,0,7,"drop","max_lw_to_give_xp",17,20,"BAT", 8], # warning! from depth 11 -PR-
-    ]
+enemies_not_light = [e[0],e[0],e[0],e[0],e[3],e[3],e[4],e[5],e[5],e[5],e[7],e[8],e[8],e[8],e[8],e[8],e[8],e[10],e[10],e[10]]
+del e # e is used in functions leater -PR-
 
 all_enemies = [enemies_likes_light, enemies_half_light, enemies_not_light, enemies_half_light]
 
@@ -191,7 +167,7 @@ def updete_enemie(m, p, q, it, plus_it = 0):
             if m["m"][q[9]][q[8]] < q[5] and m["m"][q[9]][q[8]] >= 0: # could hear?
                 if m["m"][q[9]][q[8]] == 0:
                     if enemies_class_shot(m["r"], [q[9], q[8]], [p["y"], p["x"]], q[5]):
-                        enemies_class_attack(p, q[0], q[2]) #, flag(q[11], 2) -PR-
+                        enemies_class_attack(p, q[0], q[2], flag(q[11], 2))
                 else:
                     move_enemie(m, p, q, it, plus_it)
             else:# flag(q[11], 8): # not sleeping and can't hear the player, flag 8 -PR-
@@ -202,6 +178,8 @@ def updete_enemie(m, p, q, it, plus_it = 0):
 
 def randmove(m, p, q, it, plus_it):
     direction = [randint(-1,1)+q[9], randint(-1,1)+q[8]]
+    if p["x"] == direction[0] and p["y"] == direction[1]:
+        return # do not move -PR-
 
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
     #if m["r"][q[9]][q[8]] == "":
@@ -259,11 +237,13 @@ def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
     p = shot(rmap, p, d, tlist, (hear_range if hear_range <= 7 else 7))
     return p == e
 
-def enemies_class_attack(p, head, value):
+def enemies_class_attack(p, head, value, ap):
     if randint(0, 99) < p["armor_acc"]:
-        value += randint(-value//2, value//2)-p["armor"]
-        if value < 0:
-            value = 0
+        value += randint(-value//2, value//2)
+        if not ap: # standard attack -PR-
+            value -= p["armor"]
+            if value < 0:
+                value = 0
         p["hp"] -= value
         p["wasattackby"] += head
 

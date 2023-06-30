@@ -5,7 +5,7 @@ from local_item_class import get_item
 from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
 
 
-traders = [{2,3,23,24},
+traders = [{2,3,23,24,{49,51}.pop()},
            {14,35,23,38},
            {9,10,11,12}]
 
@@ -31,7 +31,7 @@ def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -P
     while True:
         if q in slots:
             i = ilist[int(q)]
-            if (len(p["BP"]) < 6 or i["item"] in BP_mask and i["grouping"]) and p["gold"] >= i["cost"]:
+            if (len(p["BP"]) < 6 or i["item"] in f_BP_mask() and i["grouping"]) and p["gold"] >= i["cost"]:
                 p["gold"] -= i["cost"]
                 p["BP"].append(i)
                 merge(p)

@@ -84,9 +84,9 @@ def character(w, c, p):
                 pass
     get_equip_values(p)
     w.clear()
-    w.addstr(5, 5, "The angel of the LORD came back a second time and touched you and said:", c.color_pair(5))
+    w.addstr(5, 5, "The angel of the LORD came back a second time and touched YOU and said:", c.color_pair(5))
     w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
-    w.addstr(23, 67, "1 KINGS 19:7", c.color_pair(5))
+    w.addstr(23, 65, "~ 1 KINGS 19:7", c.color_pair(5))
     w.getkey()
     disable_disabled_weapons(p["strength"], p["dexterity"])
 
@@ -100,7 +100,7 @@ def prepare_map(m, p):
         i = randint(-1, 1)
         if p["type"] + i in {0,1,2}:
             p["type"] += i
-    p["type"] += p["shift_type_of"] # +"shift" -PR-
+    #p["type"] += p["shift_type_of"] # +"shift" -PR-
     enemies_class_clear()
     ilist, xp = [], 0
     if type(h[0]) == int:
@@ -116,9 +116,10 @@ def prepare_map(m, p):
             #for i in range(randint(0, 1)):
             #    ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
-    p["type"] -= p["shift_type_of"] # -"shift" -PR-
+    #p["type"] -= p["shift_type_of"] # -"shift" -PR-
 
 def start_data():
+    #blank = {"item": "", "type": "", "values": [0, ""], "cost": 0, "grouping": True, "ident": True}
     path = "data/"
     m = {
         "r": [],
@@ -136,7 +137,7 @@ def start_data():
         "shift_type_of": 0,#at the depth -PR-
         "maxhp": 20,
         "hp": 20,
-        "hpchange": 5,
+        "hpchange": 1,
         "hpcounter": 10,
         "needxp": 20,
         "xp": 0,
@@ -155,7 +156,8 @@ def start_data():
         "bow_attacks": 1,
         "e_attack": get_item(0),
         "e_hand": get_item(1),
-        "e_armor": {"item": "CLOTHES (", "type": ")", "values": [0, 50, [2,2], 1, 1], "cost": 10, "grouping": False},
+        "e_armor": get_item(48),#blank,#
+        "e_shield": get_item(50),#blank,#
         "y": 0,
         "x": 0,
         "dy": 0, # direction y -PR-
@@ -170,12 +172,13 @@ def start_data():
         "BP": [
             get_item(2),
             get_item(3),
+            #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
             ],
         "time": 0,
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],[["surface"],3]],
+        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["surface",3]],
                 ]
         }
     return m, p, path

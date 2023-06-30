@@ -16,10 +16,11 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
-    w.addstr(11, 0,"Equipted:", c.color_pair(4))
-    w.addstr(12, 2, item(p["e_attack"], 9, p), c.color_pair(5))
-    w.addstr(13, 2, item(p["e_hand"], 9, p), c.color_pair(5))
-    w.addstr(14, 2, item(p["e_armor"], 9, p), c.color_pair(5))
+    w.addstr(10, 0,"Equipted:", c.color_pair(4))
+    w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
+    w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
+    w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
+    w.addstr(14, 2, item(p["e_shield"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh() # ? -PR-
     t1 = ''
@@ -40,16 +41,16 @@ def item_menager(w, c, m, p):
     match t["item"]:
 
         case "TORCH":
-            p["torchtime"] = 3000
+            p["torchtime"] = 2000
             p["torch"] = True
             t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 3000 " + translate("TURNS"), True]
+            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 2000 " + translate("TURNS"), True]
 
         case "BREAD":
-            p["fullness"] += 5000
+            p["fullness"] += 3000
             if p["fullness"] > 10000:
                 p["fullness"] = 10000
             p["starving"] = False
@@ -60,7 +61,7 @@ def item_menager(w, c, m, p):
             return[translate("YOU ATE A") + " " + translate("BREAD"), True]
 
         case "CORPSE":
-            p["fullness"] += 200
+            p["fullness"] += 500
             if p["fullness"] > 10000:
                 p["fullness"] = 10000
             p["starving"] = False
@@ -76,15 +77,15 @@ def item_menager(w, c, m, p):
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU DRANK A") + " " + translate("POTION OF HEALING"), True]
+            return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
 
-        case "POTION OF POISON":
-            p["hp"] -= p["mhp"]//2
+        case "POISON":
+            p["hp"] -= p["maxhp"]//2
             t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU DRANK A") + " " + translate("POTION OF POISON"), True]
+            return[translate("YOU DRANK") + " " + translate("POISON"), True]
 
         case "SCROLL OF TELEPORT":
             mx, my = m["sx"]-2, m["sy"]-2
@@ -127,8 +128,8 @@ def item_menager(w, c, m, p):
                     p["e_hand"] = t
                 case ")":
                     t = p["BP"].pop(it)
-                    p["BP"].append(p["e_armor"])
-                    p["e_armor"] = t
+                    p["BP"].append(p[t["values"][1]])
+                    p[t["values"][1]] = t
                 case _:
                     return[translate("YOU CAN'T USE THAT"), False]
             update_BP_mask(p)

@@ -89,7 +89,7 @@ def map_init(m, p, items, type_of = 0, stairs = 3):
 
 def map_init_int(m, p, items, type_of, stairs):
     pokoje = []
-    m["sy"], m["sx"] = 32, 32
+    m["sy"], m["sx"] = 35, 35
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["o"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
@@ -99,7 +99,7 @@ def map_init_int(m, p, items, type_of, stairs):
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
             locate_a_room(m, pokoje, 5, 3, 5, 3, 1, False)
             ran = len(pokoje) #first rooms with no light
-            locate_a_room(m, pokoje, 10, 5, 3, 3, 1)
+            locate_a_room(m, pokoje, 25, 10, 3, 3, 1)
             l_pokoje = len(pokoje)
             for i in range(ran):
                 j = pokoje[i]
@@ -145,6 +145,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 Connect(m, middle.copy(), [m["sx"]//2, m["sy"]//2])
                 Connect(m, p1, middle.copy(), True)
                 pokojeok.append(pokojen.pop(n_minodl))
+            door_list = [":.", ":.", "+", "_,"]
             for i in range(ran):
                 j = pokoje[i]
                 for y in range(j[0]-1, j[0]+j[2]+1):
@@ -152,7 +153,7 @@ def map_init_int(m, p, items, type_of, stairs):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
                         elif m["r"][y][x] == "+":
-                            m["r"][y][x] = ":."
+                            m["r"][y][x] = choice(door_list)
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
                 m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
@@ -167,9 +168,9 @@ def map_init_int(m, p, items, type_of, stairs):
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
         case 2:
-            locate_a_room(m, pokoje, 3, 3, 1, 1, 1)
+            locate_a_room(m, pokoje, 5, 3, 1, 1, 1)
             #ran = len(pokoje) #len(special_rooms) (<>@) -PR-
-            locate_a_room(m, pokoje, 20, 10, 3, 3, 1, True)
+            locate_a_room(m, pokoje, 25, 10, 3, 3, 1, True)
             for i in range(len(pokoje)):
                 j = pokoje[i]
                 for y in range(j[0], j[0]+j[2]):

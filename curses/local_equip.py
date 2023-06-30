@@ -5,35 +5,49 @@ def get_equip_values(p):
         p["attack_attacks"] = p["e_attack"]["values"][4]
         tv = p["e_attack"]["values"][2][0] - p["strength"]
         ta = p["e_attack"]["values"][2][1] - p["dexterity"]
-        if tv >= 0:
-            p["attack"] = (2*p["e_attack"]["values"][0])//(2+tv)
-        if ta >= 0:
-            p["attack_acc"] = (2*p["e_attack"]["values"][1])//(2+ta)
+        if tv > 0:
+            p["attack"] = (2*p["attack"])//(2+tv)
+        if ta > 0:
+            p["attack_acc"] = (2*p["attack_acc"])//(2+ta)
     else:
         p["attack"] = 1
+
     if p["e_hand"]["type"] == "}":
         p["bow"] = p["e_hand"]["values"][0]
         p["bow_acc"] = p["e_hand"]["values"][1]
         p["bow_attacks"] = p["e_hand"]["values"][4]
         tv = p["e_hand"]["values"][2][0] - p["strength"]
         ta = p["e_hand"]["values"][2][1] - p["dexterity"]
-        if tv >= 0:
-            p["bow"] = (2*p["e_hand"]["values"][0])//(2+tv)
-        if ta >= 0:
-            p["bow_acc"] = (2*p["e_hand"]["values"][1])//(2+ta)
+        if tv > 0:
+            p["bow"] //= (1+tv)
+        if ta > 0:
+            p["bow_acc"] //= (1+ta)
     else:
         p["bow"] = 1
+
     if p["e_armor"]["type"] == ")":
         p["armor"] = p["e_armor"]["values"][0]
-        p["armor_acc"] = p["e_armor"]["values"][1]
+        p["armor_acc"] = 50 #future p["acc"] -PR-
         tv = p["e_armor"]["values"][2][0] - p["strength"]
         ta = p["e_armor"]["values"][2][1] - p["dexterity"]
-        if tv >= 0:
-            p["armor"] = (2*p["e_armor"]["values"][0])//(2+tv)
-        if ta >= 0:
-            p["armor_acc"] = (2*p["e_armor"]["values"][1])//(2+ta)
+        if tv > 0:
+            p["armor"] = (2*p["armor"])//(2+tv)
+        if ta > 0:
+            p["armor_acc"] = ((2+ta)*p["armor_acc"])//2
     else:
         p["armor"] = 0
+
+    if p["e_shield"]["type"] == ")":
+        p["shield"] = p["e_shield"]["values"][0]
+        t = p["e_shield"]["values"][2] -p["strength"]-p["dexterity"]
+        if t > 0:
+            p["shield"] -= t
+            if p["shield"] < 0:
+                p["shield"] = 0
+    else:
+        p["shield"] = 0
+    p["armor"] += p["shield"]
+
     to_delate = []
     p["arrows_id"] = -1
     for i in range(len(p["BP"])):

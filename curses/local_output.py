@@ -12,31 +12,38 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
             return ("")
     match i["type"]:
         case "]":
-            r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])+" "+str(i["values"][1])+"% "
+            r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])+" "+str(i["values"][1])+"%"
             if p:
                 i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
                 if i[0] > 0 or i[1] > 0:
-                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
+                    r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "}":
-            r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])+" "+str(i["values"][1])+"% "
+            r = (translate(i["item"][:-2]) + i["item"][-2:] + str(i["values"][0])+"x"+str(i["values"][4]) + i["type"])+" "+str(i["values"][1])+"%"
             if p:
                 i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
                 if i[0] > 0 or i[1] > 0:
-                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
+                    r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case ")":
-            r = translate(i["item"][:-2]) + " (" + str(i["values"][0])+"x"+str(i["values"][4]) + ") "
-            if p:
-                i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
-                i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
-                if i[0] > 0 or i[1] > 0:
-                    r += translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
-                    # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
-                else:
-                    r += translate("YOU CAN EQUIP IT")
+            if type(i["values"][2]) == list:
+                r = translate(i["item"][:-2]) + " (" + str(i["values"][0]) + ")"
+                if p:
+                    i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
+                    i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
+                    if i[0] > 0 or i[1] > 0:
+                        r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
+                        # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
+            else:
+                r = translate(i["item"][:-2]) + " (" + str(i["values"][0]) + ")"
+                if p:
+                    i = i["values"][2]-p["strength"]-p["dexterity"]
+                    i = i if i > 0 else 0
+                    if i > 0:
+                        r += " "+translate("WITH MINUS")+" "+str(i[0])
+                        # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "|":
             return (str(i["values"][0]) + "x " + translate((i["values"][1] if i["values"][0] > 1 else i["item"]), i["values"][0]))
@@ -74,7 +81,7 @@ def playerdata(y, p):
         case 12:
             return "  range: {" + str(p["bow"])+"x"+str(p["bow_attacks"])+"} "+str(p["bow_acc"])+"%"
         case 13:
-            return "  armor: " + str(p["armor"])
+            return "  armor: " + str(p["armor"])#+"+"+str(p["shield"])
         case 15:
             return item(p["BP"], 0)
         case 16:

@@ -27,8 +27,8 @@ def f_gold(m, p, npos, stay):
 
 def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = ","
-    m["v"][npy][npx] = ","
+    m["r"][npy][npx] = "_,"
+    m["v"][npy][npx] = "_,"
     echo = "Otworzyłeś drzwi"
     return[False, echo, True]
 
@@ -70,7 +70,7 @@ def f_weapons(m, p, npos, stay):
             p["BP"].append(i)
             update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+translate(str(i["item"][:-2])+" "+(i["item"][-1]+str(i["values"][0])+"x"+str(i["values"][4])+i["type"]))
+            echo = translate("YOU TAKE")+" "+translate(item(i, 9, p))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
@@ -95,8 +95,6 @@ def terrain(w, c, m, p, npos, stay):
             return f_items(m, p, npos, stay)
         case "~":
             return f_items(m, p, npos, stay)
-        # # case "!":
-        # #     return f_orantium(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "+":
             return f_door(m, p, npos, stay)
         case ":":
@@ -107,8 +105,6 @@ def terrain(w, c, m, p, npos, stay):
             return f_weapons(m, p, npos, stay)
         case ")":
             return f_weapons(m, p, npos, stay)
-        # case "?":
-        #     return f_potion(rmap, vmap, p, np, gold, baner, backpack, direction)
         case "=":
             return [False, translate("THIS TILE IS CLOSED"), False]
         case ".":
