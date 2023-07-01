@@ -42,7 +42,7 @@ def character(w, c, p):
     w.clear() # ? -PR-
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "0.0.G", c.color_pair(4))
+    w.addstr(2, 37, "0.1.0", c.color_pair(4))
     w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
     w.addstr(5, 2, "2 - HUMAN BANDIT", c.color_pair(1))
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))

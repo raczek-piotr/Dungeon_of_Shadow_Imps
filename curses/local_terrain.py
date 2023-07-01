@@ -29,7 +29,7 @@ def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
     m["r"][npy][npx] = "_,"
     m["v"][npy][npx] = "_,"
-    echo = "Otworzyłeś drzwi"
+    echo = translate("YOU OPEN A DOOR")
     return[False, echo, True]
 
 def f_block(m, p, npos, stay):
