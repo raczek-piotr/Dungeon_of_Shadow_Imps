@@ -88,6 +88,7 @@ def character(w, c, p):
                 p["maxhp"], p["hp"] = 10, 10
                 p["basedefend"] = 70
                 p["hpcounter"] = 14
+                p["maxeat"] *= 7 # hobbits and elfish waybread :) -PR-
                 break
             case _:
                 pass
@@ -176,9 +177,9 @@ def start_data():
         "wasattackby": "",
         "echo": "",
         "torch": True,
-        "torchtime": 500,
+        "torchtime": 800,
         "starving": False,
-        "fullness": 400,
+        "fullness": 600,
         "arrows_id": -1,
         "BP": [
             get_item(2),

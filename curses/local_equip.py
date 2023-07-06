@@ -27,7 +27,7 @@ def get_equip_values(p):
 
     if p["e_armor"]["type"] == ")":
         p["armor"] = p["e_armor"]["values"][0]
-        p["defend"] = p["basedefend"] #future p["acc"] -PR-
+        p["defend"] = p["basedefend"]
         tv = p["e_armor"]["values"][2][0] - p["strength"]
         ta = p["e_armor"]["values"][2][1] - p["dexterity"]
         if tv > 0:

@@ -3,20 +3,20 @@ from local_scripts import zero3
 
 item = [
     #  values": [damage, acc, [str|dex], tier, attacks]
-["]", {'item': 'KNIFE [', 'type': ']', 'values': [2, 60, [2, 2], 1, 1], 'cost': 72, 'grouping': False, 'ident': True}], #0
-["}", {'item': 'SLING {', 'type': '}', 'values': [1, 60, [2, 2], 1, 1], 'cost': 18, 'grouping': False, 'ident': True}], #1
-["~", {'item': 'TORCH', 'type': '', 'values': [1, 'TORCHES'], 'cost': 30, 'grouping': True, 'ident': True}], #2
-["*", {'item': 'BREAD', 'type': '', 'values': [1, 'BREADS'], 'cost': 50, 'grouping': True, 'ident': True}], #3
-["*", {'item': 'CORPSE', 'type': '', 'values': [1, 'CORPSES'], 'cost': 5, 'grouping': True, 'ident': True}], #4
-["-", {'item': 'ARROW', 'type': '', 'values': [2, 'ARROWS'], 'cost': 1, 'grouping': True, 'ident': True}], #5
-["-", {'item': 'ARROW', 'type': '', 'values': [3, 'ARROWS'], 'cost': 1, 'grouping': True, 'ident': True}], #6
-["-", {'item': 'ARROW', 'type': '', 'values': [4, 'ARROWS'], 'cost': 1, 'grouping': True, 'ident': True}], #7
-["-", {'item': 'ARROW', 'type': '', 'values': [5, 'ARROWS'], 'cost': 1, 'grouping': True, 'ident': True}], #8
-["!", {'item': 'POTION OF HEALING', 'type': '!', 'values': [1, 'POTIONS OF HEALING'], 'cost': 200, 'grouping': True, 'ident': True}], #9
-["!", {'item': 'POISON', 'type': '!', 'values': [1, 'POISON'], 'cost': 0, 'grouping': True, 'ident': True}], #10
-["!", {'item': 'POISON', 'type': '!', 'values': [1, 'POISON'], 'cost': 0, 'grouping': True, 'ident': True}], #11
-["?", {'item': 'SCROLL OF TELEPORT', 'type': '?', 'values': [1, 'SCROLLS OF TELEPORT'], 'cost': 40, 'grouping': True, 'ident': True}], #12
-["?", {'item': 'GAIN EXPERIENCE', 'type': '?', 'values': [1, 'GAIN EXPERIENCE'], 'cost': 2500, 'grouping': True, 'ident': True}], #13
+["]", {'item': 'KNIFE [', 'type': ']', 'values': [2, 60, [2, 2], 1, 1], 'cost': 72, 'grouping': False}], #0
+["}", {'item': 'SLING {', 'type': '}', 'values': [1, 60, [2, 2], 1, 1], 'cost': 18, 'grouping': False}], #1
+["~", {'item': 'TORCH', 'type': '', 'values': [1, 'TORCHES'], 'cost': 4, 'grouping': True}], #2
+["*", {'item': 'BREAD', 'type': '', 'values': [1, 'BREADS'], 'cost': 3, 'grouping': True}], #3
+["*", {'item': 'MOLD', 'type': '', 'values': [1, 'MOLDS'], 'cost': 1, 'grouping': True}], #4
+["-", {'item': 'ARROW', 'type': '', 'values': [2, 'ARROWS'], 'cost': 1, 'grouping': True}], #5
+["-", {'item': 'ARROW', 'type': '', 'values': [3, 'ARROWS'], 'cost': 1, 'grouping': True}], #6
+["-", {'item': 'ARROW', 'type': '', 'values': [4, 'ARROWS'], 'cost': 1, 'grouping': True}], #7
+["-", {'item': 'ARROW', 'type': '', 'values': [5, 'ARROWS'], 'cost': 1, 'grouping': True}], #8
+["!", {'item': 'POTION OF HEALING', 'type': '!', 'values': [1, 'POTIONS OF HEALING'], 'cost': 200, 'grouping': True}], #9
+["!", {'item': 'POTION OF POISON', 'type': '!', 'values': [1, 'POTIONS OF POISON'], 'cost': 0, 'grouping': True}], #10
+["?", {'item': 'SCROLL OF TELEPORT', 'type': '?', 'values': [1, 'SCROLLS OF TELEPORT'], 'cost': 40, 'grouping': True}], #11
+["?", {'item': 'SCROLL OF TELEPORT', 'type': '?', 'values': [1, 'SCROLLS OF TELEPORT'], 'cost': 40, 'grouping': True}], #12
+["?", {'item': 'GAIN EXPERIENCE', 'type': '?', 'values': [1, 'GAIN EXPERIENCE'], 'cost': 2500, 'grouping': True}], #13
 ["]", {'item': 'LONG KNIFE [', 'type': ']', 'values': [3, 60, [2, 5], 1, 1], 'cost': 162, 'grouping': False}], #14
 ["]", {'item': '2 KNIFES [', 'type': ']', 'values': [2, 60, [3, 5], 1, 2], 'cost': 288, 'grouping': False}], #15
 ["]", {'item': 'SHORT DAGGER [', 'type': ']', 'values': [4, 75, [4, 6], 1, 1], 'cost': 450, 'grouping': False}], #16

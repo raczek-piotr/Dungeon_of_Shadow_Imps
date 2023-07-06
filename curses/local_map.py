@@ -164,7 +164,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "_<."
 
             pokoje = Spokoje
-            l_pokoje = len(pokoje)-1
+            l_pokoje = len(pokoje)-2 # clear room for player to spawn -PR-
             i = randint(0, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
@@ -175,7 +175,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     m["r"][j[0]][j[1]] = k+" "
                 else:
                     m["r"][j[0]][j[1]] = "_"+k+"."
-            pokoje[0] = pokoje[-1] # for good place player to start -PR-
+            pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
         case 2:
             locate_a_room(m, pokoje, 25, 10, 3, 3, 1, True)
             locate_a_room(m, pokoje, 15, 0, 1, 1, 0)

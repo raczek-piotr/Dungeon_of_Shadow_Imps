@@ -5,9 +5,9 @@ from local_item_class import get_item
 from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
 
 
-traders = [{2,3,23,24,{49,51}.pop()},
+traders = [{2,3,49,23,24},
            {14,35,23,38},
-           {9,10,11,12}]
+           {9,4,12}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)

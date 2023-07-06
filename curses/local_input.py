@@ -41,18 +41,18 @@ def item_menager(w, c, m, p):
     match t["item"]:
 
         case "TORCH":
-            p["torchtime"] = 2000
+            p["torchtime"] = 800
             p["torch"] = True
             t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 2000 " + translate("TURNS"), True]
+            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 800 " + translate("TURNS"), True]
 
         case "BREAD":
-            p["fullness"] += 3000
-            if p["fullness"] > 10000:
-                p["fullness"] = 10000
+            p["fullness"] += 600
+            if p["fullness"] > p["maxeat"]:
+                p["fullness"] = p["maxeat"]
             p["starving"] = False
             t["values"][0] -= 1
             if t["values"][0] <= 0:
@@ -60,16 +60,16 @@ def item_menager(w, c, m, p):
                 update_BP_mask(p)
             return[translate("YOU ATE A") + " " + translate("BREAD"), True]
 
-        case "CORPSE":
-            p["fullness"] += 500
-            if p["fullness"] > 10000:
-                p["fullness"] = 10000
+        case "MOLD":
+            p["fullness"] += 200
+            if p["fullness"] > p["maxeat"]:
+                p["fullness"] = p["maxeat"]
             p["starving"] = False
             t["values"][0] -= 1
             if t["values"][0] <= 0:
                 p["BP"].pop(it)
                 update_BP_mask(p)
-            return[translate("YOU ATE A") + " " + translate("CORPSE"), True]
+            return[translate("YOU ATE A") + " " + translate("MOLD"), True]
 
         case "POTION OF HEALING":
             p["hp"] = p["maxhp"]
@@ -79,7 +79,7 @@ def item_menager(w, c, m, p):
                 update_BP_mask(p)
             return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
 
-        case "POISON":
+        case "POTION OF POISON":
             p["hp"] -= p["maxhp"]//2
             t["values"][0] -= 1
             if t["values"][0] <= 0:
