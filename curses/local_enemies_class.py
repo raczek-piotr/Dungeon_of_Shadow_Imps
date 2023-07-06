@@ -238,7 +238,7 @@ def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
     return p == e
 
 def enemies_class_attack(p, head, value, ap):
-    if randint(0, 99) < p["armor_acc"]:
+    if randint(0, 99) >= p["defend"]:
         value += randint(-value//2, value//2)
         if not ap: # standard attack -PR-
             value -= p["armor"]

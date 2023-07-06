@@ -42,12 +42,13 @@ def character(w, c, p):
     w.clear() # ? -PR-
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "0.1.0", c.color_pair(4))
+    w.addstr(2, 37, "0.1.1", c.color_pair(4))
     w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
     w.addstr(5, 2, "2 - HUMAN BANDIT", c.color_pair(1))
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
     w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
+    w.addstr(9, 2, "6 - HOBBIT WARRIOR", c.color_pair(1))
     if w.getmaxyx() != (24,80):
         w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(2))
         w.addstr(22, 79, "|", c.color_pair(3))
@@ -79,6 +80,14 @@ def character(w, c, p):
                 p["playertype"] = "HUMAN ARCHER"
                 p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
                 #p["arrows_id"] = 1
+                break
+            case "6":
+                p["strength"] = 5
+                p["dexterity"] = 2
+                p["playertype"] = "HOBBIT WARRIOR"
+                p["maxhp"], p["hp"] = 10, 10
+                p["basedefend"] = 70
+                p["hpcounter"] = 14
                 break
             case _:
                 pass
@@ -135,6 +144,7 @@ def start_data():
         "specials": "", # not used now -PR-
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
+        "maxeat": 2000,#at the depth -PR-
         "maxhp": 20,
         "hp": 20,
         "hpchange": 1,
@@ -151,7 +161,8 @@ def start_data():
         "armor": 0,
         "attack_acc": 1,
         "bow_acc": 1,
-        "armor_acc": 0,
+        "basedefend": 50,
+        "defend": 0,
         "attack_attacks": 1,
         "bow_attacks": 1,
         "e_attack": get_item(0),

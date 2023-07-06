@@ -166,7 +166,7 @@ def shot_menager(w, c, m, p):
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
-    w.addstr(0, 58, "Version = curses_0.1.0", c.color_pair(1))
+    w.addstr(0, 65, "Version = 0.1.1", c.color_pair(1))
     w.addstr(1, 2, "@ - you", c.color_pair(5))
     w.addstr(2, 2, "# - wall", c.color_pair(5))
     w.addstr(3, 2, "+ - closed door", c.color_pair(5))

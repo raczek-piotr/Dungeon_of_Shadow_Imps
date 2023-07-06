@@ -1,6 +1,6 @@
 #import curses as c
 from local_translator import translate
-
+spacer = "=----------------------="
 
 def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
     if arg == 9:
@@ -158,15 +158,15 @@ def output(w, c, m, p):
                     w.addstr(y, x, i, c.color_pair(col))
         w.addstr(y, 53, "|", c.color_pair(4))
         w.addstr(y, 55, playerdata(y, p), c.color_pair(1))
-        w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
-        w.addstr(0, 55, "=----------------------=", c.color_pair(4))
-        w.addstr(2, 55, "=----------------------=", c.color_pair(4))
-        w.addstr(10, 55, "=----------------------=", c.color_pair(4))
-        if p["starving"]:
-            w.addstr(12, 55, "S", c.color_pair(3))
-        if not p["torch"]:
-            w.addstr(13, 55, "L", c.color_pair(3))
-        w.addstr(14, 55, "=----------------------=", c.color_pair(4))
-        w.addstr(21, 55, "=----------------------=", c.color_pair(4))
-        w.addstr(11, 26, "@", c.color_pair(1))
+    w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
+    w.addstr(0, 55, spacer, c.color_pair(4))
+    w.addstr(2, 55, spacer, c.color_pair(4))
+    w.addstr(10, 55, spacer, c.color_pair(4))
+    if p["starving"]:
+        w.addstr(12, 55, "S", c.color_pair(3))
+    if not p["torch"]:
+        w.addstr(13, 55, "L", c.color_pair(3))
+    w.addstr(14, 55, spacer, c.color_pair(4))
+    w.addstr(21, 55, spacer, c.color_pair(4))
+    w.addstr(11, 26, "@", c.color_pair(1))
         
