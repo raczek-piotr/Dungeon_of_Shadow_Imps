@@ -1,9 +1,11 @@
 from local_translator import translate
 from local_item_class import item_class_get
 from local_enemies_class import enemies_class_is_attacked
-from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
+from local_equip import get_equip_values, merge
 from local_output import item # for f_weapons -PR-
 from local_npc import npc
+
+from local_output import item
 
 def type_gold(i):
     if i < 11:
@@ -41,24 +43,30 @@ def f_block(m, p, npos, stay):
     echo = translate("YOU DESTROYED WEEK WALL")
     return[False, echo, True]
 
+def in_BP(BP, item): #copy is in local_npc.py
+    for i in BP:
+        if i[0] == item[0]:
+            return True
+    return False
+
 def f_items(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6 or i["item"] in f_BP_mask():
+        if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
             p["BP"].append(i)
             merge(p)
-            update_BP_mask(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 0))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
+            #if item[1] == "-":
+            echo = translate("YOU TAKE")+" "+translate(item(i))+"'"
         else:
-            echo = translate("YOUR'S BACKPACK IS FULL!")
+            echo = translate("YOUR BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE ARE" if i["values"][0] > 1 else "HERE IS")+" "+str(i["values"][0])+"x "+(translate(i["values"][-1], i["values"][0]) if i["values"][0] > 1 else translate(i["item"], 1))
+        echo = translate("HERE IS")+" '"+translate(item(i))+"'"
     return[True, echo, True]
 
 def f_weapons(m, p, npos, stay):
@@ -66,15 +74,14 @@ def f_weapons(m, p, npos, stay):
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6:# or i["item"] in f_BP_mask(): grouping = False -PR-
+        if len(p["BP"]) < 6:# or i["item"] == "-": grouping = False -PR-
             p["BP"].append(i)
-            update_BP_mask(p)
             get_equip_values(p)
             echo = translate("YOU TAKE")+" "+translate(item(i, 9, p))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
         else:
-            echo = translate("YOUR'S BACKPACK IS FULL!")
+            echo = translate("YOUR BACKPACK IS FULL!")
             return[False, echo, False]
     else:
         echo = translate("HERE IS")+" "+translate(item(i, 9, p))

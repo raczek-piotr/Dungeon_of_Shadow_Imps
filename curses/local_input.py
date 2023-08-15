@@ -6,10 +6,10 @@ from local_output import output, item
 from local_translator import translate
 from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
-from local_equip import get_equip_values, update_BP_mask#, merge, f_BP_mask # not needed -PR-
+from local_equip import get_equip_values #, merge # not needed -PR-
 
 
-def sort(p): p["BP"].sort(reverse=True, key = lambda key: key["item"][-2::-1])
+def sort(p): p["BP"].sort(reverse=True, key = lambda key: key[1]+key[0][0])
 
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
@@ -38,103 +38,57 @@ def item_menager(w, c, m, p):
     except:
         return[p["echo"], False]
     t = p["BP"][it]
-    match t["item"]:
-
-        case "TORCH":
-            p["torchtime"] = 800
-            p["torch"] = True
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
+    if t[1] in {"]","}",")"}:
+        p["BP"][it], p[t[0][1]] = p[t[0][1]], p["BP"][it]
+    else:
+        match t[0][1]:
+            case 0: # food
+                p["fullness"] += t[0][2]
+                if p["fullness"] > p["maxeat"]:
+                    p["fullness"] = p["maxeat"]
+                p["starving"] = False
                 p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU LIGHT A") + " " + translate("TORCH") + ", " + translate("AND IT WILL GIVE YOU LIGHT FOR") + " 800 " + translate("TURNS"), True]
-
-        case "BREAD":
-            p["fullness"] += 600
-            if p["fullness"] > p["maxeat"]:
-                p["fullness"] = p["maxeat"]
-            p["starving"] = False
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
+                return[translate("YOU ATE A") + " " + translate(t[0][0]), True]
+            case 1: # light
+                p["torchtime"] = t[0][2]
+                p["torch"] = True
                 p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU ATE A") + " " + translate("BREAD"), True]
+                return[translate("YOU LIGHT A") + " " + translate(t[0][0]), True]
+            case 2: # scrolls
+                #if t[0][2] == 0:
+                #    pass
+                #elif t[0][2] == 1:
+                    mx, my = m["sx"]-2, m["sy"]-2
+                    q = "#"
+                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
+                        x, y = randint(1, mx), randint(1, my)
+                        q = m["r"][y][x]
+                    t["values"][0] -= 1
+                    p["x"], p["y"] = x, y
+                    p["BP"].pop(it)
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
+                #else:
+                #    pass
+            case 3: # potions
+                if t[0][2] == 0:
+                    p["hp"] = p["maxhp"]
+                    t["values"][0] -= 1
+                    p["BP"].pop(it)
+                    return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
+                    #return[translate("YOU DRANK") + " " + translate("POTION"), True] + " "+ translate("AND YOU FELT HEALT"), True]
+                elif t[0][2] == 1:
+                    p["fury"] = 50
+                    p["BP"].pop(it)
+                    return[translate("YOU DRANK") + " " + translate("POTION OF FURY"), True]
+                else:
+                    p["hp"] -= p["maxhp"]//2
+                    p["BP"].pop(it)
+                    return[translate("YOU DRANK") + " " + translate("POTION OF POISON"), True]
+                    
+        return[translate("YOU CAN'T USE THAT"), False]
 
-        case "MOLD":
-            p["fullness"] += 200
-            if p["fullness"] > p["maxeat"]:
-                p["fullness"] = p["maxeat"]
-            p["starving"] = False
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU ATE A") + " " + translate("MOLD"), True]
-
-        case "POTION OF HEALING":
-            p["hp"] = p["maxhp"]
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
-
-        case "POTION OF POISON":
-            p["hp"] -= p["maxhp"]//2
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU DRANK") + " " + translate("POISON"), True]
-
-        case "SCROLL OF TELEPORT":
-            mx, my = m["sx"]-2, m["sy"]-2
-            q = "#"
-            while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
-                x, y = randint(1, mx), randint(1, my)
-                q = m["r"][y][x]
-            t["values"][0] -= 1
-            p["x"], p["y"] = x, y
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
-
-        case "MAGIC MAPPING":
-            m["v"] = m["r"].copy() # .copy is needed (v - 1, r - 1) → r - 2 -PR- you can see monsters too
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU READ A") + " " + translate("MAGIC MAPPING"), True]
-
-        case "GAIN EXPERIENCE":
-            p["xp"] += p["xp"]//10 + 10
-            t["values"][0] -= 1
-            if t["values"][0] <= 0:
-                p["BP"].pop(it)
-                update_BP_mask(p)
-            return[translate("YOU READ A") + " " + translate("GAIN EXPERIENCE"), True]
-
-        case _:
-            match t["type"]:
-                case "]":
-                    t = p["BP"].pop(it)
-                    p["BP"].append(p["e_attack"])
-                    p["e_attack"] = t
-                case "}":
-                    t = p["BP"].pop(it)
-                    p["BP"].append(p["e_hand"])
-                    p["e_hand"] = t
-                case ")":
-                    t = p["BP"].pop(it)
-                    p["BP"].append(p[t["values"][1]])
-                    p[t["values"][1]] = t
-                case _:
-                    return[translate("YOU CAN'T USE THAT"), False]
-            update_BP_mask(p)
-            get_equip_values(p)
-            return[translate("YOU TAKE A") + " " + translate(t["item"][:-2]), True]
+    get_equip_values(p)
+    return[translate("YOU TAKE A") + " " + translate(t[0][0]), True]
     return[translate("WRONG SLOT!"), False]
 
 def drop_menager(w, c, m, p):
@@ -155,13 +109,12 @@ def shot_menager(w, c, m, p):
     w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"))
     it = get_in(w)
     dy, dx, t1 = player_move(it)
-    if (dy != 0 or dx != 0) and p["arrows_id"] != -1:
-        enemies_class_is_shoted(m, p, [dy, dx], p["bow"])
-        get_equip_values(p)
-        return[p["echo"], True]
-    elif p["arrows_id"] == -1: # return ↑ but... -PR-
-        return[translate("YOU DON'T HAVE ARROWS!"), False]
-    return[translate("YOU CAN'T SHOT THERE!"), False]
+    enemies_class_is_shoted(m, p, [dy, dx], p["bow"])
+    get_equip_values(p)
+    return[p["echo"], True]
+    #elif p["arrows_id"] == -1: # return ↑ but... -PR-
+    #    return[translate("YOU DON'T HAVE ARROWS!"), False]
+    #return[translate("YOU CAN'T SHOT THERE!"), False]
 
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()

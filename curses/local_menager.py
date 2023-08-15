@@ -42,7 +42,7 @@ def character(w, c, p):
     w.clear() # ? -PR-
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "0.1.1", c.color_pair(4))
+    w.addstr(2, 37, "0.2.0", c.color_pair(4))
     w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
     w.addstr(5, 2, "2 - HUMAN BANDIT", c.color_pair(1))
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
@@ -57,28 +57,28 @@ def character(w, c, p):
     while True:
         match w.getkey():
             case "1":
-                p["strength"] = 6
-                p["dexterity"] = 2
+                p["strength"] = 11
+                p["dexterity"] = 7
                 p["playertype"] = "HUMAN WARRIOR"
                 break
             case "2":
-                p["strength"] = 5
-                p["dexterity"] = 3
+                p["strength"] = 10
+                p["dexterity"] = 8
                 p["playertype"] = "HUMAN BANDIT"
                 break
             case "3":
                 #p["playertype"] = "HUMAN DUELIST"
                 break
             case "4":
-                p["strength"] = 3
-                p["dexterity"] = 5
+                p["strength"] = 8
+                p["dexterity"] = 10
                 p["playertype"] = "HUMAN ROUGE"
                 break
             case "5":
-                p["strength"] = 2
-                p["dexterity"] = 6
+                p["strength"] = 7
+                p["dexterity"] = 11
                 p["playertype"] = "HUMAN ARCHER"
-                p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
+                #p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
                 #p["arrows_id"] = 1
                 break
             case "6":
@@ -98,7 +98,7 @@ def character(w, c, p):
     w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
     w.addstr(23, 65, "~ 1 KINGS 19:7", c.color_pair(5))
     w.getkey()
-    disable_disabled_weapons(p["strength"], p["dexterity"])
+    #disable_disabled_weapons(p["strength"], p["dexterity"])
 
 def prepare_map(m, p):
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
@@ -154,9 +154,9 @@ def start_data():
         "xp": 0,
         "lw": 1,
         "depth": 0,
-        "strength": 4,
-        "dexterity": 4,
-        "gold": 150,
+        "strength": 9,
+        "dexterity": 9,
+        "gold": 250,
         "attack": 1,
         "bow": 1,
         "armor": 0,
@@ -164,12 +164,15 @@ def start_data():
         "bow_acc": 1,
         "basedefend": 50,
         "defend": 0,
-        "attack_attacks": 1,
-        "bow_attacks": 1,
-        "e_attack": get_item(0),
-        "e_hand": get_item(1),
-        "e_armor": get_item(48),#blank,#
-        "e_shield": get_item(50),#blank,#
+        "attack_damage": 1,
+        "bow_damage": 1,
+        "attack_hits": 1,
+        "bow_hits": 1,
+        "e_attack": get_item(25),
+        "e_hand": get_item(31),
+        "e_armor": get_item(15),
+        "e_shield": get_item(22),
+        "fury": 0,
         "y": 0,
         "x": 0,
         "dy": 0, # direction y -PR-
@@ -180,10 +183,11 @@ def start_data():
         "torchtime": 800,
         "starving": False,
         "fullness": 600,
-        "arrows_id": -1,
         "BP": [
-            get_item(2),
+            get_item(0)[:2] + [20] + get_item(0)[3:],
             get_item(3),
+            get_item(8),
+            get_item(40),
             #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
             ],
         "time": 0,

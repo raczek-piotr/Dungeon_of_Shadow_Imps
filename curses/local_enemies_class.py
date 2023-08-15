@@ -248,33 +248,51 @@ def enemies_class_attack(p, head, value, ap):
         p["wasattackby"] += head
 
 # player attack enemies
+def roll (a,b):
+    q = 0
+    for _ in range(a):
+        q += randint(1,b)
+    return q
+
 
 def enemies_class_is_shoted(m, p, dire, value):
     global tlist, heads
     tx = p["y"], p["x"] # it is NOT x'pos -PR-
     ty, tx = shot(m["r"], tx, dire, tlist)
-    p["BP"][p["arrows_id"]]["values"][0] -= 1
-    if m["r"][ty][tx][0] in heads:
-        it = int(m["r"][ty][tx][1:4])
-        enemies_class_is_attacked(m, p, it, value, True)
-        return ()
-    p["echo"] = translate("YOU SHOT SOMEWERE")
+    for ammo_id in range(len(p["BP"])):
+        ammo = p["BP"][ammo_id]
+        if ammo[0][0] == p["e_hand"][0][2]:
+            ammo[2] -= 1
+            if ammo[2] == 0:
+                p["BP"].pop(ammo_id)
+            if m["r"][ty][tx][0] in heads:
+                it = int(m["r"][ty][tx][1:4])
+                enemies_class_is_attacked(m, p, it, value, True)
+                return #()
+            p["echo"] = translate("YOU SHOT SOMEWERE")
+            return #()
+    p["echo"] = translate("NO AMMO")
+    return #()
 
-def enemies_class_is_attacked(m, p, it, value, ranged = False):
+def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep of an enemie
     if it >= 500:
         q = a[it-500]
     else:
         q = c[it]
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
-    attacks = (p["bow_attacks"] if ranged else p["attack_attacks"])
+    hits = (p["bow_hits"] if ranged else p["attack_hits"])
+    rolls = (p["bow"] if ranged else p["attack"])
+    damage = (p["bow_damage"] if ranged else p["attack_damage"])
     if q[4] != 0:
-        at_value = value * attacks
+        at_value += value * damage #free wake up hit
         acc = 100
         q[4] = 0
-    for _ in range(attacks):
-        at_value += (randint(0, 99) < acc) * (value + randint(-value//2, value//2))
+    for _ in range(hits):
+        at_value += (randint(0, 99) < acc) * (roll(rolls, damage))
     if at_value != 0:
+        if p["fury"]:
+            at_value *= 2
         q[1] -= at_value
         q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
         p["echo"] = translate("YOU HIT A")+" "+translate(q[10])

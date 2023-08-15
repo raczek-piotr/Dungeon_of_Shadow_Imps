@@ -52,6 +52,8 @@ def mainloop(w):
                 if p["fullness"] < 1:
                     p["starving"] = True
                     c.beep() # alarm the player -PR-
+            if p["fury"]:
+                p["fury"] -= 1
             while p["xp"] >= p["needxp"]:
                 p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["lw"] += 1
@@ -66,7 +68,7 @@ def mainloop(w):
                 hpcounter -= p["hpcounter"]
                 if p["starving"]:
                     p["hp"] -= 1
-                    c.beep() # alarm the player -PR-
+                    c.beep() # alarm the player of loosing hit points -PR-
                 else:
                     p["hp"] += 1
             if p["hp"] > p["maxhp"]:
@@ -80,4 +82,4 @@ def mainloop(w):
         w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-25))
         w.getkey()
 
-wrapper(mainloop) # MY curses IS working on linux :) -PR-
+wrapper(mainloop)

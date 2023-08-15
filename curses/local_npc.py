@@ -2,48 +2,56 @@ from random import randint, choice
 from local_translator import translate
 from local_output import item
 from local_item_class import get_item
-from local_equip import get_equip_values, update_BP_mask, merge, f_BP_mask
+from local_equip import get_equip_values, merge
 
 
-traders = [{2,3,49,23,24},
-           {14,35,23,38},
+traders = [{5,8},
+           {9,10,11,12,13,14},
            {9,4,12}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
     match it:
         case 0:
-            return trader(w, c, m, p, it, "Seller")
+            return trader(w, c, m, p, it, "Seller", [
+[["ROCK", "ROCKS"], "-", 5, True, 5],
+[["ARROW", "ARROWS"], "-", 10, True, 20],
+[["BOLT", "BOLTS"], "-", 25, True, 50]])
         case 1:
-            return[False, translate("- DO YOU JOB!"), False]
-            return trader(w, c, m, p, it, "Mayor")
+            return trader(w, c, m, p, it, "Mayor", [])
         case 2:
-            return trader(w, c, m, p, it, "Blue The Robin")
+            return trader(w, c, m, p, it, "Blue The Robin", [])
         case 3:
             return[False, translate("- HEY! I'M DOING MY TOILET, GO AWAY!"), False]
         case _:
             return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- ASK BLUE ROBIN FOR HELP", "- WHAT A NICE DAY!", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- IF YOU HAVE NONETHING TO DO, GO TO THE DUNGEON"])), False]
 
-def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -PR-
+def in_BP(BP, item): #copy is in local_terrain.py
+    for i in BP:
+        if i[0] == item[0]:
+            return True
+    return False
+
+def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited by python -PR-
     q = "-"
-    ilist = [get_item(i) for i in traders[it]]
+    for i in traders[it]:
+        ilist.append(get_item(i)) 
     slots = {str(i) for i in range(len(ilist))}
     while True:
         if q in slots:
             i = ilist[int(q)]
-            if (len(p["BP"]) < 6 or i["item"] in f_BP_mask() and i["grouping"]) and p["gold"] >= i["cost"]:
-                p["gold"] -= i["cost"]
+            if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i) and p["gold"] >= i[-1]:
+                p["gold"] -= i[-1]
                 p["BP"].append(i)
                 merge(p)
-                update_BP_mask(p)
                 get_equip_values(p)
-                echo = translate("YOU BUY")+" "+translate(i["item"][:-2] if i["item"][-1] in {"[","{","("} else i["item"])
+                echo = translate("YOU BUY")+" '"+translate(item(i))+"'"
                 return[False, echo, True]
             else:
-                if len(p["BP"]) < 6:
-                    echo = translate("YOU DON'T HAVE ENOUGH MONEY!")
+                if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
+                    echo = translate("YOUR BACKPACK IS FULL!")
                 else:
-                    echo = translate("YOUR'S BACKPACK IS FULL!")
+                    echo = translate("YOU DON'T HAVE ENOUGH MONEY!")
                 return[False, echo, False]
         elif q in {"PADENTER","\n", ",", "\x1b"}:
             return[False, p["echo"], False]
@@ -53,7 +61,7 @@ def trader(w, c, m, p, it, trader): #it → id, but id is definited by python -P
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(ilist)):
             w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, p), c.color_pair(1))
-            t = str(ilist[i]["cost"])
+            t = str(ilist[i][-1])
             w.addstr(i+3, 68, "COST:", c.color_pair(1))
             w.addstr(i+3, 78-len(t), t, c.color_pair(1))
         w.addstr(23, 62, "Esc: ',' or Enter", c.color_pair(5))
