@@ -152,8 +152,10 @@ def output(w, c, m, p):
         w.addstr(12, 55, "S", c.color_pair(3))
     if not p["torch"]:
         w.addstr(13, 55, "L", c.color_pair(3))
+    if p["blessing"]:
+        w.addstr(12, 54, "B", c.color_pair(2))
     if p["fury"]:
-        w.addstr(12, 54, "F", c.color_pair(2))
+        w.addstr(13, 54, "F", c.color_pair(2))
     w.addstr(14, 55, spacer, c.color_pair(4))
     w.addstr(21, 55, spacer, c.color_pair(4))
     w.addstr(11, 26, "@", c.color_pair(1))

@@ -55,9 +55,9 @@ def item_menager(w, c, m, p):
                 p["BP"].pop(it)
                 return[translate("YOU LIGHT A") + " " + translate(t[0][0]), True]
             case 2: # scrolls
-                #if t[0][2] == 0:
-                #    pass
-                #elif t[0][2] == 1:
+                if t[0][2] == 0:
+                    pass
+                elif t[0][2] == 1:
                     mx, my = m["sx"]-2, m["sy"]-2
                     q = "#"
                     while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
@@ -67,17 +67,29 @@ def item_menager(w, c, m, p):
                     p["x"], p["y"] = x, y
                     p["BP"].pop(it)
                     return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
-                #else:
-                #    pass
+                elif t[0][2] == 2:
+                    p["blessing"] += 50
+                    p["BP"].pop(it)
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF BLESSING"), True]
+                else:
+                    p["hp"] -= p["maxhp"]//2
+                    p["BP"].pop(it)
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF DARK ENEGY") + " " + translate("DARK ENERGY HITS YOU"), True]
             case 3: # potions
                 if t[0][2] == 0:
                     p["hp"] = p["maxhp"]
-                    t["values"][0] -= 1
                     p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
-                    #return[translate("YOU DRANK") + " " + translate("POTION"), True] + " "+ translate("AND YOU FELT HEALT"), True]
                 elif t[0][2] == 1:
-                    p["fury"] = 50
+                    p["blessing"] += 10
+                    p["fury"] += 10
+                    p["hp"] += p["maxhp"]//2
+                    if p["hp"] > p["maxhp"]:
+                        p["hp"] = p["maxhp"]
+                    p["BP"].pop(it)
+                    return[translate("YOU DRANK") + " " + translate("POTION OF ENHANCEMENT"), True]
+                elif t[0][2] == 2:
+                    p["fury"] += 50
                     p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF FURY"), True]
                 else:
@@ -119,7 +131,7 @@ def shot_menager(w, c, m, p):
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
-    w.addstr(0, 65, "Version = 0.1.1", c.color_pair(1))
+    w.addstr(0, 61, "Version = pre_0.2.0", c.color_pair(1))
     w.addstr(1, 2, "@ - you", c.color_pair(5))
     w.addstr(2, 2, "# - wall", c.color_pair(5))
     w.addstr(3, 2, "+ - closed door", c.color_pair(5))

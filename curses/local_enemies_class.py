@@ -282,6 +282,8 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
     hits = (p["bow_hits"] if ranged else p["attack_hits"])
+    if p["blessing"]:
+        hits *= 2
     rolls = (p["bow"] if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
     if q[4] != 0:

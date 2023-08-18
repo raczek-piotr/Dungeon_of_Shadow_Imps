@@ -54,6 +54,8 @@ def mainloop(w):
                     c.beep() # alarm the player -PR-
             if p["fury"]:
                 p["fury"] -= 1
+            if p["blessing"]:
+                p["blessing"] -= 1
             while p["xp"] >= p["needxp"]:
                 p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
                 p["lw"] += 1
@@ -79,7 +81,7 @@ def mainloop(w):
         menager(w, c, "#E", m, p)
         w.clear()
         output(w, c, m, p)#translator
-        w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-25))
+        w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-21))
         w.getkey()
 
 wrapper(mainloop)

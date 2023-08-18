@@ -6,8 +6,8 @@ from local_equip import get_equip_values, merge
 
 
 traders = [{5,8},
-           {9,10,11,12,13,14},
-           {9,4,12}]
+           {9,10,11,12,13,14,15,16},
+           {}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
@@ -17,10 +17,10 @@ def npc(w, c, m, p, it, stay):
 [["ROCK", "ROCKS"], "-", 5, True, 5],
 [["ARROW", "ARROWS"], "-", 10, True, 20],
 [["BOLT", "BOLTS"], "-", 25, True, 50]])
-        case 1:
-            return trader(w, c, m, p, it, "Mayor", [])
+        #case 1:
+        #    return trader(w, c, m, p, it, "Mayor", [])
         case 2:
-            return trader(w, c, m, p, it, "Blue The Robin", [])
+            return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100]])
         case 3:
             return[False, translate("- HEY! I'M DOING MY TOILET, GO AWAY!"), False]
         case _:
