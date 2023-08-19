@@ -42,17 +42,6 @@ def get_equip_values(p):
     else:
         p["armor"] = 0
 
-    if p["e_shield"][1] == ")":
-        p["shield"] = p["e_shield"][2][0]
-        t = p["e_shield"][2][1] - p["lw"]
-        if t > 0:
-            p["shield"] -= t
-            if p["shield"] < 0:
-                p["shield"] = 0
-    else:
-        p["shield"] = 0
-    p["armor"] += p["shield"]
-
     to_delate = []
     p["arrows_id"] = -1
     #for i in range(len(p["BP"])):

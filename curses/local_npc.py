@@ -5,9 +5,9 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,8},
+traders = [{5,8,26,27},
            {9,10,11,12,13,14,15,16},
-           {}]
+           {25}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
@@ -20,7 +20,7 @@ def npc(w, c, m, p, it, stay):
         #case 1:
         #    return trader(w, c, m, p, it, "Mayor", [])
         case 2:
-            return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100]])
+            return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100],[["POTION OF HEALING", 3, 0], "!", 1, True, 100]])
         case 3:
             return[False, translate("- HEY! I'M DOING MY TOILET, GO AWAY!"), False]
         case _:
@@ -40,7 +40,7 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
     while True:
         if q in slots:
             i = ilist[int(q)]
-            if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i) and p["gold"] >= i[-1]:
+            if (len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i)) and p["gold"] >= i[-1]:
                 p["gold"] -= i[-1]
                 p["BP"].append(i)
                 merge(p)

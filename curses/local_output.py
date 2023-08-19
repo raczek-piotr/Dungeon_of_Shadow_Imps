@@ -32,10 +32,9 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
         case ")":
             r = translate(i[0][0])+" "+str(i[2][0])
             if p:
-                i = i[2][-2]-p["strength"], i[2][-1]-p["dexterity"]
-                i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
-                if i[0] > 0 or i[1] > 0:
-                    r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
+                i = i[2][-1]-p["lw"] # new i, and i ≠ i -PR-
+                if i > 0 :
+                    r += " "+translate("YOU NEED")+" "+str(i)+" LW "+translate("MORE")
                         # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "-":
@@ -88,43 +87,17 @@ def playerdata(y, p):
 
 def output(w, c, m, p):
     if p["torch"] == 1:
-        for y in range(-1, 2):  # In the future I will make it better !!!
+        for y in range(-1, 2):
             for x in range(-1, 2):
                 i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
                 if m["r"][i[0]][i[1]][0] == "_":
                     m["r"][i[0]][i[1]] = m["r"][i[0]][i[1]][1:]
                 m["v"][i[0]][i[1]] = m["r"][i[0]][i[1]]
-    for y in range(m["sy"]):
-        m["o"][y] = m["v"][y].copy()
-    #     for x in range(m["sx"]):
-    #         m["o"][y][x] = m["v"][y][x]
-    #m["o"][p["y"]][p["x"]] = "@"
-    if p["torch"] == 1:
-        for y in range(-1, 2):
-            for x in range(-1, 2):
-                i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
-                if m["o"][i[0]][i[1]] == " ":
-                    m["o"][i[0]][i[1]] = "."
-    """    j = ""
+
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:
-            i = ""
-            for x in range(53):
-                tx = p["x"] + x - 26
-                if tx >= 0 and tx < m["sx"]:
-                    #try: # for testing m["m"] and move enemies -PR-
-                    #    i += m["m"][ty][tx][0]
-                    #except:
-                        i += m["o"][ty][tx][0]
-                else:
-                    i += " "
-            w.addstr(y, 0, i + "| " + playerdata(y, p))
-        w.addstr(y, 53, "| " + playerdata(y, p))"""
-    for y in range(23):
-        ty = p["y"] + y - 11
-        if ty >= 0 and ty < m["sy"]:
-            t = m["o"][ty]
+            t = m["v"][ty]
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
@@ -144,6 +117,12 @@ def output(w, c, m, p):
                     w.addstr(y, x, i, c.color_pair(col))
         w.addstr(y, 53, "|", c.color_pair(4))
         w.addstr(y, 55, playerdata(y, p), c.color_pair(1))
+    if p["torch"]:
+        for y in range(-1, 2):
+            for x in range(-1, 2):
+                i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
+                if m["v"][i[0]][i[1]] == " ":
+                    w.addstr(11+y, 26+x, ".", c.color_pair(1))
     w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
     w.addstr(0, 55, spacer, c.color_pair(4))
     w.addstr(2, 55, spacer, c.color_pair(4))

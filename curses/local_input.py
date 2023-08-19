@@ -20,7 +20,6 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
     w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
-    w.addstr(14, 2, item(p["e_shield"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh() # ? -PR-
     t1 = ''
@@ -63,7 +62,6 @@ def item_menager(w, c, m, p):
                     while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
                         x, y = randint(1, mx), randint(1, my)
                         q = m["r"][y][x]
-                    t["values"][0] -= 1
                     p["x"], p["y"] = x, y
                     p["BP"].pop(it)
                     return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]

@@ -48,7 +48,7 @@ def character(w, c, p):
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
     w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
-    w.addstr(9, 2, "6 - HOBBIT WARRIOR", c.color_pair(1))
+    #w.addstr(9, 2, "6 - HOBBIT WARRIOR", c.color_pair(1))
     if w.getmaxyx() != (24,80):
         w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(2))
         w.addstr(22, 79, "|", c.color_pair(3))
@@ -81,15 +81,15 @@ def character(w, c, p):
                 #p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
                 #p["arrows_id"] = 1
                 break
-            case "6":
-                p["strength"] = 5
-                p["dexterity"] = 2
-                p["playertype"] = "HOBBIT WARRIOR"
-                p["maxhp"], p["hp"] = 10, 10
-                p["basedefend"] = 70
-                p["hpcounter"] = 14
-                p["maxeat"] *= 7 # hobbits and elfish waybread :) -PR-
-                break
+            #case "6":
+            #    p["strength"] = 5
+            #    p["dexterity"] = 2
+            #    p["playertype"] = "HOBBIT WARRIOR"
+            #    p["maxhp"], p["hp"] = 10, 10
+            #    p["basedefend"] = 70
+            #    p["hpcounter"] = 14
+            #    p["maxeat"] *= 7 # hobbits and elfish waybread :) -PR-
+            #    break
             case _:
                 pass
     get_equip_values(p)
@@ -117,35 +117,22 @@ def prepare_map(m, p):
         p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
         if p["normal_level"]:
             ilist = randitem(h[0]+5) # +5 -PR-
-            for i in range(randint(0, h[0])):
-                ilist.append("$" + zero3(randint(3, 35)))
-            #for i in range(randint(0, randint(0, h[0]))):
-            #    ilist.append("*004")
-            #for i in range(randint(0, h[0]+1)): # +1 -PR-
-            #    ilist.append(choice(["-005","-006","-007","-008"]))#"-" + zero3(randint(5, 8)))
-            #for i in range(randint(0, 1)):
-            #    ilist.append("~" + zero3(item_class_init("~", {"item": "TORCH", "type": "", "values": [1, "TORCHES"], "cost": 10, "grouping": True})))
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
-    #p["type"] -= p["shift_type_of"] # -"shift" -PR-
 
 def start_data():
-    #blank = {"item": "", "type": "", "values": [0, ""], "cost": 0, "grouping": True, "ident": True}
     path = "data/"
     m = {
         "r": [],
         "v": [],
-        "o": [],
         "m": [],
         "sy": 5,
         "sx": 5,
         }
     p = {
         "playertype": "Human Duelist",
-        #"name": "qwe",#at the death -PR-
-        "specials": "", # not used now -PR-
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
-        "maxeat": 2000,#at the depth -PR-
+        "maxeat": 2000,
         "maxhp": 20,
         "hp": 20,
         "hpchange": 1,
@@ -168,10 +155,9 @@ def start_data():
         "bow_damage": 1,
         "attack_hits": 1,
         "bow_hits": 1,
-        "e_attack": get_item(27),
+        "e_attack": get_item(24),
         "e_hand": get_item(33),
-        "e_armor": get_item(16),
-        "e_shield": get_item(24),
+        "e_armor": get_item(17),
         "blessing": 0,
         "fury": 0,
         "y": 0,
@@ -188,7 +174,6 @@ def start_data():
             get_item(0)[:2] + [20] + get_item(0)[3:],
             get_item(3),
             get_item(8),
-            get_item(42),
             #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
             ],
         "time": 0,

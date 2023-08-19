@@ -117,12 +117,12 @@ def map_init_int(m, p, items, type_of, stairs):
                     pokoje.append([y, x, sy, sx])
                     continue
             
-            hm = 10
-            minhm = 8 # should be space on the map -PR-
+            hm = 80
+            minhm = 30 # should be space on the map -PR-
             Spokoje = []
             tryes = 0
             while len(Spokoje) < minhm or tryes < hm:
-                sy, sx = 1+2*randint(0,4), 1+2*randint(0,5)
+                sy, sx = randint(1,3), randint(1,3)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
                 can, tryes = True, tryes + 1
                 for i in pokoje:
@@ -177,7 +177,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     m["r"][j[0]][j[1]] = "_"+k+"."
             pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
         case 2:
-            locate_a_room(m, pokoje, 25, 10, 3, 3, 1, True)
+            locate_a_room(m, pokoje, 25, 10, 1, 2, 1, True)
             locate_a_room(m, pokoje, 15, 0, 1, 1, 0)
             for i in range(len(pokoje)):
                 j = pokoje[i]
