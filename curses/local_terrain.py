@@ -1,3 +1,5 @@
+from random import randint
+
 from local_translator import translate
 from local_item_class import item_class_get
 from local_enemies_class import enemies_class_is_attacked
@@ -54,14 +56,14 @@ def f_items(m, p, npos, stay):
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
+        if len(p["BP"]) < 6:# or i[1] == "-" and in_BP(p["BP"], i):
             p["BP"].append(i)
             merge(p)
             get_equip_values(p)
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
             #if item[1] == "-":
-            echo = translate("YOU TAKE")+" "+translate(item(i))+"'"
+            echo = translate("YOU TAKE")+" '"+translate(item(i))+"'"
         else:
             echo = translate("YOUR BACKPACK IS FULL!")
             return[False, echo, False]
@@ -69,31 +71,34 @@ def f_items(m, p, npos, stay):
         echo = translate("HERE IS")+" '"+translate(item(i))+"'"
     return[True, echo, True]
 
-def f_weapons(m, p, npos, stay):
+def f_some_items(m, p, npos, stay): #only "-" -PR-
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
     i = item_class_get(i)
     if stay:
-        if len(p["BP"]) < 6:# or i["item"] == "-": grouping = False -PR-
+        if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
+            i[2] = randint(1,9)
             p["BP"].append(i)
+            merge(p)
             get_equip_values(p)
-            echo = translate("YOU TAKE")+" "+translate(item(i, 9, p))
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
+            #if item[1] == "-":
+            echo = translate("YOU TAKE")+" '"+translate(item(i))+"'"
         else:
             echo = translate("YOUR BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE IS")+" "+translate(item(i, 9, p))
+        echo = translate("HERE ARE A FEW")+" '"+translate(item(i,10))+"'"
     return[True, echo, True]
 
 def terrain(w, c, m, p, npos, stay):
     # ramp, vmap, p, gold, baner, backpack, echo, moved
     match m["r"][npos[0]][npos[1]][0]:
+        case "-":
+            return f_some_items(m, p, npos, stay)
         case "$":
             return f_gold(m, p, npos, stay)
-        case "-":
-            return f_items(m, p, npos, stay)
         case "*":
             return f_items(m, p, npos, stay)
         case "?":
@@ -107,11 +112,11 @@ def terrain(w, c, m, p, npos, stay):
         case ":":
             return f_block(m, p, npos, stay)
         case "]":
-            return f_weapons(m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         case "}":
-            return f_weapons(m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         case ")":
-            return f_weapons(m, p, npos, stay)
+            return f_items(m, p, npos, stay)
         case "=":
             return [False, translate("THIS TILE IS CLOSED"), False]
         case ".":

@@ -60,11 +60,13 @@ def character(w, c, p):
                 p["strength"] = 11
                 p["dexterity"] = 7
                 p["playertype"] = "HUMAN WARRIOR"
+                p["e_attack"] = get_item(24)
                 break
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
                 p["playertype"] = "HUMAN BANDIT"
+                p["e_attack"] = get_item(24)
                 break
             case "3":
                 #p["playertype"] = "HUMAN DUELIST"
@@ -110,13 +112,12 @@ def prepare_map(m, p):
         i = randint(-1, 1)
         if p["type"] + i in {0,1,2}:
             p["type"] += i
-    #p["type"] += p["shift_type_of"] # +"shift" -PR-
     enemies_class_clear()
     ilist, xp = [], 0
     if type(h[0]) == int:
         p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
         if p["normal_level"]:
-            ilist = randitem(h[0]+5) # +5 -PR-
+            ilist = randitem(h[0]+5, 0, 0)+randitem(1, 0, 4)+randitem(1, 0, 2)# + arrows -PR-
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
 
 def start_data():
@@ -155,9 +156,9 @@ def start_data():
         "bow_damage": 1,
         "attack_hits": 1,
         "bow_hits": 1,
-        "e_attack": get_item(24),
-        "e_hand": get_item(33),
-        "e_armor": get_item(17),
+        "e_attack": get_item(23),
+        "e_hand": get_item(50),
+        "e_armor": get_item(16),
         "blessing": 0,
         "fury": 0,
         "y": 0,

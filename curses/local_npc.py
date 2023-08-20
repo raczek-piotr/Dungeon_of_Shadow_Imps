@@ -5,7 +5,7 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,8,26,27},
+traders = [{5,7,26,27},
            {9,10,11,12,13,14,15,16},
            {25}]
 
@@ -14,11 +14,11 @@ def npc(w, c, m, p, it, stay):
     match it:
         case 0:
             return trader(w, c, m, p, it, "Seller", [
-[["ROCK", "ROCKS"], "-", 5, True, 5],
-[["ARROW", "ARROWS"], "-", 10, True, 20],
-[["BOLT", "BOLTS"], "-", 25, True, 50]])
-        #case 1:
-        #    return trader(w, c, m, p, it, "Mayor", [])
+[["ROCK", "ROCKS"], "-", 5, True, 1],
+[["ARROW", "ARROWS"], "-", 10, True, 2],
+[["BOLT", "BOLTS"], "-", 25, True, 2]])
+        case 1:
+            return trader(w, c, m, p, it, "Powder Monkey", [["-",  [['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]]])
         case 2:
             return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100],[["POTION OF HEALING", 3, 0], "!", 1, True, 100]])
         case 3:
@@ -37,11 +37,16 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
     for i in traders[it]:
         ilist.append(get_item(i)) 
     slots = {str(i) for i in range(len(ilist))}
+    for i in ilist:
+        if i[1] == "-":
+            i[-1] *= i[2]
     while True:
         if q in slots:
             i = ilist[int(q)]
             if (len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i)) and p["gold"] >= i[-1]:
                 p["gold"] -= i[-1]
+                if i[1] == "-":
+                    i[-1] //= i[2]
                 p["BP"].append(i)
                 merge(p)
                 get_equip_values(p)
@@ -60,7 +65,7 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
         w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(ilist)):
-            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, p), c.color_pair(1))
+            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, False), c.color_pair(1))
             t = str(ilist[i][-1])
             w.addstr(i+3, 68, "COST:", c.color_pair(1))
             w.addstr(i+3, 78-len(t), t, c.color_pair(1))

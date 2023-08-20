@@ -89,7 +89,7 @@ def map_init(m, p, items, type_of = 0, stairs = 3):
 
 def map_init_int(m, p, items, type_of, stairs):
     pokoje = []
-    m["sy"], m["sx"] = 33, 33
+    m["sy"], m["sx"] = 31, 31
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["o"] = m["v"].copy()
@@ -117,8 +117,8 @@ def map_init_int(m, p, items, type_of, stairs):
                     pokoje.append([y, x, sy, sx])
                     continue
             
-            hm = 80
-            minhm = 30 # should be space on the map -PR-
+            hm = 10
+            minhm = 5 # should be space on the map -PR-
             Spokoje = []
             tryes = 0
             while len(Spokoje) < minhm or tryes < hm:

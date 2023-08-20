@@ -3,7 +3,7 @@ from local_translator import translate
 spacer = "=----------------------="
 
 def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
-    if arg == 9:
+    if arg >= 9:
         i = item
     else:
         try:
@@ -38,7 +38,10 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                         # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "-":
-            return str(i[2]) + "x " + translate(i[0][0] if i[2] == 0 else i[0][1])
+            r = translate(i[0][0] if (i[2] == 1 and arg != 10) else i[0][1])
+            if arg != 10:
+                r = str(i[2])+"x "+r
+            return r
         case _:
             return translate(i[0][0])
 
@@ -68,17 +71,17 @@ def playerdata(y, p):
         case 13:
             return "  armor: " + str(p["armor"])#+"+"+str(p["shield"])
         case 15:
-            return item(p["BP"], 0)
+            return item(p["BP"], 0, True)
         case 16:
-            return item(p["BP"], 1)
+            return item(p["BP"], 1, True)
         case 17:
-            return "" + item(p["BP"], 2)
+            return "" + item(p["BP"], 2, True)
         case 18:
-            return "" + item(p["BP"], 3)
+            return "" + item(p["BP"], 3, True)
         case 19:
-            return "" + item(p["BP"], 4)
+            return "" + item(p["BP"], 4, True)
         case 20:
-            return "" + item(p["BP"], 5)
+            return "" + item(p["BP"], 5, True)
         case 22:
             return " attack by:"
         case _:
