@@ -12,6 +12,7 @@ from local_item_class import get_item, disable_disabled_weapons, randitem
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
         case "#E":
+            scoreboard_append(w, c, p)
             p["echo"] = translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))
         case "#U":
             p["depth"] -= 1
@@ -48,12 +49,14 @@ def character(w, c, p):
     w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
     w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
+    w.addstr(10, 2, "7 - FUDIT WARRIOR", c.color_pair(1))
+    w.addstr(11, 2, "8 - FUDIT POWDER MONKEY", c.color_pair(1))
     #w.addstr(9, 2, "6 - HOBBIT WARRIOR", c.color_pair(1))
     if w.getmaxyx() != (24,80):
         w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(2))
         w.addstr(22, 79, "|", c.color_pair(3))
         w.addstr(23, 71, "point ->", c.color_pair(3))
-    w.refresh() # w.getkey() makes the same + ... -PR-
+    w.refresh() # w.getkey() makes the same + getch -PR-
     while True:
         match w.getkey():
             case "1":
@@ -83,18 +86,30 @@ def character(w, c, p):
                 #p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
                 #p["arrows_id"] = 1
                 break
-            #case "6":
-            #    p["strength"] = 5
-            #    p["dexterity"] = 2
-            #    p["playertype"] = "HOBBIT WARRIOR"
-            #    p["maxhp"], p["hp"] = 10, 10
-            #    p["basedefend"] = 70
-            #    p["hpcounter"] = 14
-            #    p["maxeat"] *= 7 # hobbits and elfish waybread :) -PR-
-            #    break
+            case "7":
+                p["strength"] = 11
+                p["dexterity"] = 8
+                p["playertype"] = "FUDIT WARRIOR"
+                p["maxhp"], p["hp"] = 16, 16
+                p["basedefend"] = 60
+                p["hpcounter"] = 20
+                p["maxeat"] *= 5
+                p["e_attack"] = get_item(24)
+                break
+            case "8":
+                p["strength"] = 8
+                p["dexterity"] = 11
+                p["playertype"] = "FUDIT POWDER MONKEY"
+                p["maxhp"], p["hp"] = 16, 16
+                p["basedefend"] = 60
+                p["hpcounter"] = 20
+                p["maxeat"] *= 5
+                p["BP"][0] = (get_item(3)[:2] + [20] + get_item(3)[3:])
+                break
             case _:
                 pass
     get_equip_values(p)
+    scoreboard_print(w, c)
     w.clear()
     w.addstr(5, 5, "The angel of the LORD came back a second time and touched YOU and said:", c.color_pair(5))
     w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
@@ -173,8 +188,8 @@ def start_data():
         "fullness": 600,
         "BP": [
             get_item(0)[:2] + [20] + get_item(0)[3:],
-            get_item(3),
-            get_item(8),
+            get_item(6),
+            get_item(7),
             #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
             ],
         "time": 0,
@@ -185,3 +200,86 @@ def start_data():
                 ]
         }
     return m, p, path
+
+def scoreboard_print(w, c):
+    try:
+        with open("scores.txt", 'r'):
+            pass
+    except:
+        with open("scores.txt", 'w') as  scores_txt:
+            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]")
+    with open("scores.txt", 'r') as scores_txt:
+        scores = scores_txt.read().split("\n")
+
+    while scores[-1] == "": # empty lines -PR-
+        scores.pop(-1)
+    for t in range(len(scores)):
+        scores[t] = scores[t].split("|")
+    scores = sorted(scores, key = lambda key: int(key[0]))
+
+    w.clear()
+    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
+    scores = scores[:-23:-1]
+    for t in range(len(scores)):
+        try:
+            w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
+            w.addstr(t+1, 8, scores[t][0], c.color_pair(5))
+            w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
+            w.addstr(t+1, 28, scores[t][4], c.color_pair(5))
+            w.addstr(t+1, 33, scores[t][5], c.color_pair(5))
+            w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
+            w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(5))
+        except:
+            pass
+    w.getkey()
+
+
+def scoreboard_append(w, c, p):
+    try:
+        with open("scores.txt", 'r'):
+            pass
+    except:
+        with open("scores.txt", 'w') as  scores_txt:
+            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]")
+
+    points = p["xp"]+(p["attack"]*p["attack_damage"]*p["attack_acc"]*p["attack_hits"])//10+(p["bow"]*p["bow_damage"]*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-44
+    q = ""
+    nick = ""
+    while q not in {"PADENTER","\n", ",", "\x1b"}:
+        if q == "KEY_BACKSPACE":
+            nick = nick[:-1]
+        elif len(nick) >= 20:
+            c.beep()
+        else:
+            nick += q
+        w.clear()
+        w.addstr(2, 36, "NICKNAME:", c.color_pair(4))
+        w.addstr(3, 40-len(nick)//2, nick, c.color_pair(1))
+        q = w.getkey()
+    with open("scores.txt", 'a') as scores_txt:
+        scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|-|"+str(p["BP"])+"\n")
+
+    with open("scores.txt", 'r') as scores_txt:
+        scores = scores_txt.read().split("\n")
+    while scores[-1] == "": # empty lines -PR-
+        scores.pop(-1)
+
+    for t in range(len(scores)):
+        scores[t] = scores[t].split("|")
+    scores = sorted(scores, key = lambda key: int(key[0]))
+
+    w.clear()
+    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
+    scores = scores[:-23:-1]
+    for t in range(len(scores)):
+        try:
+            w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
+            w.addstr(t+1, 8, scores[t][0], c.color_pair(5))
+            w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
+            w.addstr(t+1, 28, scores[t][4], c.color_pair(5))
+            w.addstr(t+1, 33, scores[t][5], c.color_pair(5))
+            w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
+            w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(5))
+        except:
+            pass
+    w.getkey()

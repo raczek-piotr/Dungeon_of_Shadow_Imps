@@ -78,7 +78,7 @@ def mainloop(w):
             if p["hp"] <= 0:
                 break
     while True: # die - PR
-        menager(w, c, "#E", m, p)
+        menager(w, c, "#E", m, p) #End game -PR-
         w.clear()
         output(w, c, m, p)#translator
         w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-21))
