@@ -57,7 +57,7 @@ def mainloop(w):
             if p["blessing"]:
                 p["blessing"] -= 1
             while p["xp"] >= p["needxp"]:
-                p["needxp"] += 20 + 5*p["lw"] #(p["lw"] + 4) * (p["lw"] + 5) * (2 * p["lw"] + 9) // 15 - 3 # sum of 2*((x+4)**2)//5 -PR-
+                p["needxp"] += 30 + 15*p["lw"]
                 p["lw"] += 1
                 p["maxhp"] += p["hpchange"]
                 p["hp"] += p["hpchange"]
@@ -77,11 +77,11 @@ def mainloop(w):
                 p["hp"] = p["maxhp"]
             if p["hp"] <= 0:
                 break
-    while True: # die - PR
-        menager(w, c, "#E", m, p) #End game -PR-
-        w.clear()
-        output(w, c, m, p)#translator
-        w.addstr(23, 0, p["echo"]+"    "+("SCORE")+": "+str(5*(2*p["lw"]+p["attack"]+p["bow"]+p["armor"])+p["depth"]+p["xp"]-21))
-        w.getkey()
+    menager(w, c, "#E", m, p) #End game -PR-
+    w.clear()
+    output(w, c, m, p)#translator
+    w.addstr(23, 0, p["echo"]+"...")
+    w.addstr(23, 56, "score: "+str(p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-74), c.color_pair(4))
+    w.getkey()
 
 wrapper(mainloop)

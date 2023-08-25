@@ -13,11 +13,12 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
     match i[1]:
         case "]":
             r = translate(i[0][0])+" "+str(i[2][0])+"D"+str(i[2][1])+" "+(str(i[2][2])+"H"+str(i[2][3])+"%")
-            #if p:
-            #    i = i["values"][2][0]-p["strength"], i["values"][2][1]-p["dexterity"]
-            #    i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
-            #    if i[0] > 0 or i[1] > 0:
-            #        r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE") # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
+            
+            if p:
+                i = i[2][-2]-p["strength"], i[2][-1]-p["dexterity"]
+                i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
+                if i[0] > 0 or i[1] > 0:
+                    r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
             return r
         case "}":
             r = translate(i[0][0])+" "+str(i[2][0])+"D"+str(i[2][1])+" "+(str(i[2][2])+"H"+str(i[2][3])+"%")
@@ -27,8 +28,8 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
                 i = i[0] if i[0] > 0 else 0, i[1] if i[1] > 0 else 0
                 if i[0] > 0 or i[1] > 0:
                     r += " "+translate("YOU NEED")+" "+str(i[0])+"|"+str(i[1])+" "+translate("MORE")
-                        # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
+                        # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
         case ")":
             r = translate(i[0][0])+" "+str(i[2][0])
             if p:
@@ -71,17 +72,17 @@ def playerdata(y, p):
         case 13:
             return "  armor: " + str(p["armor"])#+"+"+str(p["shield"])
         case 15:
-            return item(p["BP"], 0, True)
+            return item(p["BP"], 0)
         case 16:
-            return item(p["BP"], 1, True)
+            return item(p["BP"], 1)
         case 17:
-            return "" + item(p["BP"], 2, True)
+            return "" + item(p["BP"], 2)
         case 18:
-            return "" + item(p["BP"], 3, True)
+            return "" + item(p["BP"], 3)
         case 19:
-            return "" + item(p["BP"], 4, True)
+            return "" + item(p["BP"], 4)
         case 20:
-            return "" + item(p["BP"], 5, True)
+            return "" + item(p["BP"], 5)
         case 22:
             return " attack by:"
         case _:
@@ -104,13 +105,13 @@ def output(w, c, m, p):
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
-                    if t[tx] == "":
-                        t[tx] = "!"
                     i = t[tx][0]
                     if i in {"@","]","}",")","~","$","*","-","?","!"}:
                         col = 2
                     elif i == "#":
                         col = 5
+                    elif i == "=":
+                        col = 6
                     elif i in {"<",">","+",",",":"}:
                         col = 4
                     elif i.upper() != i.lower():

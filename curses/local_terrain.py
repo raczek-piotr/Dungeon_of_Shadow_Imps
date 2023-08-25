@@ -118,7 +118,7 @@ def terrain(w, c, m, p, npos, stay):
         case ")":
             return f_items(m, p, npos, stay)
         case "=":
-            return [False, translate("THIS TILE IS CLOSED"), False]
+            return [True, "SHALLOW WATER", True]
         case ".":
             return [True, "", True]
         case ",":

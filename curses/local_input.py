@@ -59,7 +59,7 @@ def item_menager(w, c, m, p):
                 elif t[0][2] == 1:
                     mx, my = m["sx"]-2, m["sy"]-2
                     q = "#"
-                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} and q != "  ":
+                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} or q == "  ":
                         x, y = randint(1, mx), randint(1, my)
                         q = m["r"][y][x]
                     p["x"], p["y"] = x, y
@@ -130,21 +130,35 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Tiles:", c.color_pair(4))
     w.addstr(0, 61, "Version = pre_0.2.0", c.color_pair(1))
-    w.addstr(1, 2, "@ - you", c.color_pair(5))
+    w.addstr(1, 2, "@/  - you/", c.color_pair(1))
+    w.addstr(1, 4, "@", c.color_pair(2))
+    w.addstr(1, 12, "NPC", c.color_pair(2))
+    w.addstr(1, 28, ". - light tile", c.color_pair(5))
+    w.addstr(1, 54, "  - dark tile", c.color_pair(4))
     w.addstr(2, 2, "# - wall", c.color_pair(5))
-    w.addstr(3, 2, "+ - closed door", c.color_pair(5))
-    w.addstr(4, 2, ", - open door", c.color_pair(5))
-    w.addstr(5, 2, ". - light tile", c.color_pair(5))
-    w.addstr(6, 2, '= - closed tile (You have to kill a Boss "B")', c.color_pair(5))
-    w.addstr(7, 2, "> - stairs down", c.color_pair(5))
-    w.addstr(8, 2, "< - stairs up", c.color_pair(5))
-    w.addstr(9, 2, "] - weapon", c.color_pair(5))
-    w.addstr(10, 2, "} - ranged weapon", c.color_pair(5))
-    w.addstr(11, 2, ") - armor", c.color_pair(5))
-    w.addstr(12, 2, "- - arrows", c.color_pair(5))
-    w.addstr(13, 2, "~ - torch", c.color_pair(5))
-    w.addstr(14, 2, "? - mixture", c.color_pair(5))
-    
+    w.addstr(2, 28, "+ - closed door", c.color_pair(4))
+    w.addstr(2, 54, ", - open door", c.color_pair(4))
+    w.addstr(3, 2, "> - stairs down", c.color_pair(1))
+    w.addstr(3, 28, "< - stairs up", c.color_pair(1))
+
+    w.addstr(4, 2, '% - tree/forest', c.color_pair(2))
+    w.addstr(4, 28, '= - water/river/lake', c.color_pair(6))
+    w.addstr(4, 54, '^ - very steep hill', c.color_pair(1))
+
+    w.addstr(6, 0, "Tiles (objects):", c.color_pair(4))
+    w.addstr(7, 2, "] - melee weapon", c.color_pair(2))
+    w.addstr(7, 28, "} - ranged weapon", c.color_pair(2))
+    w.addstr(7, 54, ") - armor", c.color_pair(2))
+
+    w.addstr(6, 54, "- - arrows", c.color_pair(2))
+
+    w.addstr(6, 2, "~ - torch", c.color_pair(2))
+    w.addstr(6, 28, "* - food", c.color_pair(2))
+
+    w.addstr(7, 2, "? - mixture", c.color_pair(2))
+    w.addstr(7, 28, "! - potion", c.color_pair(2))
+
+
     w.addstr(16, 0, "Movement:", c.color_pair(4))
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))

@@ -35,6 +35,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(3, 5, 16)
             c.init_pair(4, 136, 16)
             c.init_pair(5, 245, 16)#148 :) -PR-
+            c.init_pair(6, 57, 16)
             character(w, c, p)
             prepare_map(m, p)
             return m, p, path
@@ -104,6 +105,8 @@ def character(w, c, p):
                 p["basedefend"] = 60
                 p["hpcounter"] = 20
                 p["maxeat"] *= 5
+                p["e_hand"] = get_item(59)
+                p["e_attack"] = [['SCREW', 'e_attack'], ']', [1, 1, 1, 45, 5, 5], True, 4]
                 p["BP"][0] = (get_item(3)[:2] + [20] + get_item(3)[3:])
                 break
             case _:
@@ -133,6 +136,8 @@ def prepare_map(m, p):
         p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
         if p["normal_level"]:
             ilist = randitem(h[0]+5, 0, 0)+randitem(1, 0, 4)+randitem(1, 0, 2)# + arrows -PR-
+            for _ in range(randint(0,5)):
+                ilist.append("$"+zero3(randint(3,5+5*p["type"])))
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
 
 def start_data():
@@ -153,7 +158,7 @@ def start_data():
         "hp": 20,
         "hpchange": 1,
         "hpcounter": 10,
-        "needxp": 20,
+        "needxp": 30,
         "xp": 0,
         "lw": 1,
         "depth": 0,
@@ -207,7 +212,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]")
+            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]\n")
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 
@@ -240,9 +245,9 @@ def scoreboard_append(w, c, p):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]")
+            scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]\n")
 
-    points = p["xp"]+(p["attack"]*p["attack_damage"]*p["attack_acc"]*p["attack_hits"])//10+(p["bow"]*p["bow_damage"]*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-44
+    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-74
     q = ""
     nick = ""
     while q not in {"PADENTER","\n", ",", "\x1b"}:
@@ -253,11 +258,11 @@ def scoreboard_append(w, c, p):
         else:
             nick += q
         w.clear()
-        w.addstr(2, 36, "NICKNAME:", c.color_pair(4))
-        w.addstr(3, 40-len(nick)//2, nick, c.color_pair(1))
+        w.addstr(2, 31, "NICKNAME: (max: 20)", c.color_pair(4))
+        w.addstr(3, 31, nick, c.color_pair(1))
         q = w.getkey()
     with open("scores.txt", 'a') as scores_txt:
-        scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|-|"+str(p["BP"])+"\n")
+        scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|L|"+str(p["BP"])+"\n")
 
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")

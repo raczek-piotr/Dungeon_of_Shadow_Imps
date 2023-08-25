@@ -6,7 +6,7 @@ from local_equip import get_equip_values, merge
 
 
 traders = [{5,7,26,27},
-           {9,10,11,12,13,14,15,16},
+           {59},
            {25}]
 
 def npc(w, c, m, p, it, stay):
@@ -18,13 +18,13 @@ def npc(w, c, m, p, it, stay):
 [["ARROW", "ARROWS"], "-", 10, True, 2],
 [["BOLT", "BOLTS"], "-", 25, True, 2]])
         case 1:
-            return trader(w, c, m, p, it, "Powder Monkey", [["-",  [['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]]])
+            return trader(w, c, m, p, it, "Powder Monkey", [[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]])
         case 2:
             return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100],[["POTION OF HEALING", 3, 0], "!", 1, True, 100]])
         case 3:
             return[False, translate("- HEY! I'M DOING MY TOILET, GO AWAY!"), False]
         case _:
-            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- ASK BLUE ROBIN FOR HELP", "- WHAT A NICE DAY!", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- IF YOU HAVE NONETHING TO DO, GO TO THE DUNGEON"])), False]
+            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE FIRST BOOK!", "- WHAT A NICE DAY?", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- IF YOU HAVE NONETHING TO DO, GO TO THE DUNGEON"])), False]
 
 def in_BP(BP, item): #copy is in local_terrain.py
     for i in BP:
@@ -54,9 +54,9 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
                 return[False, echo, True]
             else:
                 if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
-                    echo = translate("YOUR BACKPACK IS FULL!")
-                else:
                     echo = translate("YOU DON'T HAVE ENOUGH MONEY!")
+                else:
+                    echo = translate("YOUR BACKPACK IS FULL!")
                 return[False, echo, False]
         elif q in {"PADENTER","\n", ",", "\x1b"}:
             return[False, p["echo"], False]

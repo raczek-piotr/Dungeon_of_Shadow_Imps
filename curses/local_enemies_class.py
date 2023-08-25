@@ -12,7 +12,7 @@ def flag(f, n):
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
 e = [
-    ["r",4,2,3,0,5,"drop",5,1,5,"RAT", 8], #0
+    ["r",4,2,3,1,5,"drop",5,1,5,"RAT", 8], #0
     ["m",3,2,2,1,5,"drop",5,1,5,"MICE", 0], #1
     ["f",1,2,1,0,3,"drop",5,1,5,"FLY", 10], #2
     ["u",10,3,11,0,7,"drop",10,6,10,"URCHIN", 9], #3
@@ -26,17 +26,24 @@ e = [
     ]
 enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],e[8],e[9],e[10]]
 enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],e[9],e[10]]
-enemies_half = enemies_light+enemies_dark
-enemies_light = enemies_light+enemies_light
-enemies_dark = enemies_dark+enemies_dark
-del e # e is used in functions leater -PR-
+#enemies_half = enemies_light+enemies_dark
+#enemies_light = enemies_light+enemies_light
+#enemies_dark = enemies_dark+enemies_dark
+del e # e is used in functions leater, but data isn't deleted -PR-
 
-all_enemies = [enemies_light, enemies_half, enemies_dark, enemies_half]
+enemies_part1 = [enemies_light,
+                 enemies_light,
+                 enemies_dark,
+                 enemies_light]
+enemies_part2 = [enemies_light,
+                 enemies_dark,
+                 enemies_dark,
+                 enemies_dark]
 
 
 def enemies_class_clear():
     global c, a, tlist, exlist, heads, elist # c - class, exlist - tlist + heads -PR-
-    tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">"}
+    tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">","="}
     exlist = tlist.copy() # = tlist + heads -PR-
     heads = set()
     c, a = [], []
@@ -44,13 +51,22 @@ def enemies_class_clear():
 
 def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
     #global enemies_likes_light, enemies_half_light, enemies_not_light
-    enemies = all_enemies[type_of%4]
+    if lw == 0:
+        lw = 1
     global c, a, exlist, heads, elist
     if elist == []:
-        for e in enemies:
+        for e in enemies_part1[type_of%4]:
             if e[8] <= lw and e[9] >= lw:
                 for _ in range(2):#randint(2,2)):
                     elist.append(e)
+        for e in enemies_part2[type_of%4]:
+            if e[8] <= lw and e[9] >= lw:
+                for _ in range(2):#randint(2,2)):
+                    elist.append(e)
+    if elist == []:
+        print(enemies_part1[type_of%4][0][8:10])
+        while True:
+            pass
 
     e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-
     e[8], e[9] = x, y
@@ -188,8 +204,8 @@ def randmove(m, p, q, it, plus_it):
     if m["r"][direction[0]][direction[1]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
             q[9], q[8] = direction
-        else:
-            q[1] = 0
+        #else: # on the randmove, enemies don't fall, because they are cautious -PR-
+        #    q[1] = 0
     m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
     if m["r"][q[9]][q[8]][-1] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
