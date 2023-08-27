@@ -24,32 +24,29 @@ def map_init_str(m, p, items, type_of):
             t = rm[y].split(";")
             for x in range(m["sx"]-2):
                 m["r"][y+1][x+1] = t[x]
-                if m["r"][y+1][x+1] == "_":
-                    m["r"][y+1][x+1] += "."
-                elif m["r"][y+1][x+1][0] == "_":
-                    if m["r"][y+1][x+1][1] == "i":
-                        l -= 1
-                        it = rm[l].split(" ")
-                        e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
-                        m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                    elif m["r"][y+1][x+1][1] == "w":
-                        l -= 1
-                        it = rm[l].split("|")
-                        e = it[-1].split(";")
-                        for i in range(len(e)):
-                            if e[i][0] == '"':
-                                e[i] = e[i][1:]
-                            else:
-                                e[i] = int(e[i])
-                        e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
-                        m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                    elif m["r"][y+1][x+1][0] == "@": # for the future -PR-
-                        pass
-                elif m["r"][y+1][x+1][0] == "e":
-                    l -= 1
-                    e = rm[l].split(" ")
-                    it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
-                    m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
+                #if m["r"][y+1][x+1][1] == "i":
+                #    l -= 1
+                #    it = rm[l].split(" ")
+                #    e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
+                #    m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                #elif m["r"][y+1][x+1][1] == "w":
+                #    l -= 1
+                #    it = rm[l].split("|")
+                #    e = it[-1].split(";")
+                #    for i in range(len(e)):
+                #        if e[i][0] == '"':
+                #            e[i] = e[i][1:]
+                #        else:
+                #            e[i] = int(e[i])
+                #    e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
+                #    m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
+                #elif m["r"][y+1][x+1][0] == "@": # for the future -PR-
+                #    pass
+                #if m["r"][y+1][x+1][0] == "e":
+                #    l -= 1
+                #    e = rm[l].split(" ")
+                #    it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
+                #    m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
     return(int(ty), int(tx))
 
 
@@ -149,29 +146,26 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
                     for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
-                        m["r"][y][x] = "_."
+                        m["r"][y][x] = "."
             for it in range(hm):
                 for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
                     for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
             if stairs > 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_>."
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">."
             if stairs % 2 == 1:
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "_<."
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<."
 
             pokoje = Spokoje
             l_pokoje = len(pokoje)-2 # clear room for player to spawn -PR-
             i = randint(0, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
-                while m["r"][j[0]][j[1]] not in {"_.", " "}:
+                while m["r"][j[0]][j[1]] not in {".", " "}:
                     i = randint(0, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                if m["r"][j[0]][j[1]] == " ":
-                    m["r"][j[0]][j[1]] = k+" "
-                else:
-                    m["r"][j[0]][j[1]] = "_"+k+"."
+                m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
             pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
         case 2:
             pokoje, tryes, hm = [], 0, 0
@@ -234,8 +228,8 @@ def map_init_int(m, p, items, type_of, stairs):
                     i = randint(3, l_pokoje) #ran=3 -PR-
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
                 m["r"][j[0]][j[1]] = k+" "
-            RandomTileConnect(m, "=")
-            RandomTileConnect(m, "=")
+            RandomTileConnect(m, "= ")
+            RandomTileConnect(m, "= ")
         case 3:
             m["r"] = [[choice(["#","#",": "]) for _ in range(m["sx"])] for _ in range(m["sy"])]
             for i in range(m["sx"]):
@@ -253,7 +247,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 for y in range(j[0]-1, j[0]+j[2]+1):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         m["r"][y][x] = "|"
-            flor = "_."
+            flor = "."
             for i in range(l_pokoje):
                 j = pokoje[i]
                 if i == ran: #rest of rooms have no light
@@ -303,7 +297,7 @@ def map_init_int(m, p, items, type_of, stairs):
                             m["r"][y][x] = ":."
                         else:
                             if randint(0, 7) == 0:
-                                m["r"][y][x] = "_:."
+                                m["r"][y][x] = ":."
             l_pokoje -= 1
             i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
@@ -318,7 +312,7 @@ def map_init_int(m, p, items, type_of, stairs):
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
-            m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "_."
+            m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "."
 
         case _: # 0 -PR-
             hm = 25
@@ -351,37 +345,34 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
                     for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
-                        m["r"][y][x] = "_."
+                        m["r"][y][x] = "."
             for it in range(hm):
                 for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
                     for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
             if stairs > 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "_>."
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">."
             if stairs % 2 == 1:
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "_<."
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<."
             l_pokoje = hm-2
             i = randint(0, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
             for k in items:
-                while m["r"][j[0]][j[1]] != "_.":
+                while m["r"][j[0]][j[1]] != ".":
                     i = randint(0, l_pokoje)
                     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-                m["r"][j[0]][j[1]] = "_"+k+"."
+                m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
 
     more = True # here are added enemies on "battle field" :) -PR-
     while more:
         i = randint(1, l_pokoje) # (1→ran) player with nonething in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        while m["r"][j[0]][j[1]] != "_." and m["r"][j[0]][j[1]] != " ":
+        while m["r"][j[0]][j[1]] not in {" ",".","= "}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         e_id, more = enemies_class_add(j[1], j[0], type_of, p["depth"])
-        if m["r"][j[0]][j[1]] != " ":
-            m["r"][j[0]][j[1]] = "_"+e_id+"."
-        else:
-            m["r"][j[0]][j[1]] = e_id+" "
+        m["r"][j[0]][j[1]] = e_id+m["r"][j[0]][j[1]]
     return(pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2)
         #rmap[i[0]+randint(1-sy, sy-1)][i[1]+randint(1-sx, sx-1)] = item
 
@@ -401,7 +392,7 @@ def RegularConnect(m, p_end, p_start):
                 direction += 1
             if m["r"][k][p_start[1]] == "|" or m["r"][k][p_start[1]] == "+":
                 m["r"][k][p_start[1]] = "+"
-            elif m["r"][k][p_start[0]] not in {"_.","=","+"}:
+            elif m["r"][k][p_start[0]] not in {".","= ","+"}:
                 m["r"][k][p_start[1]] = " "
             p_start[0] = 2*k-p_start[0]
             m["r"][p_start[0]][p_start[1]] = " "
@@ -415,7 +406,7 @@ def RegularConnect(m, p_end, p_start):
                 direction -= 1
             if m["r"][p_start[0]][k] == "|" or m["r"][p_start[0]][k] == "+":
                 m["r"][p_start[0]][k] = "+"
-            elif m["r"][p_start[0]][k] not in {"_.","=","+"}:
+            elif m["r"][p_start[0]][k] not in {".","= ","+"}:
                 m["r"][p_start[0]][k] = " "
             p_start[1] = 2*k-p_start[1]
             m["r"][p_start[0]][p_start[1]] = " "
@@ -431,7 +422,10 @@ def RandomTileConnect(m, tile):
     p_end[direction], p_start[direction] = randint(1, p_end[direction]-2), randint(1, p_start[direction]-2)
     direction = (direction+1)%2
     p_end[direction], p_start[direction] = p_end[direction]-2, 1
+    if randint(0,1):
+        p_start, p_end = p_end, p_start
     m["r"][p_start[0]][p_start[1]] = tile
+    change = {" ","#","^","+"}
     goal = True # I have the goal -PR-
     while goal:
         if direction == 0:
@@ -442,8 +436,12 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[0]
                 direction += 1
-            if m["r"][k][p_start[1]] in {"#"," ","+",": ",":."}:
+            if m["r"][k][p_start[1]] in change:
                 m["r"][k][p_start[1]] = tile
+            elif len(m["r"][k][p_start[1]]) >= 4: #@000 + something? -PR-
+                m["r"][k][p_start[1]] = m["r"][k][p_start[1]][:4]+tile
+            elif m["r"][k][p_start[1]] == "$":
+                m["r"][k][p_start[1]] = "$"+tile
             p_start[0] = k#2*k-p_start[0]
             #if m["r"][p_start[0]][p_start[1]] in {"#"," ","+",": ",":."}:
             #    m["r"][p_start[0]][p_start[1]] = "="
@@ -455,8 +453,12 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[1]
                 direction -= 1
-            if m["r"][p_start[0]][k] in {"#"," ","+",": ",":."}:
+            if m["r"][p_start[0]][k] in change:
                 m["r"][p_start[0]][k] = tile
+            elif len(m["r"][k][p_start[1]]) >= 4: #@000 + something? -PR-
+                m["r"][p_start[0]][k] = m["r"][p_start[0]][k][:4]+tile
+            elif m["r"][p_start[0]][k] == "$":
+                m["r"][p_start[0]][k] = "$"+tile
             p_start[1] = k#2*k-p_start[1]
             #if m["r"][p_start[0]][p_start[1]] in {"#"," ","+",": ",":."}:
             #    m["r"][p_start[0]][p_start[1]] = "="

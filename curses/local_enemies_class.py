@@ -12,17 +12,17 @@ def flag(f, n):
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
 e = [
-    ["r",4,2,3,1,5,"drop",5,1,5,"RAT", 8], #0
-    ["m",3,2,2,1,5,"drop",5,1,5,"MICE", 0], #1
-    ["f",1,2,1,0,3,"drop",5,1,5,"FLY", 10], #2
-    ["u",10,3,11,0,7,"drop",10,6,10,"URCHIN", 9], #3
-    ["w",7,3,4,5,7,"drop",10,6,10,"WORM", 0], #4
-    ["c",5,4,4,2,4,"drop",10,6,10,"CENTIPEDE", 0], #5
-    ["S",12,9,10,3,5,"drop",15,11,15,"SNAKE", 14], #6
-    ["b",10,7,5,0,7,"drop",15,11,15,"BAT", 12], #7
-    ["F",3,5,5,1,3,"drop",15,11,15,"POISON DART FROG", 2], #8
-    ["t",11,6,14,0,7,"drop",20,16,20,"THIEF", 0], #9
-    ["a",7,3,10,1,5,"drop",20,16,20,"ANT (the acid shooter)", 3], #10
+    ["r",4,2,3,1,5,"drop",2,1,2,"RAT", 8], #0
+    ["m",3,2,2,1,5,"drop",2,1,2,"MICE", 0], #1
+    ["f",1,2,1,1,3,"drop",2,1,2,"FLY", 10], #2
+    ["u",10,3,11,1,7,"drop",4,3,4,"URCHIN", 9], #3
+    ["w",7,3,4,5,7,"drop",4,3,4,"WORM", 0], #4
+    ["c",5,4,4,2,4,"drop",4,3,4,"CENTIPEDE", 0], #5
+    ["S",12,9,10,3,5,"drop",6,5,6,"SNAKE", 14], #6
+    ["b",10,7,5,1,7,"drop",6,5,6,"BAT", 12], #7
+    ["F",3,5,5,1,3,"drop",7,9,7,"POISON DART FROG", 2], #8
+    ["t",11,6,14,1,7,"drop",7,9,7,"THIEF", 0], #9
+    ["a",7,3,10,1,5,"drop",7,9,7,"ANT (the acid shooter)", 3], #10
     ]
 enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],e[8],e[9],e[10]]
 enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],e[9],e[10]]
@@ -43,7 +43,7 @@ enemies_part2 = [enemies_light,
 
 def enemies_class_clear():
     global c, a, tlist, exlist, heads, elist # c - class, exlist - tlist + heads -PR-
-    tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">","="}
+    tlist = {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%"}
     exlist = tlist.copy() # = tlist + heads -PR-
     heads = set()
     c, a = [], []

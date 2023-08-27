@@ -106,12 +106,14 @@ def output(w, c, m, p):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
                     i = t[tx][0]
-                    if i in {"@","]","}",")","~","$","*","-","?","!"}:
+                    if i in {"@","]","}",")","~","$","*","-","?","!","%"}:
                         col = 2
                     elif i == "#":
                         col = 5
                     elif i == "=":
                         col = 6
+                    elif i == "&":
+                        col = 7
                     elif i in {"<",">","+",",",":"}:
                         col = 4
                     elif i.upper() != i.lower():

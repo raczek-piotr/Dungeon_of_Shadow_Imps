@@ -31,8 +31,8 @@ def f_gold(m, p, npos, stay):
 
 def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = "_,"
-    m["v"][npy][npx] = "_,"
+    m["r"][npy][npx] = ","
+    m["v"][npy][npx] = ","
     echo = translate("YOU OPEN A DOOR")
     return[False, echo, True]
 
@@ -118,7 +118,11 @@ def terrain(w, c, m, p, npos, stay):
         case ")":
             return f_items(m, p, npos, stay)
         case "=":
-            return [True, "SHALLOW WATER", True]
+            return [True, translate("SHALLOW WATER"), True]
+        case "%":
+            return [True, translate("NATURE AROUND YOU"), True]
+        case "&":
+            return [False, translate("HERE IS LAVA!"), False]
         case ".":
             return [True, "", True]
         case ",":

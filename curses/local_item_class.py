@@ -7,10 +7,10 @@ item = [
 ["-",  [['ARROW', 'ARROWS'], '-', 1, True, 2]],#1
 ["-",  [['BOLT', 'BOLTS'], '-', 1, True, 2]],#2
 ["-",  [['9mm AMMO', '9mm AMMOS'], '-', 1, True, 3]],#3
-["*",  [['MOLD', 0, 200], '*', 1, True, 3]],#4
-["*",  [['BREAD', 0, 600], '*', 1, True, 13]],#5
-["*",  [['RATION OF FOOD', 0, 1000], '*', 1, True, 25]],#6
-["~",  [['TORCH', 1, 800], '~', 1, True, 19]],#7
+["*",  [['MOLD', 0, 2000], '*', 1, True, 3]],#4
+["*",  [['BREAD', 0, 6000], '*', 1, True, 13]],#5
+["*",  [['RATION OF FOOD', 0, 10000], '*', 1, True, 25]],#6
+["~",  [['TORCH', 1, 8000], '~', 1, True, 19]],#7
 ["?",  [['SCROLL', 2, 0], '?', 1, False, 100]],#8
 ["?",  [['SCROLL', 2, 1], '?', 1, False, 100]],#9
 ["?",  [['SCROLL', 2, 2], '?', 1, False, 100]],#10
@@ -20,8 +20,8 @@ item = [
 ["!",  [['POTION', 3, 2], '!', 1, False, 100]],#14
 ["!",  [['POTION', 3, 3], '!', 1, False, 5]],#15
 [")",  [['A T-SHIRT', 'e_armor'], ')', [0, 1], True, 0]],#16
-[")",  [['SOFT LEATHER', 'e_armor'], ')', [1, 16], True, 30]],#17
-[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 21], True, 130]],#18
+[")",  [['SOFT LEATHER', 'e_armor'], ')', [1, 3], True, 30]],#17
+[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 7], True, 130]],#18
 [")",  [['LEATHER MAIL', 'e_armor'], ')', [4, 41], True, 520]],#19
 [")",  [['CHAIN MAIL', 'e_armor'], ')', [5, 51], True, 810]],#20
 [")",  [['CHAIN ARMOR', 'e_armor'], ')', [7, 61], True, 1595]],#21
@@ -82,14 +82,6 @@ def get_item_more(it):
     if q[1] in {"]",")","}"}:
         q[2] = item[it][1][2].copy()
     return q
-
-def disable_disabled_weapons(s, d):
-    global item
-    #for i in range(len(item)):
-    #    if item[i][0] in {"]","}"}:
-    #        t = item[i][1][2][2]
-    #        if t[0] > s+3 or t[1] > d+3:
-    #            item[i] = item[(i%4+5)]
 
 def randitem(hm, p = 0, k = 0): # how many -PR-
     global item

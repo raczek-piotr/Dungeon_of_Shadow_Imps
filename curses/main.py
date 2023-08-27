@@ -8,6 +8,8 @@ from local_enemies_class import enemies_class_update
 from local_input_key import get_in, player_move
 from local_input import keyin
 from local_terrain import terrain
+# alwayes
+from local_scripts import sort
 
 
 from local_menager import menager
@@ -22,6 +24,7 @@ def mainloop(w):
     test_room(m, [p["y"], p["x"]])
 
     while p["hp"] > 0:
+        sort(p)
         c.flushinp() # I want no flush -PR-
         w.clear()
         output(w, c, m, p)

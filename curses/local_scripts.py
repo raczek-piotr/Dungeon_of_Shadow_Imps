@@ -23,6 +23,8 @@ def zero3(i):
         i = "0" + i
     return i
 
+def sort(p): p["BP"].sort(reverse=True, key = lambda key: key[1]+key[0][0])
+
 def is_boss_killed(m, p, head): #Boss is killed (if)-PR-
     if head == "B":
         p["strength"] += 1

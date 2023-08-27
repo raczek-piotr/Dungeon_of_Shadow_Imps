@@ -6,7 +6,7 @@ from local_enemies_class import enemies_class_clear
 
 from local_equip import get_equip_values
 from local_translator import translate
-from local_item_class import get_item, disable_disabled_weapons, randitem
+from local_item_class import get_item, randitem
 
 
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
@@ -36,6 +36,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(4, 136, 16)
             c.init_pair(5, 245, 16)#148 :) -PR-
             c.init_pair(6, 57, 16)
+            c.init_pair(7, 196, 16)
             character(w, c, p)
             prepare_map(m, p)
             return m, p, path
@@ -92,7 +93,7 @@ def character(w, c, p):
                 p["dexterity"] = 8
                 p["playertype"] = "FUDIT WARRIOR"
                 p["maxhp"], p["hp"] = 16, 16
-                p["basedefend"] = 60
+                p["basedefend"] = 70
                 p["hpcounter"] = 20
                 p["maxeat"] *= 5
                 p["e_attack"] = get_item(24)
@@ -102,12 +103,12 @@ def character(w, c, p):
                 p["dexterity"] = 11
                 p["playertype"] = "FUDIT POWDER MONKEY"
                 p["maxhp"], p["hp"] = 16, 16
-                p["basedefend"] = 60
+                p["basedefend"] = 70
                 p["hpcounter"] = 20
                 p["maxeat"] *= 5
                 p["e_hand"] = get_item(59)
                 p["e_attack"] = [['SCREW', 'e_attack'], ']', [1, 1, 1, 45, 5, 5], True, 4]
-                p["BP"][0] = (get_item(3)[:2] + [20] + get_item(3)[3:])
+                p["BP"][0] = (get_item(3)[:2] + [50] + get_item(3)[3:])
                 break
             case _:
                 pass
@@ -135,7 +136,7 @@ def prepare_map(m, p):
     if type(h[0]) == int:
         p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
         if p["normal_level"]:
-            ilist = randitem(h[0]+5, 0, 0)+randitem(1, 0, 4)+randitem(1, 0, 2)# + arrows -PR-
+            ilist = randitem(h[0]+5, 8, 0)+randitem(2, 0, 4)# + arrows -PR-
             for _ in range(randint(0,5)):
                 ilist.append("$"+zero3(randint(3,5+5*p["type"])))
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
@@ -153,7 +154,7 @@ def start_data():
         "playertype": "Human Duelist",
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
-        "maxeat": 2000,
+        "maxeat": 20000,
         "maxhp": 20,
         "hp": 20,
         "hpchange": 1,
@@ -188,9 +189,9 @@ def start_data():
         "wasattackby": "",
         "echo": "",
         "torch": True,
-        "torchtime": 800,
+        "torchtime": 1200,
         "starving": False,
-        "fullness": 600,
+        "fullness": 2000,
         "BP": [
             get_item(0)[:2] + [20] + get_item(0)[3:],
             get_item(6),
@@ -201,7 +202,7 @@ def start_data():
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["surface",3]],
+        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["fudit_village",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["surface",3]],
                 ]
         }
     return m, p, path
@@ -226,16 +227,14 @@ def scoreboard_print(w, c):
     w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
     scores = scores[:-23:-1]
     for t in range(len(scores)):
-        try:
-            w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
-            w.addstr(t+1, 8, scores[t][0], c.color_pair(5))
-            w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
-            w.addstr(t+1, 28, scores[t][4], c.color_pair(5))
-            w.addstr(t+1, 33, scores[t][5], c.color_pair(5))
-            w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
-            w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(5))
-        except:
-            pass
+        w.addstr(t+1, 1, str(t)+".", c.color_pair(2))
+        w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
+        w.addstr(t+1, 8, scores[t][0], c.color_pair(1))
+        w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
+        w.addstr(t+1, 28, scores[t][4], c.color_pair(1))
+        w.addstr(t+1, 33, scores[t][5], c.color_pair(1))
+        w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
+        w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(1))
     w.getkey()
 
 
@@ -277,14 +276,12 @@ def scoreboard_append(w, c, p):
     w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
     scores = scores[:-23:-1]
     for t in range(len(scores)):
-        try:
-            w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
-            w.addstr(t+1, 8, scores[t][0], c.color_pair(5))
-            w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
-            w.addstr(t+1, 28, scores[t][4], c.color_pair(5))
-            w.addstr(t+1, 33, scores[t][5], c.color_pair(5))
-            w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
-            w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(5))
-        except:
-            pass
+        w.addstr(t+1, 1, str(t)+".", c.color_pair(2))
+        w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
+        w.addstr(t+1, 8, scores[t][0], c.color_pair(1))
+        w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
+        w.addstr(t+1, 28, scores[t][4], c.color_pair(1))
+        w.addstr(t+1, 33, scores[t][5], c.color_pair(1))
+        w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
+        w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(1))
     w.getkey()

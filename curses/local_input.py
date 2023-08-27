@@ -9,8 +9,6 @@ from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values #, merge # not needed -PR-
 
 
-def sort(p): p["BP"].sort(reverse=True, key = lambda key: key[1]+key[0][0])
-
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
@@ -22,7 +20,6 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh() # ? -PR-
-    t1 = ''
     for i in range(6):
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
@@ -55,18 +52,28 @@ def item_menager(w, c, m, p):
                 return[translate("YOU LIGHT A") + " " + translate(t[0][0]), True]
             case 2: # scrolls
                 if t[0][2] == 0:
-                    pass
+                    p["BP"].pop(it)
+                    for q in range(len(p["BP"])):
+                        if not p["BP"][q][-2]:
+                            p["BP"][q][-2] = True
+                            if p["BP"][q][1] in {"?","!"}:
+                                p["BP"][q][0] = p["BP"][q][0].copy()
+                                if p["BP"][q][1] == "?":
+                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","SCROLL OF DARK ENERGY"][p["BP"][q][0][2]]
+                                elif p["BP"][q][1] == "!":
+                                    p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
                 elif t[0][2] == 1:
                     mx, my = m["sx"]-2, m["sy"]-2
                     q = "#"
-                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">"} or q == "  ":
+                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">","= ","=","% "} or q == "  ":
                         x, y = randint(1, mx), randint(1, my)
                         q = m["r"][y][x]
                     p["x"], p["y"] = x, y
                     p["BP"].pop(it)
-                    return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORT"), True]
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORTATION"), True]
                 elif t[0][2] == 2:
-                    p["blessing"] += 50
+                    p["blessing"] += 100
                     p["BP"].pop(it)
                     return[translate("YOU READ A") + " " + translate("SCROLL OF BLESSING"), True]
                 else:
@@ -79,15 +86,15 @@ def item_menager(w, c, m, p):
                     p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
                 elif t[0][2] == 1:
-                    p["blessing"] += 10
-                    p["fury"] += 10
+                    p["blessing"] += 20
+                    p["fury"] += 20
                     p["hp"] += p["maxhp"]//2
                     if p["hp"] > p["maxhp"]:
                         p["hp"] = p["maxhp"]
                     p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF ENHANCEMENT"), True]
                 elif t[0][2] == 2:
-                    p["fury"] += 50
+                    p["fury"] += 100
                     p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF FURY"), True]
                 else:
@@ -128,7 +135,7 @@ def shot_menager(w, c, m, p):
 
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
-    w.addstr(0, 0, "Tiles:", c.color_pair(4))
+    w.addstr(0, 0, "Game tiles:", c.color_pair(4))
     w.addstr(0, 61, "Version = pre_0.2.0", c.color_pair(1))
     w.addstr(1, 2, "@/  - you/", c.color_pair(1))
     w.addstr(1, 4, "@", c.color_pair(2))
@@ -140,12 +147,13 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(2, 54, ", - open door", c.color_pair(4))
     w.addstr(3, 2, "> - stairs down", c.color_pair(1))
     w.addstr(3, 28, "< - stairs up", c.color_pair(1))
+    w.addstr(3, 54, '^ - very steep hill', c.color_pair(1))
 
     w.addstr(4, 2, '% - tree/forest', c.color_pair(2))
     w.addstr(4, 28, '= - water/river/lake', c.color_pair(6))
-    w.addstr(4, 54, '^ - very steep hill', c.color_pair(1))
+    w.addstr(4, 54, '& - lava', c.color_pair(7))
 
-    w.addstr(6, 0, "Tiles (objects):", c.color_pair(4))
+    w.addstr(6, 0, "Game items:", c.color_pair(4))
     w.addstr(7, 2, "] - melee weapon", c.color_pair(2))
     w.addstr(7, 28, "} - ranged weapon", c.color_pair(2))
     w.addstr(7, 54, ") - armor", c.color_pair(2))
@@ -190,10 +198,10 @@ def keyin(w, c, m, p, pos, key):
             if m["r"][pos[0]][pos[1]][0] == "<":
                 return ["#U", False]
             return [translate("YOU CAN'T GO UP HERE"), False]
-        case "/":
-            sort(p)
-            get_equip_values(p)
-            return [p["echo"], False]
+        #case "/":
+        #    sort(p)
+        #    get_equip_values(p)
+        #    return [p["echo"], False]
         case "?":
             pomoc(w, c, m, p)
             return [p["echo"], False]
