@@ -7,11 +7,9 @@ def get_equip_values(p):
         tv = p["e_attack"][2][-2] - p["strength"]
         ta = p["e_attack"][2][-1] - p["dexterity"]
         if tv > 0:
-            p["attack"] = (2*p["attack"])//(1+tv)
-            p["attack_damage"] = (2*p["attack_damage"])//(1+tv)
+            p["attack"] = (4*p["attack"])//(4+tv)
         if ta > 0:
-            p["attack_acc"] = (2*p["attack_acc"])//(1+ta)
-            p["attack_hits"] = (2*p["attack_hits"])//(1+ta)
+            p["attack_acc"] = (4*p["attack_acc"])//(4+ta)
     else:
         p["attack"], p["attack_attacks"], p["attack_acc"], p["attack_hits"] = 1,0,0,0
 
@@ -23,11 +21,9 @@ def get_equip_values(p):
         tv = p["e_hand"][2][-2] - p["strength"]
         ta = p["e_hand"][2][-1] - p["dexterity"]
         if tv > 0:
-            p["bow"] //= (1+tv)
-            p["bow_damage"] //= (1+tv)
+            p["bow"] = (4*p["bow"])//(4+tv)
         if ta > 0:
-            p["bow_acc"] //= (1+ta)
-            p["bow_hits"] //= (1+ta)
+            p["bow_acc"] = (4*p["bow_acc"])//(4+tv)
     else:
         p["bow"], p["bow_attacks"], p["bow_acc"], p["bow_hits"] = 1,0,0,0
 
@@ -37,25 +33,13 @@ def get_equip_values(p):
         t = p["e_armor"][2][1] - p["lw"]
         if t > 0:
             p["armor"] = (2*p["armor"])//(2+t)
-        if t > 0:
-            p["defend"] -= 10*t
+        #    p["defend"] -= 10*t
     else:
         p["armor"] = 0
 
-    to_delate = []
-    p["arrows_id"] = -1
-    #for i in range(len(p["BP"])):
-    #    if (#p["BP"][i][1] not in {"]",")","}"} and
-    #        p["BP"][i][2] < 1):
-    #        to_delate.append(i)
-    #    elif p["BP"][i][1] == "ARROW":
-    #        p["arrows_id"] = i
-    for i in to_delate[::-1]:
-        p["BP"].pop(i)
-
 def merge(p): # polacz (PL) -PR-
     i = 0
-    while i < len(p["BP"]):
+    while i < len(p["BP"]): #marge only "-"
         j = 1
         while j < len(p["BP"]):
             if i == j:

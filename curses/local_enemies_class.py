@@ -297,10 +297,12 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
     hits = (p["bow_hits"] if ranged else p["attack_hits"])
-    if p["blessing"]:
-        hits *= 2
     rolls = (p["bow"] if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
+    if p["blessing"]:
+        hits *= 2
+    if p["fury"]:
+        rolls *= 2
     if q[4] != 0:
         at_value += value * damage #free wake up hit
         acc = 100
@@ -308,8 +310,6 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     for _ in range(hits):
         at_value += (randint(0, 99) < acc) * (roll(rolls, damage))
     if at_value != 0:
-        if p["fury"]:
-            at_value *= 2
         q[1] -= at_value
         q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
         p["echo"] = translate("YOU HIT A")+" "+translate(q[10])

@@ -90,12 +90,10 @@ def playerdata(y, p):
 
 
 def output(w, c, m, p):
-    if p["torch"] == 1:
+    if p["torch"]:
         for y in range(-1, 2):
             for x in range(-1, 2):
                 i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
-                if m["r"][i[0]][i[1]][0] == "_":
-                    m["r"][i[0]][i[1]] = m["r"][i[0]][i[1]][1:]
                 m["v"][i[0]][i[1]] = m["r"][i[0]][i[1]]
 
     for y in range(23):

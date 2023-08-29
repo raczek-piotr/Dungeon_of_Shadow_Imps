@@ -12,7 +12,7 @@ from local_equip import get_equip_values #, merge # not needed -PR-
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
-    w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])), c.color_pair(4))
+    w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
     w.addstr(10, 0,"Equipted:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
@@ -51,15 +51,15 @@ def item_menager(w, c, m, p):
                 p["BP"].pop(it)
                 return[translate("YOU LIGHT A") + " " + translate(t[0][0]), True]
             case 2: # scrolls
+                p["BP"].pop(it)
                 if t[0][2] == 0:
-                    p["BP"].pop(it)
                     for q in range(len(p["BP"])):
                         if not p["BP"][q][-2]:
                             p["BP"][q][-2] = True
                             if p["BP"][q][1] in {"?","!"}:
                                 p["BP"][q][0] = p["BP"][q][0].copy()
                                 if p["BP"][q][1] == "?":
-                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","SCROLL OF DARK ENERGY"][p["BP"][q][0][2]]
+                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","MAGIC MAPPING"][p["BP"][q][0][2]]
                                 elif p["BP"][q][1] == "!":
                                     p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
@@ -70,20 +70,20 @@ def item_menager(w, c, m, p):
                         x, y = randint(1, mx), randint(1, my)
                         q = m["r"][y][x]
                     p["x"], p["y"] = x, y
-                    p["BP"].pop(it)
                     return[translate("YOU READ A") + " " + translate("SCROLL OF TELEPORTATION"), True]
                 elif t[0][2] == 2:
                     p["blessing"] += 100
-                    p["BP"].pop(it)
                     return[translate("YOU READ A") + " " + translate("SCROLL OF BLESSING"), True]
                 else:
-                    p["hp"] -= p["maxhp"]//2
-                    p["BP"].pop(it)
-                    return[translate("YOU READ A") + " " + translate("SCROLL OF DARK ENEGY") + " " + translate("DARK ENERGY HITS YOU"), True]
+                    for y in range(m["sy"]):
+                        for x in range(m["sx"]):
+                            if m["r"][y][x][0] in {"$","&","-","*"} and m["r"][y][x][-1] != " ":
+                                m["v"][y][x] = m["r"][y][x]
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF MAGIC MAPPING"), True]
             case 3: # potions
+                p["BP"].pop(it)
                 if t[0][2] == 0:
                     p["hp"] = p["maxhp"]
-                    p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
                 elif t[0][2] == 1:
                     p["blessing"] += 20
@@ -91,15 +91,12 @@ def item_menager(w, c, m, p):
                     p["hp"] += p["maxhp"]//2
                     if p["hp"] > p["maxhp"]:
                         p["hp"] = p["maxhp"]
-                    p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF ENHANCEMENT"), True]
                 elif t[0][2] == 2:
                     p["fury"] += 100
-                    p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF FURY"), True]
                 else:
                     p["hp"] -= p["maxhp"]//2
-                    p["BP"].pop(it)
                     return[translate("YOU DRANK") + " " + translate("POTION OF POISON"), True]
                     
         return[translate("YOU CAN'T USE THAT"), False]

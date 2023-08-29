@@ -112,11 +112,11 @@ def map_init_int(m, p, items, type_of, stairs):
                     continue
             
             hm = 10
-            minhm = 5 # should be space on the map -PR-
+            minhm = 15 # should be space on the map -PR-
             Spokoje = []
             tryes = 0
             while len(Spokoje) < minhm or tryes < hm:
-                sy, sx = randint(1,3), randint(1,3)
+                sy, sx = randint(1,1), randint(1,1)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
                 can, tryes = True, tryes + 1
                 for i in pokoje:

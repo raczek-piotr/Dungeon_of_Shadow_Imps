@@ -3,6 +3,7 @@ from random import randint, choice
 from local_scripts import zero3  # or "*" -PR-
 from local_map import map_init
 from local_enemies_class import enemies_class_clear
+from local_character import character
 
 from local_equip import get_equip_values
 from local_translator import translate
@@ -38,88 +39,15 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(6, 57, 16)
             c.init_pair(7, 196, 16)
             character(w, c, p)
+            get_equip_values(p)
+            scoreboard_print(w, c)
+            w.clear()
+            w.addstr(5, 5, "The angel of the LORD came back a second time and touched YOU and said:", c.color_pair(5))
+            w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
+            w.addstr(23, 65, "~ 1 KINGS 19:7", c.color_pair(5))
+            w.getkey()
             prepare_map(m, p)
             return m, p, path
-
-def character(w, c, p):
-    w.clear() # ? -PR-
-    w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
-    w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "0.2.0", c.color_pair(4))
-    w.addstr(4, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
-    w.addstr(5, 2, "2 - HUMAN BANDIT", c.color_pair(1))
-    w.addstr(6, 2, "3 - HUMAN DUELIST", c.color_pair(1))
-    w.addstr(7, 2, "4 - HUMAN ROGUE", c.color_pair(1))
-    w.addstr(8, 2, "5 - HUMAN ARCHER", c.color_pair(1))
-    w.addstr(10, 2, "7 - FUDIT WARRIOR", c.color_pair(1))
-    w.addstr(11, 2, "8 - FUDIT POWDER MONKEY", c.color_pair(1))
-    #w.addstr(9, 2, "6 - HOBBIT WARRIOR", c.color_pair(1))
-    if w.getmaxyx() != (24,80):
-        w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(2))
-        w.addstr(22, 79, "|", c.color_pair(3))
-        w.addstr(23, 71, "point ->", c.color_pair(3))
-    w.refresh() # w.getkey() makes the same + getch -PR-
-    while True:
-        match w.getkey():
-            case "1":
-                p["strength"] = 11
-                p["dexterity"] = 7
-                p["playertype"] = "HUMAN WARRIOR"
-                p["e_attack"] = get_item(24)
-                break
-            case "2":
-                p["strength"] = 10
-                p["dexterity"] = 8
-                p["playertype"] = "HUMAN BANDIT"
-                p["e_attack"] = get_item(24)
-                break
-            case "3":
-                #p["playertype"] = "HUMAN DUELIST"
-                break
-            case "4":
-                p["strength"] = 8
-                p["dexterity"] = 10
-                p["playertype"] = "HUMAN ROUGE"
-                break
-            case "5":
-                p["strength"] = 7
-                p["dexterity"] = 11
-                p["playertype"] = "HUMAN ARCHER"
-                #p["BP"].append({"item": "ARROW", "type": "", "values": [40, "ARROWS"], "cost": 5, "grouping": True})
-                #p["arrows_id"] = 1
-                break
-            case "7":
-                p["strength"] = 11
-                p["dexterity"] = 8
-                p["playertype"] = "FUDIT WARRIOR"
-                p["maxhp"], p["hp"] = 16, 16
-                p["basedefend"] = 70
-                p["hpcounter"] = 20
-                p["maxeat"] *= 5
-                p["e_attack"] = get_item(24)
-                break
-            case "8":
-                p["strength"] = 8
-                p["dexterity"] = 11
-                p["playertype"] = "FUDIT POWDER MONKEY"
-                p["maxhp"], p["hp"] = 16, 16
-                p["basedefend"] = 70
-                p["hpcounter"] = 20
-                p["maxeat"] *= 5
-                p["e_hand"] = get_item(59)
-                p["e_attack"] = [['SCREW', 'e_attack'], ']', [1, 1, 1, 45, 5, 5], True, 4]
-                p["BP"][0] = (get_item(3)[:2] + [50] + get_item(3)[3:])
-                break
-            case _:
-                pass
-    get_equip_values(p)
-    scoreboard_print(w, c)
-    w.clear()
-    w.addstr(5, 5, "The angel of the LORD came back a second time and touched YOU and said:", c.color_pair(5))
-    w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
-    w.addstr(23, 65, "~ 1 KINGS 19:7", c.color_pair(5))
-    w.getkey()
-    #disable_disabled_weapons(p["strength"], p["dexterity"])
 
 def prepare_map(m, p):
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
@@ -151,14 +79,15 @@ def start_data():
         "sx": 5,
         }
     p = {
-        "playertype": "Human Duelist",
+        "playertype": "HUMAN DUELIST",
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
-        "maxeat": 20000,
+        "maxeat": 2000,
         "maxhp": 20,
         "hp": 20,
-        "hpchange": 1,
-        "hpcounter": 10,
+        "hpchange": 2,
+        "reg_time": 10,
+        "reg_1/": 10,
         "needxp": 30,
         "xp": 0,
         "lw": 1,
@@ -191,7 +120,7 @@ def start_data():
         "torch": True,
         "torchtime": 1200,
         "starving": False,
-        "fullness": 2000,
+        "fullness": 1500,
         "BP": [
             get_item(0)[:2] + [20] + get_item(0)[3:],
             get_item(6),
@@ -246,13 +175,14 @@ def scoreboard_append(w, c, p):
         with open("scores.txt", 'w') as  scores_txt:
             scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]\n")
 
-    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-74
+    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-80
+    c.curs_set(2)
     q = ""
     nick = ""
     while q not in {"PADENTER","\n", ",", "\x1b"}:
         if q == "KEY_BACKSPACE":
             nick = nick[:-1]
-        elif len(nick) >= 20:
+        elif len(nick) >= 20 or q == "|":
             c.beep()
         else:
             nick += q
@@ -260,6 +190,7 @@ def scoreboard_append(w, c, p):
         w.addstr(2, 31, "NICKNAME: (max: 20)", c.color_pair(4))
         w.addstr(3, 31, nick, c.color_pair(1))
         q = w.getkey()
+    c.curs_set(0)
     with open("scores.txt", 'a') as scores_txt:
         scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|L|"+str(p["BP"])+"\n")
 

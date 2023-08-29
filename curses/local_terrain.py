@@ -1,7 +1,7 @@
 from random import randint
 
 from local_translator import translate
-from local_item_class import item_class_get
+from local_item_class import get_item
 from local_enemies_class import enemies_class_is_attacked
 from local_equip import get_equip_values, merge
 from local_output import item # for f_weapons -PR-
@@ -19,7 +19,7 @@ def type_gold(i):
 def f_gold(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
-    #i = item_class_get(i)
+    #i = get_item(i)
     if stay:
         m["r"][npy][npx] = m["r"][npy][npx][4:]
         m["v"][npy][npx] = m["r"][npy][npx]
@@ -54,7 +54,7 @@ def in_BP(BP, item): #copy is in local_npc.py
 def f_items(m, p, npos, stay):
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
-    i = item_class_get(i)
+    i = get_item(i)
     if stay:
         if len(p["BP"]) < 6:# or i[1] == "-" and in_BP(p["BP"], i):
             p["BP"].append(i)
@@ -74,7 +74,7 @@ def f_items(m, p, npos, stay):
 def f_some_items(m, p, npos, stay): #only "-" -PR-
     npy, npx = npos
     i = int(m["r"][npy][npx][1:4])
-    i = item_class_get(i)
+    i = get_item(i)
     if stay:
         if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
             i[2] = randint(1,9)

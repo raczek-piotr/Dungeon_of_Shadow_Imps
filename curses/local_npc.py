@@ -20,9 +20,9 @@ def npc(w, c, m, p, it, stay):
 [["ARROW", "ARROWS"], "-", 10, True, 2],
 [["BOLT", "BOLTS"], "-", 25, True, 2]])
         case 1:
-            return trader(w, c, m, p, it, "Powder Monkey", [[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 3]])
+            return trader(w, c, m, p, it, "Powder Monkey", [[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]])
         case 2:
-            return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 100],[["POTION OF HEALING", 3, 0], "!", 1, True, 100]])
+            return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[["POTION OF HEALING", 3, 0], "!", 1, True, 120]])
         case 3:
             return[False, translate("- GO TO THE DUNGEON TO FIND BOOK OF BOOKS!"), False]
         case 4:
