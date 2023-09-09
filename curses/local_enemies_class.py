@@ -1,7 +1,6 @@
 from random import randint, choice
 from local_scripts import zero3, dire, shot
 from local_translator import translate
-from local_scripts import is_boss_killed
 
 
 def flag(f, n):
@@ -16,16 +15,19 @@ e = [
     ["m",3,2,2,1,5,"drop",2,1,2,"MICE", 0], #1
     ["f",1,2,1,1,3,"drop",2,1,2,"FLY", 10], #2
     ["u",10,3,11,1,7,"drop",4,3,4,"URCHIN", 9], #3
-    ["w",7,3,4,5,7,"drop",4,3,4,"WORM", 0], #4
+    ["w",7,3,4,1,3,"drop",4,3,4,"WORM", 0], #4
     ["c",5,4,4,2,4,"drop",4,3,4,"CENTIPEDE", 0], #5
     ["S",12,9,10,3,5,"drop",6,5,6,"SNAKE", 14], #6
     ["b",10,7,5,1,7,"drop",6,5,6,"BAT", 12], #7
-    ["F",3,5,5,1,3,"drop",7,9,7,"POISON DART FROG", 2], #8
-    ["t",11,6,14,1,7,"drop",7,9,7,"THIEF", 0], #9
-    ["a",7,3,10,1,5,"drop",7,9,7,"ANT (the acid shooter)", 3], #10
+    ["F",3,5,5,1,3,"drop",9,7,9,"POISON DART FROG", 2], #8
+    ["t",11,6,14,1,7,"drop",9,7,9,"THIEF", 0], #9
+    ["a",7,3,10,1,5,"drop",9,7,9,"ANT (the acid shooter)", 3], #10
+    ["w",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 0], #11
     ]
-enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],e[8],e[9],e[10]]
-enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],e[9],e[10]]
+enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],e[8],e[9],e[10],
+                e[11],e[11],e[11],e[11]]
+enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],e[9],e[10],
+                e[11],e[11],e[11],e[11]]
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
@@ -64,7 +66,6 @@ def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
                 for _ in range(2):#randint(2,2)):
                     elist.append(e)
     if elist == []:
-        print(enemies_part1[type_of%4][0][8:10])
         while True:
             pass
 
@@ -193,27 +194,22 @@ def updete_enemie(m, p, q, it, plus_it = 0):
 
 def randmove(m, p, q, it, plus_it):
     direction = [randint(-1,1)+q[9], randint(-1,1)+q[8]]
-    if p["x"] == direction[0] and p["y"] == direction[1]:
+    if p["y"] == direction[0] and p["x"] == direction[1]:
         return # do not move -PR-
 
+    body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    #if m["r"][q[9]][q[8]] == "":
-    #    m["r"][q[9]][q[8]] = " "
-    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is seen -PR-
-        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[0]][direction[1]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
-            q[9], q[8] = direction
-        #else: # on the randmove, enemies don't fall, because they are cautious -PR-
-        #    q[1] = 0
-    m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
+            q[9], q[8] = direction#[0:]
+            m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
+        else:
+            q[1] = 0 # no xp for the player who did NOT kill him -PR-
+    else:
+        m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
     if m["r"][q[9]][q[8]][-1] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-    if q[1] == 0: # no xp for the player who did NOT kill him -PR-
-        is_boss_killed(m, p, q[0]) # but if it was a Boss?
-        m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
-        if m["v"][q[9]][q[8]][0] == q[0]:
-            m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
 def move_enemie(m, p, q, it, plus_it):
     t_mmap = [[m["m"][q[9]-1][q[8]-1], q[9]-1, q[8]-1], [m["m"][q[9]-1][q[8]], q[9]-1, q[8]], [m["m"][q[9]-1][q[8]+1], q[9]-1, q[8]+1], [m["m"][q[9]][q[8]-1], q[9], q[8]-1], [m["m"][q[9]][q[8]+1], q[9], q[8]+1], [m["m"][q[9]+1][q[8]-1], q[9]+1, q[8]-1], [m["m"][q[9]+1][q[8]], q[9]+1, q[8]], [m["m"][q[9]+1][q[8]+1], q[9]+1, q[8]+1],
@@ -225,24 +221,19 @@ def move_enemie(m, p, q, it, plus_it):
         if i[0] >= 0 and i[0] <= p_min:
             p_min = i[0]
             direction = i
+    body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    #if m["r"][q[9]][q[8]] == "":
-    #    m["r"][q[9]][q[8]] = " "
-    if m["v"][q[9]][q[8]][0] != " ": # if viewmap is unseen -PR-
-        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
             q[9], q[8] = direction[1:]
+            m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
         else:
-            q[1] = 0
-    m["r"][q[9]][q[8]] = q[0]+zero3(it+plus_it)+m["r"][q[9]][q[8]]
+            q[1] = 0 # no xp for the player who did NOT kill him -PR-
+    else:
+        m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
     if m["r"][q[9]][q[8]][-1] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-    if q[1] == 0: # no xp for the player who did NOT kill him -PR-
-        is_boss_killed(m, p, q[0]) # but if it was a Boss?
-        m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
-        if m["v"][q[9]][q[8]][0] == q[0]:
-            m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
 # enemies attacks player
 
@@ -319,6 +310,5 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
                 m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
             p["xp"] += q[3] * (q[7] >= p["lw"])
             p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
-            is_boss_killed(m, p, q[0])
     else:
         p["echo"] = translate("YOU MISS A")+" "+translate(q[10])

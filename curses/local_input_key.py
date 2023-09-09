@@ -23,7 +23,7 @@ def player_move(p):
 
 def get_in(w):
     q = w.getkey()
-    match q: # comment it on Linux (not necessary) -PR-
+    match q: # you need it only on windows, maybe… -PR-
         case "PADPLUS":
             q = "+"
         case "PADMINUS":

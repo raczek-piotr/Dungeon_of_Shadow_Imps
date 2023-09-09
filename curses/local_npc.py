@@ -34,7 +34,7 @@ def npc(w, c, m, p, it, stay):
         case 7:
             return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM...", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
         case 8:
-            return[False, translate("- STOP THE IMPS!"), False]
+            return[False, translate(choice(["- FOOD? WE ATE MOLD... IT IS EVERYWERE!", "- FUNGAL GARDENS ARE BELOW US, WITH MOLD!"])), False]
     return[False, p["echo"], False]
 def in_BP(BP, item): #copy is in local_terrain.py
     for i in BP:

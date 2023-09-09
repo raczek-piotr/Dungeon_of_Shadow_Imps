@@ -53,7 +53,7 @@ def prepare_map(m, p):
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
     while h == "next": # not used -PR-
         p["id_camp"] += 1
-        h = p["camp"][p["id_camp"]][p["depth"]]
+        h = p["camp"][p["id_camp"]][p["depth"]].copy()
     if h[0] == "?":
         h[0] = p["type"]
         i = randint(-1, 1)
@@ -62,11 +62,12 @@ def prepare_map(m, p):
     enemies_class_clear()
     ilist, xp = [], 0
     if type(h[0]) == int:
-        p["normal_level"] = h[0] < 100 # "needs" are enable/disable -PR-
-        if p["normal_level"]:
-            ilist = randitem(h[0]+5, 8, 0)+randitem(2, 0, 4)# + arrows -PR-
-            for _ in range(randint(0,5)):
-                ilist.append("$"+zero3(randint(3,5+5*p["type"])))
+        p["normal_level"] = True # "needs" are enable/disable -PR-
+        ilist = randitem(h[0]+5, 8, 58)+randitem(2, 0, 4)# + arrows -PR-
+        for _ in range(randint(0,3+p["type"])):
+            ilist.append("$"+zero3(randint(3,5+5*p["type"])))
+    #else:
+    #    p["normal_level"] = False 
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
 
 def start_data():
@@ -82,6 +83,7 @@ def start_data():
         "playertype": "HUMAN DUELIST",
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
+        "skill": 1,
         "maxeat": 2000,
         "maxhp": 20,
         "hp": 20,
@@ -131,7 +133,7 @@ def start_data():
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["fudit_village",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["surface",3]],
+        "camp": [[["surface",0],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["fudit_village",3],[7,3],[7,3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["?",3],["surface",3]],
                 ]
         }
     return m, p, path
@@ -175,7 +177,7 @@ def scoreboard_append(w, c, p):
         with open("scores.txt", 'w') as  scores_txt:
             scores_txt.write("0|FUEL|A FUEL|0|0|0|L|[]\n")
 
-    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"])-80
+    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"]+p["armor"])-80
     c.curs_set(2)
     q = ""
     nick = ""

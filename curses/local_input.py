@@ -59,7 +59,7 @@ def item_menager(w, c, m, p):
                             if p["BP"][q][1] in {"?","!"}:
                                 p["BP"][q][0] = p["BP"][q][0].copy()
                                 if p["BP"][q][1] == "?":
-                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","MAGIC MAPPING"][p["BP"][q][0][2]]
+                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","TREASURE MAPPING"][p["BP"][q][0][2]]
                                 elif p["BP"][q][1] == "!":
                                     p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
@@ -77,17 +77,19 @@ def item_menager(w, c, m, p):
                 else:
                     for y in range(m["sy"]):
                         for x in range(m["sx"]):
-                            if m["r"][y][x][0] in {"$","&","-","*"} and m["r"][y][x][-1] != " ":
-                                m["v"][y][x] = m["r"][y][x]
-                    return[translate("YOU READ A") + " " + translate("SCROLL OF MAGIC MAPPING"), True]
+                            if m["r"][y][x][0] in {"]","}",")","$","~","-","*","!","?"}:
+                                for y2 in range(y-1, y+2):
+                                    for x2 in range(x-1, x+2):
+                                        m["v"][y2][x2] = m["r"][y2][x2]
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF TREASURE MAPPING"), True]
             case 3: # potions
                 p["BP"].pop(it)
                 if t[0][2] == 0:
                     p["hp"] = p["maxhp"]
                     return[translate("YOU DRANK") + " " + translate("POTION OF HEALING"), True]
                 elif t[0][2] == 1:
-                    p["blessing"] += 20
-                    p["fury"] += 20
+                    p["blessing"] += 25
+                    p["fury"] += 25
                     p["hp"] += p["maxhp"]//2
                     if p["hp"] > p["maxhp"]:
                         p["hp"] = p["maxhp"]
@@ -123,9 +125,11 @@ def shot_menager(w, c, m, p):
     w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"))
     it = get_in(w)
     dy, dx, t1 = player_move(it)
-    enemies_class_is_shoted(m, p, [dy, dx], p["bow"])
-    get_equip_values(p)
-    return[p["echo"], True]
+    if t1 and it != "5":
+        enemies_class_is_shoted(m, p, [dy, dx], p["bow"])
+        get_equip_values(p)
+        return[p["echo"], True]
+    return[translate("WRONG DIRECTION!"), False]
     #elif p["arrows_id"] == -1: # return ↑ but... -PR-
     #    return[translate("YOU DON'T HAVE ARROWS!"), False]
     #return[translate("YOU CAN'T SHOT THERE!"), False]
@@ -168,7 +172,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
     w.addstr(19, 4, "1 2 3", c.color_pair(1))
-    w.addstr(20, 2, "+ - use (backpack)     / - sort (no turns used)    ? - help", c.color_pair(5))
+    w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))

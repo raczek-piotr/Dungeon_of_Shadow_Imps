@@ -27,7 +27,7 @@ item = [
 [")",  [['CHAIN ARMOR', 'e_armor'], ')', [7, 37], True, 1595]],  #21
 [")",  [['PLATE ARMOR', 'e_armor'], ')', [8, 47], True, 2083]],  #22
 ["]",  [['KNIFE', 'e_attack'], ']', [1, 3, 1, 60, 6, 7], True, 120]],  #23
-["]",  [['WOODEN CLUB', 'e_attack'], ']', [1, 3, 2, 30, 8, 7], True, 120]],  #24
+["]",  [['WOODEN CLUB', 'e_attack'], ']', [2, 2, 2, 30, 8, 7], True, 270]],  #24
 ["]",  [['SICKLE', 'e_attack'], ']', [1, 5, 1, 50, 8, 9], True, 187]],  #25
 ["]",  [['SHOWEL', 'e_attack'], ']', [2, 3, 1, 40, 9, 8], True, 213]],  #26
 ["]",  [['PICK', 'e_attack'], ']', [1, 7, 1, 40, 10, 7], True, 213]],  #27
@@ -50,7 +50,7 @@ item = [
 ["]",  [['MACE', 'e_attack'], ']', [2, 4, 2, 45, 12, 9], True, 1687]],  #44
 ["]",  [['PIKE', 'e_attack'], ']', [3, 9, 1, 30, 12, 9], True, 1687]],  #45
 ["]",  [['BATTLE AXE', 'e_attack'], ']', [4, 5, 1, 60, 13, 10], True, 4320]],  #46
-["]",  [['GREAT FOIL', 'e_attack'], ']', [2, 7, 2, 45, 13, 10], True, 4320]],  #47
+["]",  [['GREAT FLAIL', 'e_attack'], ']', [2, 7, 2, 45, 13, 10], True, 4320]],  #47
 ["]",  [['HALABEARD', 'e_attack'], ']', [4, 10, 1, 35, 14, 10], True, 4940]],  #48
 ["]",  [['GREAT SWORD', 'e_attack'], ']', [2, 13, 1, 55, 14, 10], True, 4940]],  #49
 ["}",  [['SLING', 'e_hand', 'ROCK'], '}', [1, 1, 1, 60, 6, 7], True, 15]],  #50
@@ -70,6 +70,9 @@ def get_item(it):
     if q[1] in {"]",")","}"}:
         q[2] = item[it][1][2].copy()
     return q
+
+def change_item(it):
+    return item[it][1]
 
 def randitem(hm, p = 0, k = 0): # how many -PR-
     global item

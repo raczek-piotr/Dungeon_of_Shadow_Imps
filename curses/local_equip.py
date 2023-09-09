@@ -7,9 +7,9 @@ def get_equip_values(p):
         tv = p["e_attack"][2][-2] - p["strength"]
         ta = p["e_attack"][2][-1] - p["dexterity"]
         if tv > 0:
-            p["attack"] = (4*p["attack"])//(4+tv)
+            p["attack"] = (p["attack"])//(1+tv)
         if ta > 0:
-            p["attack_acc"] = (4*p["attack_acc"])//(4+ta)
+            p["attack_acc"] = (p["attack_acc"])//(1+ta)
     else:
         p["attack"], p["attack_attacks"], p["attack_acc"], p["attack_hits"] = 1,0,0,0
 
@@ -21,9 +21,9 @@ def get_equip_values(p):
         tv = p["e_hand"][2][-2] - p["strength"]
         ta = p["e_hand"][2][-1] - p["dexterity"]
         if tv > 0:
-            p["bow"] = (4*p["bow"])//(4+tv)
+            p["bow"] = (p["bow"])//(1+tv)
         if ta > 0:
-            p["bow_acc"] = (4*p["bow_acc"])//(4+tv)
+            p["bow_acc"] = (p["bow_acc"])//(2+ta) #rogue with short bow -PR-
     else:
         p["bow"], p["bow_attacks"], p["bow_acc"], p["bow_hits"] = 1,0,0,0
 
