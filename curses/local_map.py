@@ -24,29 +24,6 @@ def map_init_str(m, p, items, type_of):
             t = rm[y].split(";")
             for x in range(m["sx"]-2):
                 m["r"][y+1][x+1] = t[x]
-                #if m["r"][y+1][x+1][1] == "i":
-                #    l -= 1
-                #    it = rm[l].split(" ")
-                #    e, it = it[0], item_class_init(it[0], randint(int(it[1]), int(it[2])))
-                #    m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                #elif m["r"][y+1][x+1][1] == "w":
-                #    l -= 1
-                #    it = rm[l].split("|")
-                #    e = it[-1].split(";")
-                #    for i in range(len(e)):
-                #        if e[i][0] == '"':
-                #            e[i] = e[i][1:]
-                #        else:
-                #            e[i] = int(e[i])
-                #    e, it = it[0], item_class_init(it[0], {"item": it[1], "type": ("" if it[2] == ";" else it[2]), "values": e, "ident": (True if it[3] == "t" else False), "grouping": (True if it[4] == "t" else False)})
-                #    m["r"][y+1][x+1] = t[x][0]+e+zero3(it)+t[x][2:]
-                #elif m["r"][y+1][x+1][0] == "@": # for the future -PR-
-                #    pass
-                #if m["r"][y+1][x+1][0] == "e":
-                #    l -= 1
-                #    e = rm[l].split(" ")
-                #    it = enemies_class_init(e[0], y+1, x+1, int(e[1]), int(e[2]),int(e[3]), int(e[4]), int(e[5]), (True if e[6] == "t" else False), [])
-                #    m["r"][y+1][x+1] = e[0]+zero3(it)+t[x][1:]
     return(int(ty), int(tx))
 
 
@@ -105,7 +82,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     tryes = 0
                     pokoje.append([y, x, sy, sx])
                     continue
-            
+
             hm = 5
             minhm = 2 # should be space on the map… -PR-
             Spokoje = []
@@ -207,7 +184,48 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
             RandomTileConnect(m, "= ")
             RandomTileConnect(m, "= ")
+
         case 3:
+            minhm = 7 # should be space on the map… -PR-
+            pokoje = []
+            while len(pokoje) < minhm:
+                sy, sx = 1+2*randint(1,2), 1+2*randint(1,2)
+                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
+                can = True
+                for i in pokoje:
+                    if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
+                         abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
+                        can = False
+                if can:
+                    pokoje.append([y, x, sy, sx]) # one room in enother -PR-
+                    continue
+
+            hm = len(pokoje)
+            for it in range(hm):
+                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
+                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
+                        m["r"][y][x] = "|"
+            for it in range(hm):
+                RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
+
+            type_of_rooms = ["% ","% ","% ","% ",".",".","."]
+            for it in range(hm):
+                i = type_of_rooms.pop()
+                for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
+                    for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
+                        m["r"][y][x] = i
+            for it in range(hm):
+                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
+                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
+                        if m["r"][y][x] == "|":
+                            m["r"][y][x] = "#"
+            if stairs > 1:
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">."
+            if stairs % 2 == 1:
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<."
+            pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
+
+        case 7:
             m["r"] = [[choice(["#","#",": "]) for _ in range(m["sx"])] for _ in range(m["sy"])]
             for i in range(m["sx"]):
                 m["r"][0][i] = "#"
@@ -281,40 +299,6 @@ def map_init_int(m, p, items, type_of, stairs):
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
-            m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "."
-
-
-
-        case 7:
-            m["r"] = [[choice(["#","#","% ","% ","% ","% "]) for _ in range(m["sx"])] for _ in range(m["sy"])]
-            for i in range(m["sx"]):
-                m["r"][0][i] = "#"
-                m["r"][-1][i] = "#"
-            for i in range(m["sy"]):
-                m["r"][i][0] = "#"
-                m["r"][i][-1] = "#"
-            locate_a_room(m, pokoje, 20, 10, 3, 3, 1)
-            l_pokoje = len(pokoje)
-            flor = " "
-            for i in range(l_pokoje):
-                j = pokoje[i]
-                for y in range(j[0], j[0]+j[2]):
-                    for x in range(j[1], j[1]+j[3]):
-                        m["r"][y][x] = flor
-            pokojen = pokoje.copy()
-            pokojeok = [pokojen.pop(0)]
-            if stairs > 1:
-                m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
-            if stairs % 2 == 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
-                m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
-            m["r"][pokoje[0][0]+pokoje[0][2]//2][pokoje[0][1]+pokoje[0][3]//2] = "."
-            pokoje = [pokoje[0],[1, 1, m["sy"]-3, m["sx"]-3]]
-            RandomTileConnect(m, "= ")
-            RandomTileConnect(m, "= ")
-            RandomTileConnect(m, "= ")
-            RandomTileConnect(m, "= ")
 
         case _: # 0 -PR-
             hm = 25
@@ -363,7 +347,7 @@ def map_init_int(m, p, items, type_of, stairs):
     while more:
         i = randint(1, l_pokoje) # (1→ran) player with nonething in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        while m["r"][j[0]][j[1]] not in {" ",".","= "}:
+        while m["r"][j[0]][j[1]] not in {" ",".","= ","% "}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         e_id, more = enemies_class_add(j[1], j[0], type_of, p["depth"])
@@ -371,7 +355,7 @@ def map_init_int(m, p, items, type_of, stairs):
     i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
     j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
     for k in items:
-        while m["r"][j[0]][j[1]] not in {" ",".","= "}:
+        while m["r"][j[0]][j[1]] not in {" ",".","= ","% "}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]

@@ -54,7 +54,7 @@ def playerdata(y, p):
         case 3:
             return " hp: " + str(p["hp"]) + "/" + str(p["maxhp"])
         case 4:
-            return " xp: " + str(p["xp"])
+            return " xp: " + str(p["xp"]) + "/" + str(p["needxp"])
         case 5:
             return " lw: " + str(p["lw"])
         case 6:

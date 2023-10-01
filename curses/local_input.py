@@ -11,9 +11,11 @@ from local_equip import get_equip_values #, merge # not needed -PR-
 
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
-    w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
+    w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
+    w.addstr(4, 0, "hp: " + str(p["hp"]) + "/" + str(p["maxhp"]), c.color_pair(4))
+    w.addstr(5, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
     w.addstr(10, 0,"Equipted:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
     w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))

@@ -70,7 +70,8 @@ def mainloop(w):
                     p["skill"] += 1
                     p["strength"] += 1
                     p["dexterity"] += 1
-                p["needxp"] += 20 + 10*p["lw"]*p["skill"]**2
+                p["xpchange"] = int((p["xpchange"]*1.06+3)//1)
+                p["needxp"] += p["xpchange"]
                 get_equip_values(p)
             p["wasattackby"] = ""
 

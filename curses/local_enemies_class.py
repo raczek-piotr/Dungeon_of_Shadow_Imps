@@ -11,23 +11,23 @@ def flag(f, n):
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
 e = [
-    ["r",4,2,3,1,5,"drop",2,1,2,"RAT", 8], #0
-    ["m",3,2,2,1,5,"drop",2,1,2,"MICE", 0], #1
-    ["f",1,2,1,1,3,"drop",2,1,2,"FLY", 10], #2
-    ["u",10,3,11,1,7,"drop",4,3,4,"URCHIN", 9], #3
-    ["w",7,3,4,1,3,"drop",4,3,4,"WORM", 0], #4
-    ["c",5,4,4,2,4,"drop",4,3,4,"CENTIPEDE", 0], #5
-    ["S",12,9,10,3,5,"drop",6,5,6,"SNAKE", 14], #6
-    ["b",10,7,5,1,7,"drop",6,5,6,"BAT", 12], #7
+    ["r",4,2,3,1,5,"drop",3,1,3,"RAT", 8], #0
+    ["m",3,2,2,1,5,"drop",3,1,3,"MOUSE", 0], #1
+    ["f",1,2,1,1,3,"drop",3,1,3,"FLY", 10], #2
+    ["u",10,3,11,1,7,"drop",6,4,6,"URCHIN", 9], #3
+    ["w",7,3,4,1,3,"drop",6,4,6,"WORM", 0], #4
+    ["c",5,4,4,2,4,"drop",6,4,6,"CENTIPEDE", 0], #5
+    ["S",12,9,10,3,5,"drop",9,7,9,"SNAKE", 14], #6
+    ["b",10,7,5,1,7,"drop",9,7,9,"BAT", 12], #7
     ["F",3,5,5,1,3,"drop",9,7,9,"POISON DART FROG", 2], #8
-    ["t",11,6,14,1,7,"drop",9,7,9,"THIEF", 0], #9
-    ["a",7,3,10,1,5,"drop",9,7,9,"ANT (the acid shooter)", 3], #10
-    ["w",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 0], #11
+    ["w",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 8], #9
+    ["h",9,6,12,1,6,"drop",16,14,16,"FUDISH HUNTER", 1], #10
+    ["c",18,6,12,1,3,"drop",16,14,16,"FUNGAL CRAB", 0], #11
     ]
-enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],e[8],e[9],e[10],
-                e[11],e[11],e[11],e[11]]
-enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],e[9],e[10],
-                e[11],e[11],e[11],e[11]]
+enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
+                e[9],e[9],e[9],e[9],e[10],e[10],e[11]]
+enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
+                e[9],e[9],e[9],e[9],e[10],e[10],e[11]]
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
@@ -199,7 +199,8 @@ def randmove(m, p, q, it, plus_it):
 
     body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    if m["r"][q[9]][q[8]][-1] != " " or m["v"][q[9]][q[8]] != " ":
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[0]][direction[1]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
             q[9], q[8] = direction#[0:]
@@ -218,12 +219,13 @@ def move_enemie(m, p, q, it, plus_it):
     direction = [m["m"][q[9]][q[8]], q[9], q[8]] # stay -PR-
     while t_mmap != []:
         i = t_mmap.pop(randint(0, len(t_mmap)-1))
-        if i[0] >= 0 and i[0] <= p_min:
+        if i[0] >= 0 and i[0] <= p_min and m["r"][i[1]][i[2]][0] in tlist:
             p_min = i[0]
             direction = i
     body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
+    if m["r"][q[9]][q[8]][-1] != " " or m["v"][q[9]][q[8]] != " ":
+        m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
             q[9], q[8] = direction[1:]

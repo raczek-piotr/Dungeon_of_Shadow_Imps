@@ -17,8 +17,8 @@ def character(w, c, p):
         w.addstr(14, 2, "4 - ALGAL", c.color_pair(3))
         w.addstr(15, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS DRUIDS. WHERE DO THEY COME FROM?", c.color_pair(3))
         w.addstr(17, 2, "5 - KOBOLD", c.color_pair(7))
-        w.addstr(18, 2, "NOT VERY LIKED BY HUMANS, HOSTILE MONSTERS. THEY TRAVEL A LOT IN THEIR LIVES", c.color_pair(7))
-        w.addstr(20, 2, "6 - STONER (YOU CAN'T CHOOSE THE CLASS) (EXPERIMENTAL)", c.color_pair(5))
+        w.addstr(18, 2, "NOT VERY LIKED BY HUMANS, STRANGE MONSTERS. THEY TRAVEL A LOT IN THEIR LIVES", c.color_pair(7))
+        w.addstr(20, 2, "6 - STONE (YOU CAN'T CHOOSE THE CLASS) (EXPERIMENTAL)", c.color_pair(5))
         w.addstr(21, 2, "STONE MONSTER. GREAT REGENERATION, BUT WEAK HP. DON'T LIKE MASIVE ATTACKS", c.color_pair(5))
         if w.getmaxyx() != (24,80):
             w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(3))
@@ -43,7 +43,7 @@ def character(w, c, p):
             case "6":
                 p["strength"] = 11
                 p["dexterity"] = 7
-                p["playertype"] = "STONER"
+                p["playertype"] = "STONE"
                 p["maxhp"], p["hp"] = 10, 10
                 p["hpchange"] = 1
                 p["basedefend"] = 30
@@ -51,16 +51,6 @@ def character(w, c, p):
                 p["reg_1/"] = 5
                 p["maxeat"] = 2500
                 p["gold"] = 100
-                break
-            case "7":
-                p["strength"] = 10
-                p["dexterity"] = 8
-                p["playertype"] = "HUMAN BANDIT KICK START"
-                p["xp"] = 900
-                p["depth"] = 11
-                p["e_hand"] = get_item(55)
-                p["e_attack"] = get_item(24)
-                p["BP"].append(get_item(2)[:2] + [25] + get_item(2)[3:])
                 break
             case _:
                 pass

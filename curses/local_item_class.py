@@ -21,8 +21,8 @@ item = [
 ["!",  [['POTION', 3, 3], '!', 1, False, 10]],  #15
 [")",  [['A T-SHIRT', 'e_armor'], ')', [0, 1], True, 1]],  #16
 [")",  [['SOFT LEATHER', 'e_armor'], ')', [1, 3], True, 32]],  #17
-[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 7], True, 130]],  #18
-[")",  [['LEATHER MAIL', 'e_armor'], ')', [4, 17], True, 520]],  #19
+[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 6], True, 130]],  #18
+[")",  [['LEATHER MAIL', 'e_armor'], ')', [4, 13], True, 520]],  #19
 [")",  [['CHAIN MAIL', 'e_armor'], ')', [5, 27], True, 813]],  #20
 [")",  [['CHAIN ARMOR', 'e_armor'], ')', [7, 37], True, 1595]],  #21
 [")",  [['PLATE ARMOR', 'e_armor'], ')', [8, 47], True, 2083]],  #22
