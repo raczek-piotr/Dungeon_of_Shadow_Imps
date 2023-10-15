@@ -10,7 +10,7 @@ from local_input import keyin
 from local_terrain import terrain
 # alwayes
 from local_scripts import sort
-# in advancing
+# used in advancing
 from local_equip import get_equip_values
 
 

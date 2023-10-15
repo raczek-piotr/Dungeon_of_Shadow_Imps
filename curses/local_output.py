@@ -99,7 +99,7 @@ def output(w, c, m, p):
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:
-            t = m["v"][ty]
+            t = m["r"][ty]
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:

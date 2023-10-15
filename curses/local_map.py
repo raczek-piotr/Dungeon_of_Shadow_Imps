@@ -68,29 +68,26 @@ def map_init_int(m, p, items, type_of, stairs):
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     match type_of:
         case 1:
-            hm, minhm = 3, 7
-            pokoje, tryes = [], 0
-            while len(pokoje) < minhm or tryes < hm:
+            hm = 7
+            pokoje == []
+            while len(pokoje) < hm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-                can, tryes = True, tryes + 1
+                can, = True
                 for i in pokoje:
                     if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
                          abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
                         can = False
                 if can:
-                    tryes = 0
                     pokoje.append([y, x, sy, sx])
                     continue
 
-            hm = 5
-            minhm = 2 # should be space on the map… -PR-
+            hm = 3
             Spokoje = []
-            tryes = 0
-            while len(Spokoje) < minhm or tryes < hm:
-                sy, sx = randint(1,1), randint(1,1)
+            while len(Spokoje) < hm:
+                sy, sx = randint(2,3), randint(2,3)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-                can, tryes = True, tryes + 1
+                can = True
                 for i in pokoje:
                     if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
                          abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
@@ -103,18 +100,17 @@ def map_init_int(m, p, items, type_of, stairs):
                 for y in range(Spokoje[it][0], Spokoje[it][0] + Spokoje[it][2]):
                     for x in range(Spokoje[it][1], Spokoje[it][1] + Spokoje[it][3]):
                         m["r"][y][x] = " "
+            for it in range(hm):
+                RegularConnect(m, Spokoje[it-1].copy(), Spokoje[it].copy())
 
             hm = len(pokoje)
             for it in range(hm):
                 for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
                     for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                         m["r"][y][x] = "|"
-            Spokoje.extend(pokoje)
-            for it in range(len(Spokoje)):
-                RegularConnect(m, Spokoje[it-1].copy(), Spokoje[it].copy())
-
-            #for it in range(hm):
-            #    RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
+            for it in range(hm):
+                RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
+            RegularConnect(m, Spokoje[it].copy(), pokoje[it].copy()) # connect the two "worlds" -PR-
             for it in range(hm):
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
                     for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
@@ -124,6 +120,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
+            Spokoje.extend(pokoje)
             if stairs > 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">."
             if stairs % 2 == 1:
@@ -301,18 +298,16 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
 
         case _: # 0 -PR-
-            hm = 25
-            minhm = 9 # 5 -PR-
+            hm = 9 # 5 -PR-
             pokoje = []
-            tryes = 0
             sizey, sizex = 17, 26
             m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
             m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            while len(pokoje) < minhm or tryes < hm:
+            while len(pokoje) < hm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
-                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx) if tryes != 0 else 1 #on left boarder
-                can, tryes = True, tryes + 1
+                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx) if hm != 0 else 1 #on left boarder
+                can = True
                 for i in pokoje:
                     if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
                          abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):
@@ -375,7 +370,7 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[0]
                 direction += 1
-            if m["r"][k][p_start[1]] == "|" or m["r"][k][p_start[1]] == "+":
+            if m["r"][k][p_start[1]] == "|":
                 m["r"][k][p_start[1]] = "+"
             elif m["r"][k][p_start[0]] not in {".","= ","+"}:
                 m["r"][k][p_start[1]] = " "
@@ -389,7 +384,7 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[1]
                 direction -= 1
-            if m["r"][p_start[0]][k] == "|" or m["r"][p_start[0]][k] == "+":
+            if m["r"][p_start[0]][k] == "|":
                 m["r"][p_start[0]][k] = "+"
             elif m["r"][p_start[0]][k] not in {".","= ","+"}:
                 m["r"][p_start[0]][k] = " "
@@ -453,6 +448,7 @@ def RandomTileConnect(m, tile):
             direction = (direction+1) % 2
 
 def Connect(m, p_end, p_start, clear = False):
+    m["r"][p_start[0]][p_start[1]] = "d"
     direction = randint(0, 1)
     goal = True # Do we have a goal? Or it is "done"?
     while goal:
@@ -460,13 +456,13 @@ def Connect(m, p_end, p_start, clear = False):
             if p_start[0] < p_end[0]:
                 k = (p_start[0]+1) % m["sy"]
             elif p_start[0] > p_end[0]:
-                k = (p_start[0]-1 )% m["sy"]
+                k = (p_start[0]-1)% m["sy"]
             else:
                 k = p_start[0]
                 direction += 1
             if m["r"][p_start[0]][p_start[1]] == "|":
                 m["r"][p_start[0]][p_start[1]] = "+"
-            elif m["r"][p_start[0]][p_start[1]] in {"#","  "}:
+            elif m["r"][p_start[0]][p_start[1]] in {"#","  ","&"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[0] = k
         else:
@@ -479,7 +475,7 @@ def Connect(m, p_end, p_start, clear = False):
                 direction -= 1
             if m["r"][p_start[0]][p_start[1]] == "|":
                 m["r"][p_start[0]][p_start[1]] = "+"
-            elif m["r"][p_start[0]][p_start[1]] in {"#","  "}:
+            elif m["r"][p_start[0]][p_start[1]] in {"#","  ","&"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[1] = k
         if p_start[0] == p_end[0] and p_start[1] == p_end[1]:

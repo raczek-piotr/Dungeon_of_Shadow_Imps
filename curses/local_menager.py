@@ -34,7 +34,6 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             else:
                 p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#R":
-            m, p, path = start_data() # only here the data in needed to give it back -PR-
             c.init_pair(1, 231, 16)
             c.init_pair(2, 46, 16)
             c.init_pair(3, 5, 16)
@@ -42,7 +41,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(5, 245, 16)#148 :) -PR-
             c.init_pair(6, 57, 16)
             c.init_pair(7, 196, 16)
-            character(w, c, p)
+            m, p, path = character(w, c, p) # only here the data in needed to give it back -PR-
             get_equip_values(p)
             scoreboard_print(w, c)
             w.clear()
@@ -62,7 +61,8 @@ def prepare_map(m, p):
     if h[0] in {0,1}:
         i = randint(-1, 1)
         if _type + i in {0,1,2}:
-            p["type"] = _type + h[0] #h[0] is shift
+            _type += i
+        p["type"] = _type + h[0] #h[0] is shift
     enemies_class_clear()
     ilist = []
 #    with open("logfile.txt", "a") as log:
@@ -78,72 +78,3 @@ def prepare_map(m, p):
     #else:
     #    p["normal_level"] = False 
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
-
-def start_data():
-    path = "data/"
-    m = {
-        "r": [],
-        "v": [],
-        "m": [],
-        "sy": 5,
-        "sx": 5,
-        }
-    p = {
-        "playertype": "HUMAN DUELIST",
-        "normal_level": True,
-        "shift_type_of": 0,#at the depth -PR-
-        "skill": 1,
-        "maxeat": 2000,
-        "maxhp": 20,
-        "hp": 20,
-        "hpchange": 2,
-        "reg_time": 10,
-        "reg_1/": 10,
-        "needxp": 40,
-        "xpchange": 40,
-        "xp": 0,
-        "lw": 1,
-        "depth": 0,
-        "strength": 9,
-        "dexterity": 9,
-        "gold": 250,
-        "attack": 1,
-        "bow": 1,
-        "armor": 0,
-        "attack_acc": 1,
-        "bow_acc": 1,
-        "basedefend": 50,
-        "defend": 0,
-        "attack_damage": 1,
-        "bow_damage": 1,
-        "attack_hits": 1,
-        "bow_hits": 1,
-        "e_attack": get_item(23),
-        "e_hand": get_item(50),
-        "e_armor": get_item(16),
-        "blessing": 0,
-        "fury": 0,
-        "y": 0,
-        "x": 0,
-        "dy": 0, # direction y -PR-
-        "dx": 0,
-        "wasattackby": "",
-        "echo": "",
-        "torch": True,
-        "torchtime": 1200,
-        "starving": False,
-        "fullness": 1500,
-        "BP": [
-            get_item(0)[:2] + [20] + get_item(0)[3:],
-            get_item(6),
-            get_item(7),
-            #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
-            ],
-        "time": 0,
-        "moved": True,
-        "id_camp": 0,
-        "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3],[3,3],[3,3],[3,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],["surface",3]],
-                ]
-        }
-    return m, p, path

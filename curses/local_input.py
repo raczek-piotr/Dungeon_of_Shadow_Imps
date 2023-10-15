@@ -76,14 +76,19 @@ def item_menager(w, c, m, p):
                 elif t[0][2] == 2:
                     p["blessing"] += 100
                     return[translate("YOU READ A") + " " + translate("SCROLL OF BLESSING"), True]
-                else:
+                elif t[0][2] == 3:
                     for y in range(m["sy"]):
                         for x in range(m["sx"]):
                             if m["r"][y][x][0] in {"]","}",")","$","~","-","*","!","?"}:
                                 for y2 in range(y-1, y+2):
                                     for x2 in range(x-1, x+2):
                                         m["v"][y2][x2] = m["r"][y2][x2]
-                    return[translate("YOU READ A") + " " + translate("SCROLL OF TREASURE MAPPING"), True]
+                else: # CYCLOPE-DIA -PR-
+                    if randint(0, 1):
+                        p["strength"] += 1
+                    else:
+                        p["dexterity"] += 1
+                    return[translate("YOU READ A") + " " + translate("CYCLOPE-DIA"), True]
             case 3: # potions
                 p["BP"].pop(it)
                 if t[0][2] == 0:

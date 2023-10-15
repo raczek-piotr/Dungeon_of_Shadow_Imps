@@ -20,12 +20,12 @@ item = [
 ["!",  [['POTION', 3, 2], '!', 1, False, 100]],  #14
 ["!",  [['POTION', 3, 3], '!', 1, False, 10]],  #15
 [")",  [['A T-SHIRT', 'e_armor'], ')', [0, 1], True, 1]],  #16
-[")",  [['SOFT LEATHER', 'e_armor'], ')', [1, 3], True, 32]],  #17
-[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 6], True, 130]],  #18
-[")",  [['LEATHER MAIL', 'e_armor'], ')', [4, 13], True, 520]],  #19
-[")",  [['CHAIN MAIL', 'e_armor'], ')', [5, 27], True, 813]],  #20
-[")",  [['CHAIN ARMOR', 'e_armor'], ')', [7, 37], True, 1595]],  #21
-[")",  [['PLATE ARMOR', 'e_armor'], ')', [8, 47], True, 2083]],  #22
+[")",  [['SOFT LEATHER', 'e_armor'], ')', [1, 4], True, 32]],  #17
+[")",  [['HARD LEATHER', 'e_armor'], ')', [2, 7], True, 130]],  #18
+[")",  [['LEATHER MAIL', 'e_armor'], ')', [4, 14], True, 520]],  #19
+[")",  [['CHAIN MAIL', 'e_armor'], ')', [6, 27], True, 813]],  #20
+[")",  [['CHAIN ARMOR', 'e_armor'], ')', [9, 37], True, 1595]],  #21
+[")",  [['PLATE ARMOR', 'e_armor'], ')', [12, 47], True, 2083]],  #22
 ["]",  [['KNIFE', 'e_attack'], ']', [1, 3, 1, 60, 6, 7], True, 120]],  #23
 ["]",  [['WOODEN CLUB', 'e_attack'], ']', [2, 2, 2, 30, 8, 7], True, 270]],  #24
 ["]",  [['SICKLE', 'e_attack'], ']', [1, 5, 1, 50, 8, 9], True, 187]],  #25
