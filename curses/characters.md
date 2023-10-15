@@ -1,4 +1,4 @@
-# Dungeons of Shadow Imps
+# Dungeons of Shadow Imps v0.2.0_dev
 ## Characters
 ### Human:
 -  Warrior
@@ -7,11 +7,39 @@
 -  Rogue
 -  Archer
 
-### Other:
--  will be someday
+### Fudish:
+-  *
+-  Barbarian
+-  Duelist
+-  Rogue
+-  Archer
+
+### Dwarf:
+-  Warrior
+-  Miner
+-  Scout
+-  *
+-  *
+
+### ALGAL:
+-  *
+-  *
+-  Wanderer
+-  Traveler
+-  *
+
+### CYCLOPE:
+-  *
+-  Beastman
+-  *
+-  Hunter
+-  *
+
+### STONE:
+-  no variants to choose, skils like Human Warrior
 
 ### Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/
--  email → raczek.piotr@o2.pl
--  webpage → never I think
+-  feedback-email → raczek.piotr@o2.pl
+-  webpage → never — I think

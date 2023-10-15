@@ -40,9 +40,9 @@ def character(w, c, p):
         "bow_damage": 1,
         "attack_hits": 1,
         "bow_hits": 1,
-        "e_attack": get_item(23),
-        "e_hand": get_item(50),
-        "e_armor": get_item(16),
+        "e_attack": get_item(24),
+        "e_hand": get_item(51),
+        "e_armor": get_item(17),
         "blessing": 0,
         "fury": 0,
         "y": 0,
@@ -65,7 +65,7 @@ def character(w, c, p):
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3],[3,3],[3,3],[3,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],["surface",3]],
+        "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],["surface",3],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3]],
                 ]
         }
 
@@ -234,21 +234,21 @@ def dwarf(w, c, p):
                 p["strength"] = 11
                 p["dexterity"] = 7
                 p["playertype"] = "DWARF WARRIOR"
-                p["e_attack"] = get_item(27)
+                p["e_attack"] = get_item(28)
                 p["BP"] = [(get_item(3)[:2] + [50] + get_item(3)[3:]), get_item(7)]
                 break
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
                 p["playertype"] = "DWARF MINER"
-                p["e_attack"] = get_item(27)
+                p["e_attack"] = get_item(28)
                 p["BP"] = [(get_item(3)[:2] + [100] + get_item(3)[3:]), get_item(7)]
                 break
             case "3":
                 p["strength"] = 9
                 p["dexterity"] = 9
                 p["playertype"] = "DWARF SCOUT"
-                p["e_attack"] = get_item(26)
+                p["e_attack"] = get_item(27)
                 p["BP"] = [(get_item(3)[:2] + [50] + get_item(3)[3:]), get_item(7)]
                 break
             case _:
@@ -260,9 +260,9 @@ def dwarf(w, c, p):
     p["reg_time"] = 10
     p["reg_1/"] = 9
     p["gold"] = 50
-    p["e_hand"] = get_item(59)
-    p["e_armor"] = get_item(17)
-    item = change_item(13)
+    p["e_hand"] = get_item(60)
+    p["e_armor"] = get_item(18)
+    item = change_item(14)
     item[-2] = True
     item[0] = ['POTION OF ENHANCEMENT', 3, 1]
     return True
@@ -333,11 +333,11 @@ def cyclope(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
-    p["maxhp"], p["hp"] = 30, 30
-    p["hpchange"] = 3
-    p["basedefend"] = 25
+    p["maxhp"], p["hp"] = 20, 20
+    p["hpchange"] = 2
+    p["basedefend"] = 40
     p["reg_time"] = 10
-    p["reg_1/"] = 9
+    p["reg_1/"] = 10
     p["gold"] = 25
     p["max_eat"] = 3000
     p["e_attack"] = [['ROUGH CLUB', 'e_attack'], ']', [1, 4, 2, 30, 7, 7], True, 225]

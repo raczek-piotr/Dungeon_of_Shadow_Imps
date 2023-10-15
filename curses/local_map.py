@@ -145,7 +145,10 @@ def map_init_int(m, p, items, type_of, stairs):
                 for y in range(j[0], j[0]+j[2]):
                     for x in range(j[1], j[1]+j[3]):
                         m["r"][y][x] = " "
-            pokojen = pokoje.copy()
+            for p in pokoje:
+                p = [p[0]+p[2]//2, p[1]+p[3]//2]
+                Connect(m, p, [m["sx"]//2, m["sy"]//2])
+            """pokojen = pokoje.copy()
             pokojeok = [pokojen.pop(0)]
             while pokojen != []:
                 n_minodl = 0
@@ -172,7 +175,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 #middle = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
                 Connect(m, p2, [m["sx"]//2, m["sy"]//2])
                 Connect(m, p1, [m["sx"]//2, m["sy"]//2], True)
-                pokojeok.append(pokojen.pop(n_minodl))
+                pokojeok.append(pokojen.pop(n_minodl))"""
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
                 m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
@@ -360,7 +363,7 @@ def RegularConnect(m, p_end, p_start):
     p_end[0], p_end[1] = p_end[0] + 2 * randint(0,p_end[2]//2), p_end[1] + 2 * randint(0,p_end[3]//2)
     p_start[0], p_start[1] = p_start[0] + 2 * randint(0,p_start[2]//2), p_start[1] + 2 * randint(0,p_start[3]//2)
     direction = randint(0, 1)
-    goal = True # I have the goal -PR-
+    goal = True # have the goal -PR-
     while goal:
         if direction == 0:
             if p_start[0] < p_end[0]:
@@ -370,9 +373,9 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[0]
                 direction += 1
-            if m["r"][k][p_start[1]] == "|":
+            if m["r"][k][p_start[1]] == "|" or m["r"][k][p_start[1]] == "+":
                 m["r"][k][p_start[1]] = "+"
-            elif m["r"][k][p_start[0]] not in {".","= ","+"}:
+            elif m["r"][k][p_start[0]] not in {".","= ","%"}:
                 m["r"][k][p_start[1]] = " "
             p_start[0] = 2*k-p_start[0]
             m["r"][p_start[0]][p_start[1]] = " "
@@ -384,9 +387,9 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[1]
                 direction -= 1
-            if m["r"][p_start[0]][k] == "|":
+            if m["r"][p_start[0]][k] == "|" or m["r"][p_start[0]][k] == "+":
                 m["r"][p_start[0]][k] = "+"
-            elif m["r"][p_start[0]][k] not in {".","= ","+"}:
+            elif m["r"][p_start[0]][k] not in {".","= ","%"}:
                 m["r"][p_start[0]][k] = " "
             p_start[1] = 2*k-p_start[1]
             m["r"][p_start[0]][p_start[1]] = " "

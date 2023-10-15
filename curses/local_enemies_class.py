@@ -7,7 +7,7 @@ def flag(f, n):
     return f%(2*n)//n
 # flags
 # 1 - is a shooter
-# 2 - poison (armor penetration)
+# 2 - poison/something_else (armor penetration)
 # 4 - random movement 50% (always)
 # 8 - when not sleeping and there is no player in range, then random movement (seeks player)
 e = [
@@ -20,14 +20,24 @@ e = [
     ["S",12,9,10,3,5,"drop",9,7,9,"SNAKE", 14], #6
     ["b",10,7,5,1,7,"drop",9,7,9,"BAT", 12], #7
     ["F",3,5,5,1,3,"drop",9,7,9,"POISON DART FROG", 2], #8
+
     ["w",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 8], #9
     ["h",9,6,12,1,6,"drop",16,14,16,"FUDISH HUNTER", 1], #10
     ["c",18,6,12,1,3,"drop",16,14,16,"FUNGAL CRAB", 0], #11
+    ["W",15,8,10,1,6,"drop",19,17,19,"WOLF", 0], #12
+    ["S",10,6,20,1,3,"drop",19,17,19,"FUNGAL SCORPION", 2], #13
+
+    ["g",6,25,23,1,4,"drop",23,21,23,"GOBLIN WITH A CHAINSAW", 0], #14
+    ["z",6,10,8,1,6,"drop",23,21,23,"ZOMBI", 0], #15
+    ["m",17,12,17,0,2,"drop",26,24,26,"MONKEY WITH KNIFE", 8], #16
+    ["C",30,14,85,0,7,"drop",26,24,26,"STOLEN OLD FUDISH SMALL CANNON", 2], #17
     ]
 enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
-                e[9],e[9],e[9],e[9],e[10],e[10],e[11]]
+                e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
+                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16]]
 enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
-                e[9],e[9],e[9],e[9],e[10],e[10],e[11]]
+                e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
+                e[14],e[14],e[14],e[14],e[15],e[17]]
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
@@ -199,7 +209,7 @@ def randmove(m, p, q, it, plus_it):
 
     body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    if m["r"][q[9]][q[8]][-1] != " " or m["v"][q[9]][q[8]] != " ":
+    if m["r"][q[9]][q[8]][-1] != " " and m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[0]][direction[1]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
@@ -209,7 +219,7 @@ def randmove(m, p, q, it, plus_it):
             q[1] = 0 # no xp for the player who did NOT kill him -PR-
     else:
         m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
-    if m["r"][q[9]][q[8]][-1] != " ":
+    if m["r"][q[9]][q[8]][-1] != " " and m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
 def move_enemie(m, p, q, it, plus_it):
@@ -224,7 +234,7 @@ def move_enemie(m, p, q, it, plus_it):
             direction = i
     body = m["r"][q[9]][q[8]][:4]
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
-    if m["r"][q[9]][q[8]][-1] != " " or m["v"][q[9]][q[8]] != " ":
+    if m["r"][q[9]][q[8]][-1] != " " and m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
     if m["r"][direction[1]][direction[2]][0] in tlist: # move an enemie? -PR-
         if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
@@ -234,7 +244,7 @@ def move_enemie(m, p, q, it, plus_it):
             q[1] = 0 # no xp for the player who did NOT kill him -PR-
     else:
         m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
-    if m["r"][q[9]][q[8]][-1] != " ":
+    if m["r"][q[9]][q[8]][-1] != " " and m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
 # enemies attacks player
@@ -247,7 +257,7 @@ def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
 
 def enemies_class_attack(p, head, value, ap):
     if randint(0, 99) >= p["defend"]:
-        value += randint(-value//2, value//2)
+        value += randint(-value**0.5//1, value**0.5//1)
         if not ap: # standard attack -PR-
             value -= p["armor"]
             if value < 0:
@@ -298,7 +308,7 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
         rolls *= 2
     if q[4] != 0:
         at_value += value * damage #free wake up hit
-        acc = 100
+        acc = acc if ranged else 100
         q[4] = 0
     for _ in range(hits):
         at_value += (randint(0, 99) < acc) * (roll(rolls, damage))
