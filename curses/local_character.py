@@ -42,7 +42,7 @@ def character(w, c, p):
         "bow_hits": 1,
         "e_attack": get_item(24),
         "e_hand": get_item(51),
-        "e_armor": get_item(17),
+        "e_armor": get_item(16),
         "blessing": 0,
         "fury": 0,
         "y": 0,
@@ -65,7 +65,7 @@ def character(w, c, p):
         "moved": True,
         "id_camp": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],["surface",3],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",3]],
+        "camp": [[["surface",1],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",1],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],["stonehouse",1],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["gate",1],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["bottom",2]],
                 ]
         }
 
@@ -118,6 +118,7 @@ def character(w, c, p):
                 p["reg_1/"] = 5
                 p["maxeat"] = 2500
                 p["gold"] = 100
+                p["depth"] = 20
                 break
             case _:
                 pass
@@ -261,7 +262,7 @@ def dwarf(w, c, p):
     p["reg_1/"] = 9
     p["gold"] = 50
     p["e_hand"] = get_item(60)
-    p["e_armor"] = get_item(18)
+    p["e_armor"] = get_item(17)
     item = change_item(14)
     item[-2] = True
     item[0] = ['POTION OF ENHANCEMENT', 3, 1]

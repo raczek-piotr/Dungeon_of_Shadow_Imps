@@ -28,7 +28,7 @@ def npc(w, c, m, p, it, stay):
         case 4:
             return trader(w, c, m, p, it, "Fudit Seller", [[["SCROLL IDENTIFY", 2, 0], "!", 1, True, 100]])
         case 5:
-            return trader(w, c, m, p, it, "Last Guardian of Gleam Gate", [])
+            return trader(w, c, m, p, it, "Last Guardian of Gate", [])
         case 6:
             return[False, translate("- MAYOR IS WAITING FOR YOU"), False]
         case 7:
