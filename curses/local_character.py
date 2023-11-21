@@ -111,14 +111,13 @@ def character(w, c, p):
                 p["strength"] = 11
                 p["dexterity"] = 7
                 p["playertype"] = "STONE"
-                p["maxhp"], p["hp"] = 10, 10
+                p["maxhp"], p["hp"] = 100, 100
                 p["hpchange"] = 1
                 p["basedefend"] = 30
                 p["reg_time"] = 2
                 p["reg_1/"] = 5
                 p["maxeat"] = 2500
                 p["gold"] = 100
-                p["depth"] = 20
                 break
             case _:
                 pass

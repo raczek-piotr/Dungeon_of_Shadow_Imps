@@ -43,6 +43,8 @@ def mainloop(w):
             p["echo"], p["moved"] = keyin(w, c, m, p, [p["y"], p["x"]], gi)
         if p["echo"][:1] == "#": # it could be "" … -PR-
             menager(w, c, p["echo"], m, p) # next map? -PR-
+            if p["echo"] == "#":
+                return 0
 
         if p["torch"]:
             test_room(m, [p["y"], p["x"]])
@@ -90,10 +92,5 @@ def mainloop(w):
             if p["hp"] <= 0:
                 break
     menager(w, c, "#E", m, p) #End game -PR-
-    w.clear()
-    output(w, c, m, p)#translator
-    w.addstr(23, 0, p["echo"]+"...")
-    w.addstr(23, 56, "score: "+str(p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"]+p["armor"])-80), c.color_pair(2))
-    w.getkey()
 
 wrapper(mainloop)

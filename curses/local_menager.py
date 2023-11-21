@@ -17,22 +17,30 @@ _type = 1 #local permanent variable -PR-
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
         case "#E":
-            scoreboard_append(w, c, p)
-            p["echo"] = translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))
+            score = scoreboard_append(w, c, p)
+            w.clear()
+            output(w, c, m, p)#translator
+            w.addstr(23, 0, translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))+"...")
+            w.addstr(23, 56, "score: "+str(score), c.color_pair(2))
+            w.getkey()
         case "#U":
             p["depth"] -= 1
             prepare_map(m, p)
             p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#D":
             p["depth"] += 1
-            prepare_map(m, p)
-            if command[2:] == "!":
-                p["echo"] = translate("YOU FALL DOWNSTAIRS!")
-                p["hp"] -= p["maxhp"]//2
-                #if p["hp"] <= 0: # not working (nothing changes) -PR-
-                #    p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
+            if p["depth"] >= 30:
+                p["echo"] = "#"
+                scoreboard_append(w, c, p, True) # Win The Game
             else:
-                p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
+                prepare_map(m, p)
+                if command[2:] == "!":
+                    p["echo"] = translate("YOU FALL DOWNSTAIRS!")
+                    p["hp"] -= p["maxhp"]//2
+                    #if p["hp"] <= 0: # not working (nothing changes) -PR-
+                    #    p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
+                else:
+                    p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#R":
             c.init_pair(1, 231, 16)
             c.init_pair(2, 46, 16)
