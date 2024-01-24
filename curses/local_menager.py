@@ -73,7 +73,11 @@ def prepare_map(c, m, p):
             _type += i
         p["type"] = _type + h[0] #h[0] is shift
     else:
-        p["type"] = h[0]
+        try:
+            p["type"] = int(h[0])
+            flag = False
+        except:
+            flag = True
     enemies_class_clear()
     ilist = []
 #    with open("logfile.txt", "a") as log:
@@ -88,18 +92,19 @@ def prepare_map(c, m, p):
             ilist.append("$"+zero3(randint(3,5+5*p["type"])))
     #else:
     #    p["normal_level"] = False
+    if not flag:
     typ = p["type"] - 1 # TYPe -PR-
-    if typ < 0:
-        typ = 0
-    elif typ > 3:
-        typ = 3
-    if typ == 0:
-        c.init_pair(8, 245, -1)
-    elif typ == 1:
-        c.init_pair(8, 41, -1)
-    elif typ == 2:
-        c.init_pair(8, 238, -1)
-    else: # == 3
-        c.init_pair(8, 196, -1)
-    p["environment_bonus"] = p["environment"][typ]
+        if typ < 0:
+            typ = 0
+        elif typ > 3:
+            typ = 3
+        if typ == 0:
+            c.init_pair(8, 245, -1)
+        elif typ == 1:
+            c.init_pair(8, 41, -1)
+        elif typ == 2:
+            c.init_pair(8, 238, -1)
+        else: # == 3
+            c.init_pair(8, 196, -1)
+        p["environment_bonus"] = p["environment"][typ]
     p["y"], p["x"] = map_init(m, p, ilist, p["type"], h[1])
