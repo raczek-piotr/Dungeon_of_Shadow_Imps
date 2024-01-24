@@ -72,7 +72,7 @@ def prepare_map(c, m, p):
         if _type + i in {0,1,2}:
             _type += i
         p["type"] = _type + h[0] #h[0] is shift
-        p["type"] = 1
+        type_of_map = p["type"]
     else:
         type_of_map = h[0]
         p["type"] = 1
