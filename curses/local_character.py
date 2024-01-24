@@ -47,7 +47,7 @@ def character(w, c, p):
         "fury": 0,
         "y": 0,
         "x": 0,
-        "dy": 0, # direction y -PR-
+        "dy": 0, # direction (movement or attack) y -PR-
         "dx": 0,
         "wasattackby": "",
         "echo": "",
@@ -59,13 +59,14 @@ def character(w, c, p):
             get_item(0)[:2] + [20] + get_item(0)[3:],
             get_item(6),
             get_item(7),
-            #for testing only{"item": "MAGIC MAPPING", "type": "!", "values": [20, "MAGIC MAPPING"], "cost": 40, "grouping": True},
             ],
         "time": 0,
         "moved": True,
         "id_camp": 0,
+        "environment": [0, 0, 0, 0],
+        "environment_bonus": 0,
         "type": 1, # type of dungeon -PR-
-        "camp": [[["surface",1],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",1],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],["stonehouse",1],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["gate",1],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["bottom",2]],
+        "camp": [[["surface",1],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["fudit_village",1],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],[3,3],["stonehouse",1],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],["gate",1],[3,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],["thebook",2]],
                 ]
         }
 
@@ -84,13 +85,13 @@ def character(w, c, p):
         w.addstr(14, 2, "4 - ALGAL", c.color_pair(3))
         w.addstr(15, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS DRUIDS. WHERE DO THEY COME FROM?", c.color_pair(3))
         w.addstr(17, 2, "5 - CYCLOPE", c.color_pair(7))
-        w.addstr(18, 2, "NOT VERY LIKED BY HUMANS, THEY ARE CYCLOPES! THEY TRAVEL A LOT IN THEIR LIVES", c.color_pair(7))
-        w.addstr(20, 2, "6 - STONE (YOU CAN'T CHOOSE THE CLASS) (EXPERIMENTAL)", c.color_pair(5))
-        w.addstr(21, 2, "STONE MONSTER. GREAT REGENERATION, BUT WEAK HP. DON'T LIKE MASIVE ATTACKS", c.color_pair(5))
+        w.addstr(18, 2, "DIRTY AND SMELLY... THEY ARE FROM THE EAST MOUNTAINS", c.color_pair(7))
+        #w.addstr(20, 2, "6 - STONE (YOU CAN'T CHOOSE THE CLASS) (EXPERIMENTAL)", c.color_pair(5))
+        #w.addstr(21, 2, "STONE MONSTER. GREAT REGENERATION, BUT WEAK HP. DON'T LIKE MASIVE ATTACKS", c.color_pair(5))
         if w.getmaxyx() != (24,80):
             w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(3))
             w.addstr(22, 79, "|", c.color_pair(7))
-            w.addstr(23, 71, "point ->", c.color_pair(7))
+            w.addstr(23, 71, "point --", c.color_pair(7))
         match w.getkey():
             case "1":
                 if human(w, c, p):
@@ -107,18 +108,6 @@ def character(w, c, p):
             case "5":
                 if cyclope(w, c, p):
                     break
-            case "6":
-                p["strength"] = 11
-                p["dexterity"] = 7
-                p["playertype"] = "STONE"
-                p["maxhp"], p["hp"] = 100, 100
-                p["hpchange"] = 1
-                p["basedefend"] = 30
-                p["reg_time"] = 2
-                p["reg_1/"] = 5
-                p["maxeat"] = 2500
-                p["gold"] = 100
-                break
             case _:
                 pass
     return m, p, path
@@ -165,6 +154,7 @@ def human(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["environment"] = [2, 1, 0, 0]
     p["maxeat"] = 2500
     item = change_item(8)
     item[-2] = True
@@ -209,6 +199,7 @@ def fudish(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["environment"] = [0, 2, 1, 0]
     p["basedefend"] = 60
     p["reg_time"] = 12
     p["maxeat"] = 5000
@@ -254,6 +245,7 @@ def dwarf(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["environment"] = [0, 0, 2, 1]
     p["maxhp"], p["hp"] = 30, 30
     p["hpchange"] = 3
     p["basedefend"] = 30
@@ -292,6 +284,7 @@ def algal(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["environment"] = [1, 1, 1, 1]
     p["maxhp"], p["hp"] = 10, 10
     p["hpchange"] = 1
     p["basedefend"] = 70
@@ -333,12 +326,13 @@ def cyclope(w, c, p):
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["environment"] = [0, 0, 0, 0]
     p["maxhp"], p["hp"] = 20, 20
     p["hpchange"] = 2
     p["basedefend"] = 40
     p["reg_time"] = 10
     p["reg_1/"] = 10
-    p["gold"] = 25
+    p["gold"] = 50
     p["max_eat"] = 3000
     p["e_attack"] = [['ROUGH CLUB', 'e_attack'], ']', [1, 4, 2, 30, 7, 7], True, 225]
     p["BP"].append([['CYCLOPE-DIA', 2, 4], '?', 1, True, 500])

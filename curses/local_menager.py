@@ -25,31 +25,32 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             w.getkey()
         case "#U":
             p["depth"] -= 1
-            prepare_map(m, p)
+            prepare_map(c, m, p)
             p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#D":
             p["depth"] += 1
-            if p["depth"] >= 30:
+            if p["depth"] >= 40:
                 p["echo"] = "#"
                 scoreboard_append(w, c, p, True) # Win The Game
             else:
-                prepare_map(m, p)
+                prepare_map(c, m, p)
                 if command[2:] == "!":
                     p["echo"] = translate("YOU FALL DOWNSTAIRS!")
                     p["hp"] -= p["maxhp"]//2
-                    #if p["hp"] <= 0: # not working (nothing changes) -PR-
-                    #    p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
+                    if p["hp"] <= 0: # not working (nothing changes) -PR-
+                        p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
                 else:
                     p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
         case "#R":
-            c.init_pair(1, 231, 16)
-            c.init_pair(2, 46, 16)
-            c.init_pair(3, 5, 16)
-            c.init_pair(4, 136, 16)
-            c.init_pair(5, 245, 16)#148 :) -PR-
-            c.init_pair(6, 57, 16)
-            c.init_pair(7, 196, 16)
-            m, p, path = character(w, c, p) # only here the data in needed to give it back -PR-
+            c.init_pair(1, 231, -1)
+            c.init_pair(2, 46, -1)
+            c.init_pair(3, 5, -1)
+            c.init_pair(4, 136, -1)
+            c.init_pair(5, 245, -1)
+            c.init_pair(6, 57, -1)
+            c.init_pair(7, 196, -1)
+            c.init_pair(8, 41, -1)#It don't need to be definited here -PR-
+            m, p, path = character(w, c, p) # I have to return the first data -PR-
             get_equip_values(p)
             scoreboard_print(w, c)
             w.clear()
@@ -57,10 +58,10 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             w.addstr(6, 13, '"Get up and eat, for the journey is too much for you."', c.color_pair(1))
             w.addstr(23, 65, "~ 1 KINGS 19:7", c.color_pair(5))
             w.getkey()
-            prepare_map(m, p)
+            prepare_map(c, m, p)
             return m, p, path
 
-def prepare_map(m, p):
+def prepare_map(c, m, p):
     global _type #local permanent variable -PR-
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
     while h == "next": # not used -PR-
@@ -84,5 +85,19 @@ def prepare_map(m, p):
         for _ in range(randint(0,3+p["type"])):
             ilist.append("$"+zero3(randint(3,5+5*p["type"])))
     #else:
-    #    p["normal_level"] = False 
+    #    p["normal_level"] = False
+    typ = p["type"] - 1 # TYPe -PR-
+    if typ < 0:
+        typ = 0
+    elif typ > 3:
+        typ = 3
+    if typ == 0:
+        c.init_pair(8, 245, -1)
+    elif typ == 1:
+        c.init_pair(8, 41, -1)
+    elif typ == 2:
+        c.init_pair(8, 238, -1)
+    else: # == 3
+        c.init_pair(8, 196, -1)
+    p["environment_bonus"] = p["environment"][typ]
     p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])

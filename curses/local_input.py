@@ -13,9 +13,10 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.clear()
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
-    w.addstr(3, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
-    w.addstr(4, 0, "hp: " + str(p["hp"]) + "/" + str(p["maxhp"]), c.color_pair(4))
-    w.addstr(5, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
+    w.addstr(3, 0, translate("CRITIC CHANCE")+": "+ str(p["environment_bonus"]) + "/10", c.color_pair(8))
+    w.addstr(5, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
+    w.addstr(6, 0, "hp: " + str(p["hp"]) + "/" + str(p["maxhp"]), c.color_pair(4))
+    w.addstr(7, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
     w.addstr(10, 0,"Equipted:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
     w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
@@ -129,7 +130,7 @@ def drop_menager(w, c, m, p):
 def shot_menager(w, c, m, p):
     w.clear()
     output(w, c, m, p)
-    w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"))
+    w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"), c.color_pair(1))
     it = get_in(w)
     dy, dx, t1 = player_move(it)
     if t1 and it != "5":

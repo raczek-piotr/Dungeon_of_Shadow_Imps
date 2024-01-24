@@ -16,12 +16,14 @@ from local_equip import get_equip_values
 
 from local_menager import menager
 def mainloop(w):
+    c.start_color()
+    c.use_default_colors()
     c.initscr()
     c.noqiflush()
     c.curs_set(0)
     w.resize(24,80)
     c.resize_term(24,80)
-    m, p, path = menager(w, c) # from there are imported maps and other things :) -PR-
+    m, p, path = menager(w, c) # from there are imported maps and player :) -PR-
     reg_time, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
 
@@ -30,7 +32,7 @@ def mainloop(w):
         c.flushinp() # I want no flush -PR-
         w.clear()
         output(w, c, m, p)
-        w.addstr(23, 0, p["echo"]+":")
+        w.addstr(23, 0, p["echo"]+":", c.color_pair(1))
         w.refresh()
         p["wasattackby"] = ""
         gi = get_in(w)
@@ -44,7 +46,7 @@ def mainloop(w):
         if p["echo"][:1] == "#": # it could be "" … -PR-
             menager(w, c, p["echo"], m, p) # next map? -PR-
             if p["echo"] == "#":
-                return 0
+                return # close the game -PR-
 
         if p["torch"]:
             test_room(m, [p["y"], p["x"]])

@@ -35,11 +35,7 @@
 -  Hunter
 -  *
 
-### STONE:
--  no variants to choose, skils like Human Warrior
-
 ### Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/
--  feedback-email → raczek.piotr@o2.pl
 -  webpage → never — I think

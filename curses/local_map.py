@@ -6,7 +6,7 @@ from local_enemies_class import enemies_class_add
 
 
 def map_init_str(m, p, items, type_of):
-    with open("maps/"+type_of+".map", "r") as rm: # readmap -PR-
+    with open("maps/"+type_of+".cfg", "r") as rm: # readmap -PR-
         p["echo"] = "?!"
         rm = rm.read().split("\n")
         while rm[-1] == "":
@@ -73,7 +73,7 @@ def map_init_int(m, p, items, type_of, stairs):
             while len(pokoje) < hm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-                can, = True
+                can = True
                 for i in pokoje:
                     if ((abs((i[0]+i[2])-(y+sy)) < i[2]+sy and
                          abs((i[1]+i[3])-(x+sx)) < i[3]+sx)):

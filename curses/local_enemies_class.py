@@ -21,32 +21,35 @@ e = [
     ["b",10,7,5,1,7,"drop",9,7,9,"BAT", 12], #7
     ["F",3,5,5,1,3,"drop",9,7,9,"POISON DART FROG", 2], #8
 
-    ["w",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 8], #9
+    ["m",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 8], #9
     ["t",10,6,12,1,6,"drop",16,14,16,"FUDISH TRAPPER", 1], #10
     ["c",15,7,12,1,3,"drop",16,14,16,"FUNGAL CRAB", 0], #11
-    ["W",15,8,10,1,6,"drop",19,17,19,"WOLF", 0], #12
+    ["w",15,8,10,1,6,"drop",19,17,19,"WOLF", 0], #12
     ["S",10,6,20,1,3,"drop",19,17,19,"FUNGAL SCORPION", 2], #13
 
-    ["g",3,23,17,1,4,"drop",23,21,23,"GOBLIN WITH A CHAINSAW", 0], #14
+    ["g",10,11,17,1,4,"drop",23,21,23,"GOBLIN WITH A CHAINSAW", 0], #14
     ["z",6,12,12,1,6,"drop",23,21,23,"ZOMBI", 0], #15
-    ["m",15,12,15,0,2,"drop",26,24,26,"MONKEY WITH KNIFE", 8], #16
-    ["C",30,13,30,1,7,"drop",26,24,26,"STOLEN FUDISH SMALL CANNON", 2], #17
+    ["m",15,12,15,0,2,"drop",26,24,26,"MONKEY WITH A KNIFE", 8], #16
+    ["C",30,13,30,1,7,"drop",26,24,26,"STOLEN SMALL FUDISH CANNON", 2], #17
     ["x",27,15,27,0,2,"drop",29,27,29,"PLAGUE", 0], #18
 
-    ["G",10,18,20,0,5,"drop",23,21,23,"GHOST", 8], #19
-    ["b",40,15,25,1,7,"drop",23,21,23,"GREAT BAT", 12], #20
-    ["b",40,15,25,1,7,"drop",23,21,23,"GREAT BAT", 0], #21
+    ["G",30,20,80,1,5,"drop",33,31,33,"GHOST", 13], #19
+    ["D",60,24,160,5,7,"drop",36,34,36,"GREADY AND ADVENTUROUS DWARF MINER", 0], #20
+    ["s",12,27,44,1,7,"drop",36,34,36,"SHADOW IMP", 0], #21
+    ["W",32,31,160,1,7,"drop",37,39,37,"SHADOW IMP VETERAN", 0], #22
     ]
 enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
-                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16]]
+                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16],
+                e[19],e[19],e[19],e[19],e[20],e[20],e[20],e[21],e[21],e[22],e[22],e[22],e[22]]
 enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
-                e[14],e[14],e[14],e[14],e[15],e[17]]
+                e[14],e[14],e[14],e[14],e[15],e[17],
+                e[19],e[19],e[19],e[19],e[20],e[20],e[20],e[21],e[21],e[22],e[22],e[22],e[22]]
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
-del e # e is used in functions leater, but data isn't deleted -PR-
+del e # e ↑ is used in functions leater, but data isn't deleted -PR-
 
 enemies_part1 = [enemies_light,
                  enemies_light,
@@ -291,11 +294,11 @@ def enemies_class_is_shoted(m, p, dire, value):
             if m["r"][ty][tx][0] in heads:
                 it = int(m["r"][ty][tx][1:4])
                 enemies_class_is_attacked(m, p, it, value, True)
-                return #()
+                return
             p["echo"] = translate("YOU SHOT SOMEWERE")
-            return #()
+            return
     p["echo"] = translate("NO AMMO")
-    return #()
+    return
 
 def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep of an enemie
     if it >= 500:
@@ -312,20 +315,25 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     if p["fury"]:
         rolls *= 2
     if q[4] != 0:
-        at_value += value * damage #free wake up hit
+        at_value += value * damage # free wake up hit
         acc = acc if ranged else 100
         q[4] = 0
     for _ in range(hits):
         at_value += (randint(0, 99) < acc) * (roll(rolls, damage))
+    # critic hit
+    critic = randint(0, 9) < p["environment_bonus"]
+    if critic:
+        at_value *= 2
     if at_value != 0:
         q[1] -= at_value
         q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
         p["echo"] = translate("YOU HIT A")+" "+translate(q[10])
-        if q[1] <= 0:
+        if q[1] <= 0 :
             m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
             if m["v"][q[9]][q[8]][0] == q[0]:
                 m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
             p["xp"] += q[3] * (q[7] >= p["lw"])
             p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
+        p["echo"] += (" WITH A CRITIC HIT!" if p["environment_bonus"] else "")
     else:
         p["echo"] = translate("YOU MISS A")+" "+translate(q[10])

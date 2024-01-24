@@ -6,10 +6,12 @@ from local_equip import get_equip_values, merge
 
 
 traders = [{5,6,7,26,27},
-           {59},
+           {60},
            {25},
            {5,6,7,26,27},
-           {6,7,18}]
+           {6,7,18,60},
+           {6,7},
+           {6,7}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
@@ -24,16 +26,20 @@ def npc(w, c, m, p, it, stay):
         case 2:
             return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[["POTION OF HEALING", 3, 0], "!", 1, True, 120]])
         case 3:
-            return[False, translate("- GO TO THE DUNGEON TO FIND BOOK OF BOOKS!"), False]
+            return[False, translate("- I DON'T KNOW WHAT TO THINK ABOUT YOUR DREAM!"), False]
         case 4:
             return trader(w, c, m, p, it, "Fudit Seller", [[["SCROLL IDENTIFY", 2, 0], "!", 1, True, 100]])
         case 5:
-            return trader(w, c, m, p, it, "Last Guardian of Gate", [])
+            return trader(w, c, m, p, it, "Lost Dwarf Seller", [[["POTION OF HEALING", 3, 0], "!", 1, True, 120], [["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],[["BOLT", "BOLTS"], "-", 25, True, 2]])
         case 6:
-            return[False, translate("- MAYOR IS WAITING FOR YOU"), False]
+            return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "!", 1, True, 100]])
         case 7:
-            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM...", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
+            return trader(w, c, m, p, it, "ANGEL", [[["BOOK OF BOOKS", 2, 0], "!", 1, True, 100]]) #ENDING
         case 8:
+            return[False, translate("- MAYOR IS EMBARRASSED"), False]
+        case 9:
+            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM... I NEVER SEE HIM", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
+        case 10:
             return[False, translate(choice(["- FOOD? WE ATE MOLD... IT IS EVERYWERE!", "- FUNGAL GARDENS ARE BELOW US, WITH MOLD!"])), False]
     return[False, p["echo"], False]
 def in_BP(BP, item): #copy is in local_terrain.py

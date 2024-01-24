@@ -50,21 +50,21 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
 def playerdata(y, p):
     match y:
         case 1:
-            return " "+p["playertype"]
+            return p["playertype"]
         case 3:
-            return " hp: " + str(p["hp"]) + "/" + str(p["maxhp"])
+            return "hp: " + str(p["hp"]) + "/" + str(p["maxhp"])
         case 4:
-            return " xp: " + str(p["xp"]) + "/" + str(p["needxp"])
+            return "xp: " + str(p["xp"]) + "/" + str(p["needxp"])
         case 5:
-            return " lw: " + str(p["lw"])
+            return "lw: " + str(p["lw"])
         case 6:
-            return " depth: " + str(p["depth"])
+            return "depth: " + str(p["depth"])
         case 7:
-            return " str|dex"
+            return "str|dex"
         case 8:
-            return " "*(4-len(str(p["strength"])))+str(p["strength"])+"|"+str(p["dexterity"])
+            return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+str(p["dexterity"])
         case 9:
-            return " gold: " + str(p["gold"])
+            return "gold: " + str(p["gold"])
         case 11:
             return " attack: " + str(p["attack"])+"D"+str(p["attack_damage"])+" "+(str(p["attack_hits"])+"H"+str(p["attack_acc"])+"%")
         case 12:
@@ -76,15 +76,15 @@ def playerdata(y, p):
         case 16:
             return item(p["BP"], 1)
         case 17:
-            return "" + item(p["BP"], 2)
+            return item(p["BP"], 2)
         case 18:
-            return "" + item(p["BP"], 3)
+            return item(p["BP"], 3)
         case 19:
-            return "" + item(p["BP"], 4)
+            return item(p["BP"], 4)
         case 20:
-            return "" + item(p["BP"], 5)
+            return item(p["BP"], 5)
         case 22:
-            return " attack by:"
+            return "attack by:"
         case _:
             return ""
 
@@ -107,7 +107,7 @@ def output(w, c, m, p):
                     if i in {"@","]","}",")","~","$","*","-","?","!","%"}:
                         col = 2
                     elif i == "#":
-                        col = 5
+                        col = 8
                     elif i == "=":
                         col = 6
                     elif i == "&":
@@ -120,11 +120,12 @@ def output(w, c, m, p):
                         col = 1
                     w.addstr(y, x, i, c.color_pair(col))
         w.addstr(y, 53, "|", c.color_pair(4))
-        w.addstr(y, 55, playerdata(y, p), c.color_pair(1))
+        w.addstr(y, 56, playerdata(y, p), c.color_pair(1))
     if p["torch"]:
         for y in range(-1, 2):
+            ty = (p["y"] + y) % m["sy"]
             for x in range(-1, 2):
-                i = [(p["y"] + y) % m["sy"], (p["x"] + x) % m["sx"]]
+                i = [ty, (p["x"] + x) % m["sx"]]
                 if m["v"][i[0]][i[1]] == " ":
                     w.addstr(11+y, 26+x, ".", c.color_pair(1))
     w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
@@ -132,13 +133,15 @@ def output(w, c, m, p):
     w.addstr(2, 55, spacer, c.color_pair(4))
     w.addstr(10, 55, spacer, c.color_pair(4))
     if p["starving"]:
-        w.addstr(12, 55, "S", c.color_pair(3))
+        w.addstr(12, 56, "S", c.color_pair(3))
     if not p["torch"]:
-        w.addstr(13, 55, "L", c.color_pair(3))
+        w.addstr(13, 56, "L", c.color_pair(3))
     if p["blessing"]:
-        w.addstr(12, 54, "B", c.color_pair(2))
+        w.addstr(12, 55, "B", c.color_pair(2))
     if p["fury"]:
-        w.addstr(13, 54, "F", c.color_pair(2))
+        w.addstr(13, 55, "F", c.color_pair(2))
+    if p["environment_bonus"]:
+        w.addstr(11, 55, str(p["environment_bonus"]), c.color_pair(2))
     w.addstr(14, 55, spacer, c.color_pair(4))
     w.addstr(21, 55, spacer, c.color_pair(4))
     w.addstr(11, 26, "@", c.color_pair(1))
