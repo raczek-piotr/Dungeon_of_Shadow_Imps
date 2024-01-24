@@ -72,6 +72,8 @@ def prepare_map(c, m, p):
         if _type + i in {0,1,2}:
             _type += i
         p["type"] = _type + h[0] #h[0] is shift
+    else:
+        p["type"] = h[0]
     enemies_class_clear()
     ilist = []
 #    with open("logfile.txt", "a") as log:
@@ -100,4 +102,4 @@ def prepare_map(c, m, p):
     else: # == 3
         c.init_pair(8, 196, -1)
     p["environment_bonus"] = p["environment"][typ]
-    p["y"], p["x"] = map_init(m, p, ilist, h[0], h[1])
+    p["y"], p["x"] = map_init(m, p, ilist, p["type"], h[1])

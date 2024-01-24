@@ -334,6 +334,6 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
                 m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
             p["xp"] += q[3] * (q[7] >= p["lw"])
             p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
-        p["echo"] += (" WITH A CRITIC HIT!" if p["environment_bonus"] else "")
+        p["echo"] += (" WITH A CRITIC HIT!" if critic else "")
     else:
         p["echo"] = translate("YOU MISS A")+" "+translate(q[10])

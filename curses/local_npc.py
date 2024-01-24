@@ -5,11 +5,11 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,6,7,26,27},
+traders = [{5,6,7,27,28},
            {60},
-           {25},
-           {5,6,7,26,27},
-           {6,7,18,60},
+           {26},
+           {5,6,7,27,28},
+           {6,7,60},
            {6,7},
            {6,7}]
 
