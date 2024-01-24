@@ -93,7 +93,7 @@ def prepare_map(c, m, p):
     #else:
     #    p["normal_level"] = False
     if not flag:
-    typ = p["type"] - 1 # TYPe -PR-
+        typ = p["type"] - 1 # TYPe -PR-
         if typ < 0:
             typ = 0
         elif typ > 3:
