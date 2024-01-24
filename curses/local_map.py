@@ -110,7 +110,7 @@ def map_init_int(m, p, items, type_of, stairs):
                         m["r"][y][x] = "|"
             for it in range(hm):
                 RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
-            RegularConnect(m, Spokoje[it].copy(), pokoje[it].copy()) # connect the two "worlds" -PR-
+            RegularConnect(m, Spokoje[hm-it].copy(), pokoje[it].copy()) # connect the two "worlds" -PR-
             for it in range(hm):
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
                     for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
@@ -220,9 +220,9 @@ def map_init_int(m, p, items, type_of, stairs):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
             if stairs > 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">."
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "> "
             if stairs % 2 == 1:
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<."
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "< "
             pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
 
         case 7:
