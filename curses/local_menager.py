@@ -77,7 +77,7 @@ def prepare_map(c, m, p):
         p["type"] = _type + h[0] #h[0] is shift
         type_of = p["type"]
     elif h[0] in {10,11,12,13}:
-        p["type"] = h[0] - 10
+        p["type"] = h[0]
         type_of = p["type"]
     else: #int
         type_of = h[0]
