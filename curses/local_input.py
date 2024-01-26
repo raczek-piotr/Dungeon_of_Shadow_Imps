@@ -84,6 +84,7 @@ def item_menager(w, c, m, p):
                                 for y2 in range(y-1, y+2):
                                     for x2 in range(x-1, x+2):
                                         m["v"][y2][x2] = m["r"][y2][x2]
+                    return[translate("YOU READ A") + " " + translate("SCROLL OF TREASURE MAPPING"), True]
                 else: # CYCLOPE-DIA -PR-
                     if randint(0, 1):
                         p["strength"] += 1
@@ -107,6 +108,7 @@ def item_menager(w, c, m, p):
                     return[translate("YOU DRANK") + " " + translate("POTION OF FURY"), True]
                 else:
                     p["hp"] -= p["maxhp"]//2
+                    c.beep() # alarm the player -PR-
                     return[translate("YOU DRANK") + " " + translate("POTION OF POISON"), True]
                     
         return[translate("YOU CAN'T USE THAT"), False]
@@ -145,7 +147,6 @@ def shot_menager(w, c, m, p):
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Game tiles:", c.color_pair(4))
-    w.addstr(0, 61, "Version = pre_0.2.0", c.color_pair(1))
     w.addstr(1, 2, "@/  - you/", c.color_pair(1))
     w.addstr(1, 4, "@", c.color_pair(2))
     w.addstr(1, 12, "NPC", c.color_pair(2))
@@ -167,13 +168,13 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(7, 28, "} - ranged weapon", c.color_pair(2))
     w.addstr(7, 54, ") - armor", c.color_pair(2))
 
-    w.addstr(6, 54, "- - arrows", c.color_pair(2))
+    w.addstr(8, 54, "- - arrows", c.color_pair(2))
 
-    w.addstr(6, 2, "~ - torch", c.color_pair(2))
-    w.addstr(6, 28, "* - food", c.color_pair(2))
+    w.addstr(8, 2, "~ - torch", c.color_pair(2))
+    w.addstr(8, 28, "* - food", c.color_pair(2))
 
-    w.addstr(7, 2, "? - mixture", c.color_pair(2))
-    w.addstr(7, 28, "! - potion", c.color_pair(2))
+    w.addstr(9, 2, "? - mixture", c.color_pair(2))
+    w.addstr(9, 28, "! - potion", c.color_pair(2))
 
 
     w.addstr(16, 0, "Movement:", c.color_pair(4))
@@ -183,6 +184,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
+    w.addstr(23, 61, "Version = DEV_0.2.0", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     get_in(w)

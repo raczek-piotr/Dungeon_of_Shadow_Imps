@@ -141,7 +141,7 @@ def output(w, c, m, p):
     if p["fury"]:
         w.addstr(13, 55, "F", c.color_pair(2))
     if p["environment_bonus"]:
-        w.addstr(11, 55, str(p["environment_bonus"]), c.color_pair(2))
+        w.addstr(11, 55, str(p["environment_bonus"]), c.color_pair(8))
     w.addstr(14, 55, spacer, c.color_pair(4))
     w.addstr(21, 55, spacer, c.color_pair(4))
     w.addstr(11, 26, "@", c.color_pair(1))

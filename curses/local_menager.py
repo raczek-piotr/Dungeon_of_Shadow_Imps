@@ -1,6 +1,6 @@
 from random import randint, choice
 #from time import sleep
-from local_scripts import zero3  # or "*" -PR-
+from local_scripts import zero3
 from local_map import map_init
 from local_enemies_class import enemies_class_clear
 from local_character import character
@@ -10,8 +10,11 @@ from local_equip import get_equip_values
 from local_translator import translate
 from local_item_class import get_item, randitem
 
+from local_output import output
 
-_type = 1 #local permanent variable -PR-
+
+_type = 1 # local (script) permanent variable -PR-
+c_type = [0,2,1,2,3] # color_type -PR-
 
 
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
@@ -19,7 +22,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
         case "#E":
             score = scoreboard_append(w, c, p)
             w.clear()
-            output(w, c, m, p)#translator
+            output(w, c, m, p)
             w.addstr(23, 0, translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))+"...")
             w.addstr(23, 56, "score: "+str(score), c.color_pair(2))
             w.getkey()
@@ -62,35 +65,35 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             return m, p, path
 
 def prepare_map(c, m, p):
-    global _type #local permanent variable -PR-
+    global _type, c_type
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
     while h == "next": # not used -PR-
         p["id_camp"] += 1
         h = p["camp"][p["id_camp"]][p["depth"]].copy()
-    if h[0] in {0,1,2}:
+    if h[0] in {0,1,2,3}:
         i = randint(-1, 1)
         if _type + i in {0,1,2}:
             _type += i
         p["type"] = _type + h[0] #h[0] is shift
-        type_of_map = p["type"]
-    else:
-        type_of_map = h[0]
-        p["type"] = 1
+        type_of = p["type"]
+    elif h[0] in {10,11,12,13}:
+        p["type"] = h[0] - 10
+        type_of = p["type"]
+    else: #int
+        type_of = h[0]
+        p["type"] = h[1]
     enemies_class_clear()
     ilist = []
-#    with open("logfile.txt", "a") as log:
-#        log.write(str(h)+"\n")
-#        log.write(str(_type)+"\n")
-#        log.write(str(p)+"\n")
-#        log.write(str(m)+"\n\n\n")
     if type(h[0]) == int:
         p["normal_level"] = True # "needs" are enable/disable -PR-
         ilist = randitem(h[0]+5, 8, 58)+randitem(2, 0, 4)# + arrows -PR-
         for _ in range(randint(0,3+p["type"])):
             ilist.append("$"+zero3(randint(3,5+5*p["type"])))
+        if p["type"] == 2:
+            ilist += randitem(4, 4, 4)
     #else:
     #    p["normal_level"] = False
-    typ = p["type"] - 1 # TYPe -PR-
+    typ = c_type[p["type"]] # TYPe -PR-
     if typ < 0:
         typ = 0
     elif typ > 3:
@@ -104,4 +107,4 @@ def prepare_map(c, m, p):
     else: # == 3
         c.init_pair(8, 196, -1)
     p["environment_bonus"] = p["environment"][typ]
-    p["y"], p["x"] = map_init(m, p, ilist, type_of_map, h[1])
+    p["y"], p["x"] = map_init(m, p, ilist, type_of, h[1])

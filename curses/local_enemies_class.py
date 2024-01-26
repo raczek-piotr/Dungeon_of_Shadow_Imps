@@ -29,22 +29,24 @@ e = [
 
     ["g",10,11,17,1,4,"drop",23,21,23,"GOBLIN WITH A CHAINSAW", 0], #14
     ["z",6,12,12,1,6,"drop",23,21,23,"ZOMBI", 0], #15
-    ["m",15,12,15,0,2,"drop",26,24,26,"MONKEY WITH A KNIFE", 8], #16
-    ["C",30,13,30,1,7,"drop",26,24,26,"STOLEN SMALL FUDISH CANNON", 2], #17
+    ["m",30,12,30,0,2,"drop",26,24,26,"MONKEY WITH A KNIFE", 8], #16
+    ["C",30,17,60,1,7,"drop",26,24,26,"STOLEN SMALL FUDISH CANNON", 2], #17
     ["x",27,15,27,0,2,"drop",29,27,29,"PLAGUE", 0], #18
 
     ["G",30,20,80,1,5,"drop",33,31,33,"GHOST", 13], #19
     ["D",60,24,160,5,7,"drop",36,34,36,"GREADY AND ADVENTUROUS DWARF MINER", 0], #20
     ["s",12,27,44,1,7,"drop",36,34,36,"SHADOW IMP", 0], #21
-    ["W",32,31,160,1,7,"drop",37,39,37,"SHADOW IMP VETERAN", 0], #22
+    ["W",32,31,160,1,7,"drop",39,37,39,"SHADOW IMP VETERAN", 0], #22
     ]
 enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
-                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16],
+                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16],e[16],e[17],e[17],
+                e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],
                 e[19],e[19],e[19],e[19],e[20],e[20],e[20],e[21],e[21],e[22],e[22],e[22],e[22]]
 enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
-                e[14],e[14],e[14],e[14],e[15],e[17],
+                e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[17],e[17],e[17],
+                e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],
                 e[19],e[19],e[19],e[19],e[20],e[20],e[20],e[21],e[21],e[22],e[22],e[22],e[22]]
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
@@ -75,21 +77,18 @@ def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
         lw = 1
     global c, a, exlist, heads, elist
     if elist == []:
-        for e in enemies_part1[type_of%4]:
+        for e in enemies_part1[type_of % 4]:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(2):#randint(2,2)):
+                for _ in range(randint(1, 3)):
                     elist.append(e)
-        for e in enemies_part2[type_of%4]:
+        for e in enemies_part2[type_of % 4]:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(2):#randint(2,2)):
+                for _ in range(randint(1, 3)):
                     elist.append(e)
-    if elist == []:
-        while True:
-            pass
 
     e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-
     e[8], e[9] = x, y
-    if e[11]%2 == 1:
+    if e[11]%2 == 1: # get a flag -PR-
         q, it = a, len(a)+500
     else:
         q, it = c, len(c)

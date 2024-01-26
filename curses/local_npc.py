@@ -9,7 +9,7 @@ traders = [{5,6,7,27,28},
            {60},
            {26},
            {5,6,7,27,28},
-           {6,7,60},
+           {6,7},
            {6,7},
            {6,7}]
 
@@ -28,7 +28,7 @@ def npc(w, c, m, p, it, stay):
         case 3:
             return[False, translate("- I DON'T KNOW WHAT TO THINK ABOUT YOUR DREAM!"), False]
         case 4:
-            return trader(w, c, m, p, it, "Fudit Seller", [[["SCROLL IDENTIFY", 2, 0], "!", 1, True, 100]])
+            return trader(w, c, m, p, it, "Fudit Seller", [[["SCROLL OF TELEPORTATION", 2, 1], "!", 1, True, 50]])
         case 5:
             return trader(w, c, m, p, it, "Lost Dwarf Seller", [[["POTION OF HEALING", 3, 0], "!", 1, True, 120], [["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],[["BOLT", "BOLTS"], "-", 25, True, 2]])
         case 6:
