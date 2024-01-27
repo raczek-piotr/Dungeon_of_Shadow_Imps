@@ -77,7 +77,7 @@ def prepare_map(c, m, p):
         p["type"] = _type + h[0] #h[0] is shift
         type_of = p["type"]
     elif h[0] in {10,11,12,13}:
-        p["type"] = h[0]
+        p["type"] = h[0] - 10
         type_of = p["type"]
     else: #int
         type_of = h[0]
@@ -93,6 +93,7 @@ def prepare_map(c, m, p):
             ilist += randitem(4, 4, 4)
     #else:
     #    p["normal_level"] = False
+    print(p["type"])
     typ = c_type[p["type"]] # TYPe -PR-
     if typ < 0:
         typ = 0
