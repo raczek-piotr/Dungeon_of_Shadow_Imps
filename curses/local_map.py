@@ -54,8 +54,6 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
 
 
 def map_init(m, p, items, type_of = 0, stairs = 3):
-    with open("log.txt", "a") as txt:
-        txt.write(str(type_of)+" "+str(type(type_of))+"\n")
     if type(type_of) == int:
         return map_init_int(m, p, items, type_of, stairs)
     else:

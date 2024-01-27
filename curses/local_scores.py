@@ -4,7 +4,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("505|DEFAULT|DWARF MINER|2343|7|7|-|[]\n")
+            scores_txt.write("403|DEFAULT|DWARF SCOUT|1258|5|9|-|[]\n")
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 
@@ -15,7 +15,7 @@ def scoreboard_print(w, c):
     scores = sorted(scores, key = lambda key: int(key[0]))
 
     w.clear()
-    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
+    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:-23:-1]
     for t in range(len(scores)):
         w.addstr(t+1, 1, str(t+1)+".", c.color_pair(2))
