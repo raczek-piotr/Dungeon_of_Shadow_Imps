@@ -184,7 +184,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 61, "Version = DEV_0.2.0", c.color_pair(1))
+    w.addstr(23, 60, "Version = DEV_0.2.0", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     get_in(w)
