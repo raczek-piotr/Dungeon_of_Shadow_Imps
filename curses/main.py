@@ -14,6 +14,9 @@ from local_scripts import sort
 from local_equip import get_equip_values
 
 
+from time import time, ctime
+
+
 from local_menager import menager
 def mainloop(w):
     c.start_color()
@@ -95,4 +98,6 @@ def mainloop(w):
                 break
     menager(w, c, "#E", m, p) #End game -PR-
 
+with open("log.txt", "a") as txt:
+    txt.write("\n" + ctime(time()) + " starting a new game\n")
 wrapper(mainloop)

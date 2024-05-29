@@ -1,8 +1,8 @@
 from random import randint, choice
+from time import time, ctime
 
 from local_scripts import zero3
 from local_enemies_class import enemies_class_add
-#from local_boss_map import boss_map_init
 
 
 def map_init_str(m, p, items, type_of):
@@ -55,7 +55,7 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
 
 def map_init(m, p, items, type_of = 0, stairs = 3):
     with open("log.txt", "a") as txt:
-        txt.write(str(type_of)+" "+str(type(type_of))+"\n")
+        txt.write(ctime(time()) + " creating map with properties: " + str(type_of)+" "+str(type(type_of))+"\n")
     if type(type_of) == int:
         return map_init_int(m, p, items, type_of, stairs)
     else:
