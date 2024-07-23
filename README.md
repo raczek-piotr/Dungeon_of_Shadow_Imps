@@ -24,10 +24,10 @@
 	
 ## Errors in curses
 ### Errors:
-  1. "no module called curses" or "no module called _curses"
+  1. `no module called curses` or `no module called _curses`
       *  curses is not installed
-      *  install windows.curses or curses-2048 (curses-2048 is with game 2048) they should? work on linux
-  2. "_curses.error: setupterm: could not find terminal"
+      *  install windows.curses
+  2. `_curses.error: setupterm: could not find terminal`
       *  you had to ran it in editor's terminal or console, but it has it be the terminal/cmd (ctrl + t, great shortcut in thonny)
 
 ## Contact

@@ -7,6 +7,7 @@ from local_translator import translate
 from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values #, merge # not needed -PR-
+from local_spells import spell_menager
 
 
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
@@ -14,12 +15,15 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
     w.addstr(3, 0, translate("CRITIC CHANCE")+": "+ str(p["environment_bonus"]) + "/10", c.color_pair(8))
-    w.addstr(5, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
+    if p["inteligence"] > 0:
+        w.addstr(5, 0, "str|dex|int " + str(p["strength"]) + "|" + str(p["dexterity"]) + "|" + str(p["inteligence"]), c.color_pair(4))
+    else:
+        w.addstr(5, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(6, 0, "hp: " + str(p["hp"]) + "/" + str(p["maxhp"]), c.color_pair(4))
     w.addstr(7, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
     w.addstr(10, 0,"Equipted:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
-    w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
+    w.addstr(12, 2, p["hand_name"], c.color_pair(5))
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh() # ? -PR-
@@ -37,8 +41,10 @@ def item_menager(w, c, m, p):
     except:
         return[p["echo"], False]
     t = p["BP"][it]
-    if t[1] in {"]","}",")"}:
+    if t[1] in {"]","}",")","~"}:
         p["BP"][it], p[t[0][1]] = p[t[0][1]], p["BP"][it]
+        get_equip_values(p)
+        return[translate("YOU EQUIP") + " " + translate(t[0][0]), True]
     else:
         match t[0][1]:
             case 0: # food
@@ -141,7 +147,7 @@ def shot_menager(w, c, m, p):
         return[p["echo"], True]
     return[translate("WRONG DIRECTION!"), False]
     #elif p["arrows_id"] == -1: # return ↑ but... -PR-
-    #    return[translate("YOU DON'T HAVE ARROWS!"), False]
+    #    return[translate("YOU DON'T HAVE AMMO!"), False]
     #return[translate("YOU CAN'T SHOT THERE!"), False]
 
 def pomoc(w, c, m, p): #not beautyful, but done -PR-
@@ -164,17 +170,18 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(4, 54, '& - lava', c.color_pair(7))
 
     w.addstr(6, 0, "Game items:", c.color_pair(4))
+
     w.addstr(7, 2, "] - melee weapon", c.color_pair(2))
     w.addstr(7, 28, "} - ranged weapon", c.color_pair(2))
     w.addstr(7, 54, ") - armor", c.color_pair(2))
 
-    w.addstr(8, 54, "- - arrows", c.color_pair(2))
-
     w.addstr(8, 2, "~ - torch", c.color_pair(2))
     w.addstr(8, 28, "* - food", c.color_pair(2))
+    w.addstr(8, 54, "- - arrows", c.color_pair(2))
 
     w.addstr(9, 2, "? - mixture", c.color_pair(2))
     w.addstr(9, 28, "! - potion", c.color_pair(2))
+    w.addstr(9, 28, "~ - book", c.color_pair(2))
 
 
     w.addstr(16, 0, "Movement:", c.color_pair(4))
@@ -184,7 +191,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 60, "Version = DEV_0.2.0", c.color_pair(1))
+    w.addstr(23, 60, "Version = DEV_0.2.1", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     get_in(w)
@@ -194,13 +201,15 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
 def keyin(w, c, m, p, pos, key):
     match key:
         #case "-":
-        #     pass
+        #    pass
         case "+":
-             return item_menager(w, c, m, p)
+            return item_menager(w, c, m, p)
         case ",":
-             return drop_menager(w, c, m, p)
+            return drop_menager(w, c, m, p)
         case "0":
-             return shot_menager(w, c, m, p)
+            if p["magic_list"]:
+                return spell_menager(w, c, m, p)
+            return shot_menager(w, c, m, p)
         case ">":
             if m["r"][pos[0]][pos[1]][0] == ">":
                 return ["#D", False]

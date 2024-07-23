@@ -28,18 +28,23 @@ def character(w, c, p):
         "depth": 0,
         "strength": 9,
         "dexterity": 9,
+        "inteligence": 0,
+        "magic_list": False,
         "gold": 250,
-        "attack": 1,
-        "bow": 1,
         "armor": 0,
-        "attack_acc": 1,
-        "bow_acc": 1,
         "basedefend": 50,
         "defend": 0,
+        #defend_name": "",
+        "attack": 1,
+        "attack_acc": 1,
         "attack_damage": 1,
-        "bow_damage": 1,
         "attack_hits": 1,
+        #"attack_name": "",
+        "bow": 1,
+        "bow_acc": 1,
+        "bow_damage": 1,
         "bow_hits": 1,
+        #"hand_name": "1D1 1H60%",
         "e_attack": get_item(24),
         "e_hand": get_item(51),
         "e_armor": get_item(16),
@@ -74,7 +79,7 @@ def character(w, c, p):
         w.clear() # ? -PR-
         w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
         w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-        w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+        w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
         w.addstr(3, 2, "SELECT A RACE:", c.color_pair(4))
         w.addstr(5, 2, "1 - HUMAN", c.color_pair(1))
         w.addstr(6, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
@@ -116,13 +121,14 @@ def human(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(3, 2, "CLASSES (HUMAN):", c.color_pair(4))
     w.addstr(5, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
     w.addstr(7, 2, "2 - HUMAN BANDIT", c.color_pair(1))
     w.addstr(9, 2, "3 - HUMAN DUELIST", c.color_pair(1))
     w.addstr(11, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(13, 2, "5 - HUMAN ARCHER", c.color_pair(1))
+    w.addstr(15, 2, "6 - HUMAN MAGE", c.color_pair(1))
     w.refresh()
     while True:
         q = w.getkey()
@@ -151,6 +157,13 @@ def human(w, c, p):
                 p["playertype"] = "HUMAN ARCHER"
                 p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
                 break
+            case "6":
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 4
+                p["playertype"] = "HUMAN MAGE"
+                p["BP"].append(get_item(65))
+                break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
@@ -165,7 +178,7 @@ def fudish(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(3, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(5, 2, "1 - FUDISH BARBARIAN", c.color_pair(2))
     w.addstr(7, 2, "2 - FUDISH DUELIST", c.color_pair(2))
@@ -212,7 +225,7 @@ def dwarf(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(3, 2, "CLASSES (DWARF):", c.color_pair(4))
     w.addstr(5, 2, "1 - DWARF WARRIOR", c.color_pair(6))
     w.addstr(7, 2, "2 - DWARF MINER", c.color_pair(6))
@@ -263,7 +276,7 @@ def algal(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(3, 2, "CLASSES (ALGAL):", c.color_pair(4))
     w.addstr(5, 2, "1 - ALGAL WANDERER", c.color_pair(3))
     w.addstr(7, 2, "2 - ALGAL TRAVELER", c.color_pair(3))
@@ -272,18 +285,19 @@ def algal(w, c, p):
         q = w.getkey()
         match q:
             case "1":
-                p["strength"] = 9
-                p["dexterity"] = 9
+                p["strength"] = 8
+                p["dexterity"] = 8
                 p["playertype"] = "ALGAL WANDERER"
                 break
             case "2":
-                p["strength"] = 8
-                p["dexterity"] = 10
+                p["strength"] = 7
+                p["dexterity"] = 9
                 p["playertype"] = "ALGAL TRAVELER"
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
+    p["inteligence"] = 1
     p["environment"] = [1, 1, 1, 0]
     p["maxhp"], p["hp"] = 10, 10
     p["hpchange"] = 1
@@ -305,7 +319,7 @@ def cyclope(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DEV_0.2.0", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(3, 2, "CLASSES (CYCLOPE):", c.color_pair(4))
     w.addstr(5, 2, "1 - CYCLOPE BEASTMAN", c.color_pair(7))
     w.addstr(7, 2, "2 - CYCLOPE HUNTER", c.color_pair(7))

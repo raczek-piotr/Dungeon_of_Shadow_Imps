@@ -95,34 +95,6 @@ def map_init_int(m, p, items, type_of, stairs):
             pos = pokoje[-1]
             pos = [pos[0]+pos[2]//2, pos[1]+pos[3]//2]
             Connect(m, pos, [m["sx"]//2, m["sy"]//2], True)
-            """pokojen = pokoje.copy()
-            pokojeok = [pokojen.pop(0)]
-            while pokojen != []:
-                n_minodl = 0
-                o_minodl = 0
-                minodl = m["sy"]**2 + m["sx"]**2
-                for id_n in range(len(pokojen)):
-                    n = pokojen[id_n]
-                    modl = m["sy"]**2 + m["sx"]**2
-                    o_modl = -1
-                    for id_o in range(len(pokojeok)):
-                        o = pokojeok[id_o]
-                        odl = (n[0]-n[2]/2-o[0]+o[2]/2)**2 + (n[1]-n[3]/2-o[1]+o[3]/2)**2
-                        if odl > modl and odl < 20:
-                            modl = odl
-                            o_modl = id_o
-                    if modl > minodl:
-                        minodl = modl
-                        n_minodl = id_n
-                        o_minodl = o_modl
-                p2 = pokojeok[o_minodl]
-                p1 = pokojen[n_minodl]
-                p2 = [p2[0]+p2[2]//2, p2[1]+p2[3]//2]
-                p1 = [p1[0]+p1[2]//2, p1[1]+p1[3]//2]
-                #middle = [(p1[0]+p2[0])//2, (p1[1]+p2[1])//2]
-                Connect(m, p2, [m["sx"]//2, m["sy"]//2])
-                Connect(m, p1, [m["sx"]//2, m["sy"]//2], True)
-                pokojeok.append(pokojen.pop(n_minodl))"""
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
                 m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
@@ -155,7 +127,7 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
 
-            type_of_rooms = ["% ","% ","% ","% ",".",".","."]
+            type_of_rooms = ["% ","% ","% ","% ","=" ".", ".","."] # one more -PR-
             for it in range(hm):
                 i = type_of_rooms.pop()
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
@@ -192,7 +164,7 @@ def map_init_int(m, p, items, type_of, stairs):
             flor = "."
             for i in range(l_pokoje):
                 j = pokoje[i]
-                if i == ran: #rest of rooms have no light
+                if i == ran: # rest of rooms have no light -PR-
                     flor = " "
                 for y in range(j[0], j[0]+j[2]):
                     for x in range(j[1], j[1]+j[3]):
@@ -235,7 +207,7 @@ def map_init_int(m, p, items, type_of, stairs):
                     for x in range(j[1]-1, j[1]+j[3]+1):
                         if m["r"][y][x] == "|":
                             m["r"][y][x] = "#"
-                        elif m["r"][y][x] == "+":
+                        elif m["r"][y][x] == "+ ":
                             m["r"][y][x] = ": "
                         else:
                             if randint(0, 7) == 0:
@@ -379,8 +351,8 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[0]
                 direction += 1
-            if m["r"][k][p_start[1]] == "|" or m["r"][k][p_start[1]] == "+":
-                m["r"][k][p_start[1]] = "+"
+            if m["r"][k][p_start[1]] == "|" or m["r"][k][p_start[1]] == "+ ":
+                m["r"][k][p_start[1]] = "+ "
             elif m["r"][k][p_start[0]] not in {".","= ","%"}:
                 m["r"][k][p_start[1]] = " "
             p_start[0] = 2*k-p_start[0]
@@ -393,8 +365,8 @@ def RegularConnect(m, p_end, p_start):
             else:
                 k = p_start[1]
                 direction -= 1
-            if m["r"][p_start[0]][k] == "|" or m["r"][p_start[0]][k] == "+":
-                m["r"][p_start[0]][k] = "+"
+            if m["r"][p_start[0]][k] == "|" or m["r"][p_start[0]][k] == "+ ":
+                m["r"][p_start[0]][k] = "+ "
             elif m["r"][p_start[0]][k] not in {".","= ","%"}:
                 m["r"][p_start[0]][k] = " "
             p_start[1] = 2*k-p_start[1]
@@ -425,7 +397,7 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[0]
                 direction += 1
-            if m["r"][k][p_start[1]] in change:
+            if m["r"][k][p_start[1]][0] in change:
                 m["r"][k][p_start[1]] = tile
             elif len(m["r"][k][p_start[1]]) >= 4: #@000 + something? -PR-
                 m["r"][k][p_start[1]] = m["r"][k][p_start[1]][:4]+tile
@@ -442,7 +414,7 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[1]
                 direction -= 1
-            if m["r"][p_start[0]][k] in change:
+            if m["r"][p_start[0]][k][0] in change:
                 m["r"][p_start[0]][k] = tile
             elif len(m["r"][k][p_start[1]]) >= 4: #@000 + something? -PR-
                 m["r"][p_start[0]][k] = m["r"][p_start[0]][k][:4]+tile
@@ -470,7 +442,7 @@ def Connect(m, p_end, p_start, clear = False):
                 k = p_start[0]
                 direction += 1
             if m["r"][p_start[0]][p_start[1]] == "|":
-                m["r"][p_start[0]][p_start[1]] = "+"
+                m["r"][p_start[0]][p_start[1]] = "+ "
             elif m["r"][p_start[0]][p_start[1]] in {"#","  ","&"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[0] = k
@@ -483,7 +455,7 @@ def Connect(m, p_end, p_start, clear = False):
                 k = p_start[1]
                 direction -= 1
             if m["r"][p_start[0]][p_start[1]] == "|":
-                m["r"][p_start[0]][p_start[1]] = "+"
+                m["r"][p_start[0]][p_start[1]] = "+ "
             elif m["r"][p_start[0]][p_start[1]] in {"#","  ","&"}:
                 m["r"][p_start[0]][p_start[1]] = "d"
             p_start[1] = k

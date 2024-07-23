@@ -5,13 +5,13 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,6,7,27,28},
-           {60},
-           {26},
-           {5,6,7,27,28},
-           {6,7},
-           {6,7},
-           {6,7}]
+traders = [{5,6,7,27,28, randint(27, 50)},
+           {60, 61},
+           {26, 62, randint(63, 65)},
+           {},
+           {6,7, randint(62, 65), randint(27, 50)},
+           {5,7, randint(62, 65), randint(27, 50), randint(27, 50)},
+           {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
@@ -20,7 +20,8 @@ def npc(w, c, m, p, it, stay):
             return trader(w, c, m, p, it, "Seller", [
 [["ROCK", "ROCKS"], "-", 5, True, 1],
 [["ARROW", "ARROWS"], "-", 10, True, 2],
-[["BOLT", "BOLTS"], "-", 25, True, 2]])
+[["BOLT", "BOLTS"], "-", 25, True, 2],
+])
         case 1:
             return trader(w, c, m, p, it, "Powder Monkey", [[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]])
         case 2:
@@ -42,6 +43,7 @@ def npc(w, c, m, p, it, stay):
         case 10:
             return[False, translate(choice(["- FOOD? WE ATE MOLD... IT IS EVERYWERE!", "- FUNGAL GARDENS ARE BELOW US, WITH MOLD!"])), False]
     return[False, p["echo"], False]
+
 def in_BP(BP, item): #copy is in local_terrain.py
     for i in BP:
         if i[0] == item[0]:
@@ -49,7 +51,7 @@ def in_BP(BP, item): #copy is in local_terrain.py
     return False
 
 def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited by python -PR-
-    q = "-"
+    q = ""
     for i in traders[it]:
         ilist.append(get_item(i)) 
     slots = {str(i) for i in range(len(ilist))}
@@ -65,8 +67,8 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
                     i[-1] //= i[2]
                 p["BP"].append(i)
                 merge(p)
-                get_equip_values(p)
-                echo = translate("YOU BUY")+" '"+translate(item(i))+"'"
+                #get_equip_values(p)
+                echo = translate("YOU BUY")+" '"+translate(item(i, 9, p))+"'"
                 return[False, echo, True]
             else:
                 if len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i):
@@ -74,6 +76,9 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
                 else:
                     echo = translate("YOUR BACKPACK IS FULL!")
                 return[False, echo, False]
+        elif q in {"s","-"}:
+            seller(w, c, m, p, it, trader, ilist)
+            return[False, p["echo"], False]
         elif q in {"PADENTER","\n", ",", "\x1b"}:
             return[False, p["echo"], False]
         w.clear()
@@ -81,10 +86,52 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
         w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(ilist)):
-            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, False), c.color_pair(1))
+            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, p), c.color_pair(1))
             t = str(ilist[i][-1])
             w.addstr(i+3, 68, "COST:", c.color_pair(1))
             w.addstr(i+3, 78-len(t), t, c.color_pair(1))
+        w.addstr(22, 0, "'s' or '-' to sell something", c.color_pair(4))
+        w.addstr(23, 60, "Esc: ',' or 'Enter'", c.color_pair(5))
+        q = w.getkey()
+    return[True, echo, True]
+
+def seller(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited by python -PR-
+    q = ""
+    slots = {str(i) for i in range(len(p["BP"]))}
+    for i in ilist:
+        if i[1] == "-":
+            i[-1] *= i[2]
+    while True:
+        if q in slots:
+            q = int(q)
+            t = p["BP"][q][-1]
+            if p["BP"][q][1] == "-":
+                t *= p["BP"][q][2]
+            t = t // 10
+            p["gold"] += t
+            p["BP"].pop(q)
+            #merge(p)
+            #get_equip_values(p)
+            echo = translate("YOU SELL")+" '"+translate(item(p["BP"], q, p))+"'"
+            return[False, echo, True]
+        elif q in {"PADMINUS","-","s","S"}: #PADMINUS for windows; doesn't work -PR-
+            seller(w, c, m, p, it, trader, ilist)
+            return[False, p["echo"], False]
+        elif q in {"PADENTER","\n", ",", "\x1b"}:
+            return[False, p["echo"], False]
+        w.clear()
+        w.addstr(0, 4, trader, c.color_pair(5))
+        w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
+        w.addstr(2, 0, "Items:", c.color_pair(5))
+        for i in range(len(p["BP"])):
+            w.addstr(i+3, 2, str(i)+": "+item(p["BP"], i, p), c.color_pair(1))
+            t = p["BP"][i][-1]
+            if p["BP"][i][1] == "-":
+                t *= p["BP"][i][2]
+            t = str(t // 10)
+            w.addstr(i+3, 68, "SELL:", c.color_pair(1))
+            w.addstr(i+3, 78-len(t), t, c.color_pair(1))
+        w.addstr(22, 0, "What do you want to sell?:", c.color_pair(4))
         w.addstr(23, 62, "Esc: ',' or Enter", c.color_pair(5))
         q = w.getkey()
     return[True, echo, True]

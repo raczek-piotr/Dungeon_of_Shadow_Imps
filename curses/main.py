@@ -77,6 +77,8 @@ def mainloop(w):
                     p["skill"] += 1
                     p["strength"] += 1
                     p["dexterity"] += 1
+                    if p["inteligence"] > 0:
+                        p["inteligence"] += 1
                 p["xpchange"] = int((p["xpchange"]*1.06+3)//1)
                 p["needxp"] += p["xpchange"]
                 get_equip_values(p)

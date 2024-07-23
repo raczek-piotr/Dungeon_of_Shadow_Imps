@@ -273,26 +273,42 @@ def enemies_class_attack(p, head, value, ap):
         p["wasattackby"] += head
 
 # player attack enemies
-def roll (a,b):
+def roll(a,b):
     q = 0
     for _ in range(a):
         q += randint(1,b)
     return q
 
 
+def enemies_class_is_cast(m, p, dire, value):
+    global tlist, heads
+    tx = p["y"], p["x"] # it is NOT x'pos -PR-
+    ty, tx = shot(m["r"], tx, dire, tlist) # it is a test -PR-
+    p["bow"] = 2
+    p["bow_damage"] = value
+    p["bow_hits"] = 1
+    p["bow_acc"] = 100
+    if m["r"][ty][tx][0] in heads:
+        it = int(m["r"][ty][tx][1:4])
+        enemies_class_is_attacked(m, p, it, value, 2)
+        return
+    p["echo"] = translate("YOU SHOT SOMEWERE")
+    return
+
 def enemies_class_is_shoted(m, p, dire, value):
     global tlist, heads
     tx = p["y"], p["x"] # it is NOT x'pos -PR-
-    ty, tx = shot(m["r"], tx, dire, tlist)
+    ty, tx = shot(m["r"], tx, dire, tlist) # it is a test -PR-
     for ammo_id in range(len(p["BP"])):
         ammo = p["BP"][ammo_id]
         if ammo[0][0] == p["e_hand"][0][2]:
-            ammo[2] -= 1
+            shots = min(ammo[2], p["e_hand"][2][1])
+            ammo[2] -= shots
             if ammo[2] == 0:
                 p["BP"].pop(ammo_id)
             if m["r"][ty][tx][0] in heads:
                 it = int(m["r"][ty][tx][1:4])
-                enemies_class_is_attacked(m, p, it, value, True)
+                enemies_class_is_attacked(m, p, it, value, shots)
                 return
             p["echo"] = translate("YOU SHOT SOMEWERE")
             return
@@ -307,7 +323,7 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
     hits = (p["bow_hits"] if ranged else p["attack_hits"])
-    rolls = (p["bow"] if ranged else p["attack"])
+    rolls = (ranged if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
     if p["blessing"]:
         hits *= 2

@@ -31,8 +31,10 @@ def f_gold(m, p, npos, stay):
 
 def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = ","
-    m["v"][npy][npx] = ","
+    m["r"][npy][npx] = m["r"][npy][npx][1:]
+    m["v"][npy][npx] = m["v"][npy][npx][1:]
+    if m["v"][npy][npx] == "":
+        m["v"][npy][npx] = " "
     echo = translate("YOU OPEN A DOOR")
     return[False, echo, True]
 
@@ -42,7 +44,7 @@ def f_block(m, p, npos, stay):
     m["v"][npy][npx] = m["v"][npy][npx][1:]
     if m["v"][npy][npx] == "":
         m["v"][npy][npx] = " "
-    echo = translate("YOU DESTROYED WEEK WALL")
+    echo = translate("WEEK WALL FALLED DOWN")
     return[False, echo, True]
 
 def in_BP(BP, item): #copy is in local_npc.py
@@ -63,12 +65,12 @@ def f_items(m, p, npos, stay):
             m["r"][npy][npx] = m["r"][npy][npx][4:]
             m["v"][npy][npx] = m["r"][npy][npx]
             #if item[1] == "-":
-            echo = translate("YOU TAKE")+" '"+translate(item(i))+"'"
+            echo = translate("YOU TAKE")+" '"+translate(item(i, 9, p))+"'"
         else:
             echo = translate("YOUR BACKPACK IS FULL!")
             return[False, echo, False]
     else:
-        echo = translate("HERE IS")+" '"+translate(item(i))+"'"
+        echo = translate("HERE IS")+" '"+translate(item(i, 9, p))+"'"
     return[True, echo, True]
 
 def f_some_items(m, p, npos, stay): #only "-" -PR-

@@ -35,7 +35,7 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
             if p:
                 i = i[2][-1]-p["lw"] # new i, and i ≠ i -PR-
                 if i > 0 :
-                    r += " "+translate("YOU NEED")+" "+str(i)+" LW "+translate("MORE")
+                    r += " "+translate("YOU NEED")+" "+str(i)+" LW(S) "+translate("MORE")
                         # POTRZEBUJESZ o 3 SIŁY WIĘCEJ, ABY GO WYPOSAŻYĆ -PR-
             return r
         case "-":
@@ -60,15 +60,21 @@ def playerdata(y, p):
         case 6:
             return "depth: " + str(p["depth"])
         case 7:
+            if p["inteligence"] > 0:
+                return "str|dex|int"
             return "str|dex"
         case 8:
+            if p["inteligence"] > 0:
+                return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+" "*(3-len(str(p["dexterity"])))+str(p["dexterity"])+"|"+" "*(3-len(str(p["inteligence"])))+str(p["inteligence"])
             return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+str(p["dexterity"])
         case 9:
             return "gold: " + str(p["gold"])
         case 11:
             return " attack: " + str(p["attack"])+"D"+str(p["attack_damage"])+" "+(str(p["attack_hits"])+"H"+str(p["attack_acc"])+"%")
         case 12:
-            return "  range: " + str(p["bow"])+"D"+str(p["bow_damage"])+" "+(str(p["bow_hits"])+"H"+str(p["bow_acc"])+"%")
+            if p["magic_list"]:
+                return "  " + p["hand_name"]
+            return "  range: " + p["hand_name"]
         case 13:
             return "  armor: " + str(p["armor"])#+"+"+str(p["shield"])
         case 15:
@@ -104,7 +110,7 @@ def output(w, c, m, p):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
                     i = t[tx][0]
-                    if i in {"@","]","}",")","~","$","*","-","?","!","%"}:
+                    if i in {"@","]","}",")","~","$","*","-","?","!","%","~"}:
                         col = 2
                     elif i == "#":
                         col = 8
@@ -145,4 +151,3 @@ def output(w, c, m, p):
     w.addstr(14, 55, spacer, c.color_pair(4))
     w.addstr(21, 55, spacer, c.color_pair(4))
     w.addstr(11, 26, "@", c.color_pair(1))
-        

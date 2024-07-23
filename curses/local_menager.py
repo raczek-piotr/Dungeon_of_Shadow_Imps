@@ -19,18 +19,18 @@ c_type = [0,2,1,2,3] # color_type -PR-
 
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
-        case "#E":
+        case "#E": # END -PR-
             score = scoreboard_append(w, c, p)
             w.clear()
             output(w, c, m, p)
             w.addstr(23, 0, translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))+"...")
             w.addstr(23, 56, "score: "+str(score), c.color_pair(2))
             w.getkey()
-        case "#U":
+        case "#U": # UP-starir -PR-
             p["depth"] -= 1
             prepare_map(c, m, p)
-            p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
-        case "#D":
+            p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOSED BEHIND YOU")
+        case "#D": # DOWN-starir -PR-
             p["depth"] += 1
             if p["depth"] >= 40:
                 p["echo"] = "#"
@@ -43,8 +43,8 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
                     if p["hp"] <= 0: # not working (nothing changes) -PR-
                         p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
                 else:
-                    p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOCED BEHIND YOU")
-        case "#R":
+                    p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOSED BEHIND YOU")
+        case "#R": # RESET -PR-
             c.init_pair(1, 231, -1)
             c.init_pair(2, 46, -1)
             c.init_pair(3, 5, -1)
