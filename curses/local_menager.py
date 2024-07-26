@@ -53,6 +53,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(6, 57, -1)
             c.init_pair(7, 196, -1)
             c.init_pair(8, 41, -1)#It don't need to be definited here -PR-
+            c.init_pair(9, 238, -1)
             m, p, path = character(w, c, p) # I have to return the first data -PR-
             get_equip_values(p)
             scoreboard_print(w, c)
