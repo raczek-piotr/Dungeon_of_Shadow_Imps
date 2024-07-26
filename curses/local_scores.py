@@ -4,7 +4,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("505|DEFAULT|DWARF MINER|2343|7|7|-|[]\n")
+            scores_txt.write("625|DEFAULT|FUDISH ARCHER|2214|8|8|-|[]\n")
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 

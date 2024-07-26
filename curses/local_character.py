@@ -250,9 +250,9 @@ def dwarf(w, c, p):
     w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
     w.addstr(4, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
-    w.addstr(7, 2, "1 - DWARF CLAN WARRIOR", c.color_pair(6))
-    w.addstr(9, 2, "2 - DWARF MINER", c.color_pair(6))
-    w.addstr(11, 2, "3 - DWARF SCOUT", c.color_pair(6))
+    w.addstr(7, 2, "1 - DWARWISH CLAN WARRIOR", c.color_pair(6))
+    w.addstr(9, 2, "2 - DWARWISH MINER", c.color_pair(6))
+    w.addstr(11, 2, "3 - DWARWISH SCOUT", c.color_pair(6))
     w.refresh()
     while True:
         q = w.getkey()
@@ -260,19 +260,19 @@ def dwarf(w, c, p):
             case "1":
                 p["strength"] = 11
                 p["dexterity"] = 7
-                p["playertype"] = "DWARF CLAN WARRIOR"
+                p["playertype"] = "DWARWISH CLAN WARRIOR"
                 p["e_attack"] = get_item(25)
                 break
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
-                p["playertype"] = "DWARF MINER"
+                p["playertype"] = "DWARWISH MINER"
                 p["e_attack"] = get_item(28)
                 break
             case "3":
                 #p["strength"] = 9
                 #p["dexterity"] = 9
-                p["playertype"] = "DWARF SCOUT"
+                p["playertype"] = "DWARWISH SCOUT"
                 p["e_attack"] = get_item(27)
                 break
             case _:
@@ -311,7 +311,7 @@ def imp(w, c, p):
                 p["dexterity"] = 8
                 p["playertype"] = "IMP LINE SOLDIER"
                 p["e_hand"] = get_item(60)
-                p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:]), get_item(7)]
+                p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
                 break
             case "2":
                 p["strength"] = 9

@@ -34,8 +34,8 @@ item = [
 ["]",  [['PICK', 'e_attack'], ']', [1, 7, 1, 40, 10, 7], True, 213]],  #28
 ["]",  [['LONG KNIFE', 'e_attack'], ']', [1, 5, 1, 60, 7, 8], True, 270]],  #29
 ["]",  [['2 KNIFES', 'e_attack'], ']', [1, 3, 2, 60, 8, 9], True, 480]],  #30
-["]",  [['DAGGER', 'e_attack'], ']', [2, 4, 1, 60, 9, 10], True, 750]],  #31
-["]",  [['LONG DAGGER', 'e_attack'], ']', [2, 6, 1, 60, 10, 12], True, 1470]],  #32
+["]",  [['SHORT DAGGER', 'e_attack'], ']', [2, 4, 1, 60, 9, 10], True, 750]],  #31
+["]",  [['DAGGER', 'e_attack'], ']', [2, 6, 1, 60, 10, 12], True, 1470]],  #32
 ["]",  [['HEAVY DAGGER', 'e_attack'], ']', [2, 9, 1, 60, 11, 13], True, 3000]],  #33
 ["]",  [['FOIL', 'e_attack'], ']', [1, 2, 2, 80, 8, 9], True, 270]],  #34
 ["]",  [['RAPIER', 'e_attack'], ']', [1, 3, 2, 60, 9, 10], True, 480]],  #35
@@ -60,11 +60,11 @@ item = [
 ["}",  [['COMPOSIVE BOW', 'e_hand', 'ARROW'], '}', [1, 15, 1, 70, 9, 13], True, 1306]],  #54
 ["}",  [['LONG BOW', 'e_hand', 'ARROW'], '}', [1, 22, 1, 80, 10, 14], True, 3526]],  #55
 ["}",  [['HAND CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 8, 1, 40, 10, 8], True, 135]],  #56
-["}",  [['L. CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 10, 1, 40, 11, 9], True, 201]],  #57
+["}",  [['S. CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 10, 1, 40, 11, 9], True, 201]],  #57
 ["}",  [['CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 15, 1, 40, 11, 11], True, 426]],  #58
 ["}",  [['H. CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 21, 1, 40, 12, 12], True, 806]],  #59
 ["}",  [['GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 1, 90, 7, 7], True, 135]],  #60
-["}",  [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 5, 1, 70, 7, 7], True, 1000]],  #61
+["}",  [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 1200]],  #61
 ["?",  [["DRUID'S SPELLS", 'e_hand', False], '??', [0, 1, 2, 5, 7], True, 500]],  #62
 ["?",  [['WATER LANGUAGE', 'e_hand', False], '??', [3, 4, 9], True, 5000]],  #63
 ["?",  [['FIRE COMPENDIUM', 'e_hand', False], '??', [0, 2, 6, 8], True, 5000]],  #64

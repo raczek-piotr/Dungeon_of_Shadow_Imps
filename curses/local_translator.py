@@ -49,15 +49,15 @@ lang_PL = {
     "YOU MISS A": "SPUDŁOWAŁEŚ",
     "YOU WENT DOWN": "ZSZEDŁEŚ W DÓŁ",
     "YOU WENT UP": "WSZEDŁEŚ DO GÓRY",
+    "YOU TOOK": "WZIĄŁEŚ",
     }
-
 def translate(ang, number = 0):
     lang = "none"
     match lang:
         case "PL":
-            return(l_pl(ang, number))
+            return l_pl(ang, number)
         case _:
-            return(ang)
+            return ang
 def l_pl(ang, number):
-    global lang_PL
-    return(lang_PL.get(ang+("" if number == 0 else "1" if number == 1 else "2" if number < 5 or number % 10 in [2, 3, 4] and number > 20 else "5"), ang))
+    global lang_PL # why not? -PR-
+    return lang_PL.get(ang+("" if number == 0 else "1" if number == 1 else "2" if number < 5 or number % 10 in [2, 3, 4] and number > 20 else "5"), ang)

@@ -9,6 +9,7 @@
 ## General info
 * Roguelike game with simple interface played in console.
 * The polish translation is disabled default, so you can enable it in "local_translator.py" `lang = "PL"` but it is't finished yet… -PR-
+* game characters: https://github.com/raczek-piotr/Dungeon_of_Shadow_Imps/blob/main/curses/characters.md
 	
 ## Technologies
 ### Project with curses is created with (curses):

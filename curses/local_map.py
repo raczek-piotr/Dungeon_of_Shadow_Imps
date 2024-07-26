@@ -126,7 +126,7 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
 
-            type_of_rooms = [["%"],["%"],["%","%","%","=",":="],["="],["."],[".","%","="]]
+            type_of_rooms = [["%"],["%"],["%","%","%","=","="],["="],["."],[".","%","="]]
             for it in range(hm):
                 i = choice(type_of_rooms)
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
@@ -317,21 +317,23 @@ def map_init_int(m, p, items, type_of, stairs):
 
     more = True # here are added enemies on "battle field" :) -PR-
     l_pokoje = len(pokoje)-1
-    while more:
+    for k in items:
         i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         while m["r"][j[0]][j[1]][0] not in {" ",".","=","%"}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        e_id, more = enemies_class_add(j[1], j[0], type_of, p["depth"])
-        m["r"][j[0]][j[1]] = e_id+m["r"][j[0]][j[1]]
-    i = randint(1, l_pokoje) # (1→ran) less items in rooms with lihgt
-    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-    for k in items:
-        while m["r"][j[0]][j[1]] not in {" ",".","= ","% "}:
+        m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
+    while more:
+        i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
+        j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        while m["r"][j[0]][j[1]][0] not in {" ",".","=","%","*","~","]","}",")","?","!"}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
+        e_id, more = enemies_class_add(j[1], j[0], type_of, p["depth"])
+        m["r"][j[0]][j[1]] = e_id+m["r"][j[0]][j[1]]
+    i = randint(1, l_pokoje)
+    j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
     return(pokoje[0][0]+pokoje[0][2]//2, pokoje[0][1]+pokoje[0][3]//2)
 
 def RegularConnect(m, p_end, p_start):
