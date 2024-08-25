@@ -65,10 +65,10 @@ item = [
 ["}",  [['H. CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 21, 1, 40, 12, 12], True, 806]],  #59
 ["}",  [['GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 1, 90, 7, 7], True, 135]],  #60
 ["}",  [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 1200]],  #61
-["?",  [["DRUID'S SPELLS", 'e_hand', False], '??', [0, 1, 2, 5, 7], True, 500]],  #62
-["?",  [['WATER LANGUAGE', 'e_hand', False], '??', [3, 4, 9], True, 5000]],  #63
-["?",  [['FIRE COMPENDIUM', 'e_hand', False], '??', [0, 2, 6, 8], True, 5000]],  #64
-["?",  [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 5], True, 200]],  #65
+["?",  [["DRUID'S SPELLS", 'e_hand', False], '??', [3, 4, 5, 6], True, 800]],  #62
+["?",  [['WATER LANGUAGE', 'e_hand', False], '??', [7, 2, 8, 9, 10], True, 8000]],  #63
+["?",  [['FIRE COMPENDIUM', 'e_hand', False], '??', [0, 1, 2, 11, 12, 13], True, 8000]],  #64
+["?",  [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 500]],  #65
 ]
 
 def get_item(it):
@@ -78,12 +78,10 @@ def get_item(it):
     return q
 
 def change_item(it):
-    return item[it][1]
+    return item[it]
 
-def randitem(hm, p = 0, k = 0): # how many -PR-
+def randitem(hm, p = 0, k = len(item)-1): # how many -PR-
     global item
-    if k == 0:
-        k = len(item)-1
     q = []
     for _ in range(hm):
         r = randint(p, k) # r → randitem_index -PR-

@@ -1,4 +1,7 @@
-# Dungeons of Shadow Imps Base_0.3
+# Dungeons of Shadow Imps Base_0.4
+## Dice
+`1D2 2H80%` means
+you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 ## Races
 ### Human:
 -  Warrior
@@ -28,6 +31,7 @@
 ### Algal:
 -  Paladin
 -  Druid
+-  Mage
 
 ### Gnome:
 -  Duelist
@@ -72,11 +76,13 @@
 ### Mage
 -  **strength** 7
 -  **dexterity** 7
--  **inteligence** 11
+-  **inteligence** 12
 -  Spell book
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
+-  They can't find the heaviest armors
+-  5% chance to become Wizard (Mage with other spellbook)
 ### Paladin
 -  **strength** 9
 -  **dexterity** 7

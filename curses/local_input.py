@@ -23,7 +23,7 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(7, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
     w.addstr(10, 0,"Equipted:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
-    w.addstr(12, 2, p["hand_name"], c.color_pair(5))
+    w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     w.refresh() # ? -PR-
@@ -73,7 +73,7 @@ def item_menager(w, c, m, p):
                                     p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
                 elif t[0][2] == 1:
-                    mx, my = m["sx"]-2, m["sy"]-2
+                    mx, my = m["sx"]-1, m["sy"]-1
                     q = "#"
                     while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%"} or q == "  ":
                         x, y = randint(1, mx), randint(1, my)
@@ -190,7 +190,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot / cast a spell", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 61, "Version = Base_0.3", c.color_pair(1))
+    w.addstr(23, 61, "Version = Base_0.4", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     get_in(w)

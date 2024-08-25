@@ -30,6 +30,7 @@
       *  install windows.curses
   2. `_curses.error: setupterm: could not find terminal`
       *  you had to ran it in editor's terminal or console, but it has it be the terminal/cmd (ctrl + t, great shortcut in thonny)
+  3. if any errors occur while playing, there is simple logfile with **almost** no *log* in it
 
 ## Contact
 * email raczek.piotr@o2.pl

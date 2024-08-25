@@ -1,4 +1,5 @@
 from local_item_class import get_item, change_item
+from random import randint
 
 
 def character(w, c, p):
@@ -55,6 +56,7 @@ def character(w, c, p):
         "x": 0,
         "dy": 0, # direction (movement or attack) y -PR-
         "dx": 0,
+        "ismage": False,
         "wasattackby": "",
         "echo": "",
         "torch": True,
@@ -80,7 +82,7 @@ def character(w, c, p):
         w.clear() # ? -PR-
         w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
         w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-        w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+        w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
         w.addstr(3, 2, "SELECT A RACE:", c.color_pair(4))
         w.addstr(5, 2, "1 - HUMAN", c.color_pair(1))
         w.addstr(6, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
@@ -125,7 +127,7 @@ def human(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
     w.addstr(5, 2, "CLASSES (HUMAN):", c.color_pair(4))
     w.addstr(7, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
@@ -170,11 +172,15 @@ def human(w, c, p):
                 p["playertype"] = "HUMAN PALADIN"
                 break
             case "7":
+                p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 11
+                p["inteligence"] = 12
                 p["playertype"] = "HUMAN MAGE"
                 p["e_hand"] = get_item(65)
+                if randint(0, 19) == 0:
+                    p["playertype"] = "HUMAN WIZARD"
+                    p["e_hand"] = get_item(randint(62, 64))
                 p["BP"] = [get_item(6),get_item(7)]
                 break
             case _:
@@ -182,7 +188,7 @@ def human(w, c, p):
                     return False
     p["gold"] = 200
     p["environment"] = [1, 1, 1, 0]
-    item = change_item(8)
+    item = change_item(8)[1]
     item[-2] = True
     item[0] = ['SCROLL OF IDENTIFY', 2, 0]
     return True
@@ -191,7 +197,7 @@ def fudish(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(7, 2, "1 - FUDISH WARRIOR", c.color_pair(2))
@@ -238,7 +244,7 @@ def fudish(w, c, p):
     p["basedefend"] = 60
     p["reg_time"] = 12
     p["maxeat"] = 5000
-    item = change_item(9)
+    item = change_item(9)[1]
     item[-2] = True
     item[0] = ['SCROLL OF TELEPORTATION', 2, 1]
     return True
@@ -247,7 +253,7 @@ def dwarf(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
     w.addstr(7, 2, "1 - DWARWISH CLAN WARRIOR", c.color_pair(6))
@@ -288,7 +294,7 @@ def dwarf(w, c, p):
     p["e_hand"] = get_item(60)
     p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
     p["e_armor"] = get_item(17)
-    item = change_item(13)
+    item = change_item(13)[1]
     item[-2] = True
     item[0] = ['POTION OF ENHANCEMENT', 3, 1]
     return True
@@ -297,7 +303,7 @@ def imp(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "THEY ARE FROM THE BOTTOM OF THE WORLD, THEY KNEW THE WORLD WELL", c.color_pair(3))
     w.addstr(5, 2, "CLASSES (IMP):", c.color_pair(4))
     w.addstr(7, 2, "1 - IMP LINE SOLDIER", c.color_pair(3))
@@ -327,7 +333,7 @@ def imp(w, c, p):
     p["maxhp"], p["hp"] = 20, 20
     p["hpchange"] = 2
     p["basedefend"] = 40
-    item = change_item(11)
+    item = change_item(11)[1]
     item[-2] = True
     item[0] = ['TREASURE MAPPING', 2, 3]
     return True
@@ -336,11 +342,12 @@ def algal(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS APPRENTICE. WHO THEY ARE?", c.color_pair(7))
     w.addstr(5, 2, "CLASSES (ALGAL):", c.color_pair(4))
     w.addstr(7, 2, "1 - ALGAL PALADIN", c.color_pair(7))
     w.addstr(9, 2, "2 - ALGAL DRUID", c.color_pair(7))
+    w.addstr(11, 2, "3 - ALGAL MAGE", c.color_pair(7))
     w.refresh()
     while True:
         q = w.getkey()
@@ -359,6 +366,18 @@ def algal(w, c, p):
                 p["e_hand"] = get_item(62)
                 p["BP"] = [get_item(6),get_item(7)]
                 break
+            case "3":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "ALGAL MAGE"
+                p["e_hand"] = get_item(65)
+                if randint(0, 19) == 0:
+                    p["playertype"] = "ALGAL WIZARD"
+                    p["e_hand"] = get_item(randint(62, 64))
+                p["BP"] = [get_item(6),get_item(7)]
+                break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b"}:
                     return False
@@ -370,10 +389,10 @@ def algal(w, c, p):
     p["reg_time"] = 16
     p["reg_1/"] = 5
     p["maxeat"] = 5000
-    item = change_item(12)
+    item = change_item(12)[1]
     item[-2] = True
     item[0] = ['POTION OF HEALING', 3, 0]
-    item = change_item(15)
+    item = change_item(15)[1]
     item[-2] = True
     item[0] = ['POTION OF POISON', 3, 3]
     return True
@@ -382,7 +401,7 @@ def gnome(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 37, "BASE_0.3", c.color_pair(4))
+    w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "YOU AGAIN? WHAT A GNOM... HOW HAVE YOU OPENED THE DOOR?", c.color_pair(5))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(7, 2, "1 - GNOMISH DUELIST", c.color_pair(5))

@@ -7,17 +7,24 @@ from random import randint
 
 
 spell_list = [
-# name,						 2%-6=,chance,2D_value,inteligence_needed, flag_if_value_is_False
-[translate("MAGIC MISSLE"),  1,    70,    1,       8],    #0
-[translate("MAGIC LIGHT"),   1,    100,   False,   9,  0],#1
-[translate("DRUID'S SHOT"),  2,    70,    5,       10],   #2
-[translate("WATER STORM"),   6,    60,    8,       11],   #3
-[translate("HEALING 2HP"),   6,    20,    False,   12, 2],#4
-[translate("TELEPORTATION"), 1,    40,    False,   12, 1],#5
-[translate("FIRE SHOT"),     1,    60,    6,       13],   #6
-[translate("HEALING 4HP"),   2,    20,    False,   14, 4],#7
-[translate("FIRE BALL"),     1,    70,    7,       15],   #8
-[translate("HYDROGEN BLAST"),6,    60,    16,      16],   #9
+# name,						 2% 6=,chance,2D_value,inteligence_needed, flag_if_value_is_False
+[translate("MAGIC LIGHT"),    1,    90,  False,   8,  0],#0
+[translate("TELEPORTATION"),  1,    90,  False,   10, 1],#1
+[translate("MAGIC MISSLE"),   1,    70,  1,       12],   #2
+
+[translate("DEDECT NATURE"),  1,    70,  False,   8 , 3],#3
+[translate("DRUID'S SHOT"),   2,    70,  5,       10],   #4
+[translate("WORDS OF NATURE"),1,    70,  False,   12, 4],#5
+[translate("HERBALIZM"),      2,    70,  False,   14, 2],#6
+
+[translate("DETECT WATER"),   1,    80,  False,   10, 5],#7
+[translate("WATER JUMP"),     6,    80,  False,   13, 7],#8
+[translate("CONDENCE HUMID"), 1,    80,  False,   14, 6],#9
+[translate("TSUNAMI"),        6,    80,  8,       15],   #10
+
+[translate("FIRE BALL"),      1,    60,  5,       13],   #11
+[translate("LIGHTNING"),      1,    20,  15,      14],   #12
+[translate("HYDROGEN BLAST"), 6,    60,  False,   15, 8],#13
 ]
 
 def spell_menager(w, c, m, p):
@@ -49,7 +56,7 @@ def spell_menager(w, c, m, p):
     if spell_list[p["magic_list"][q]][3]:
         w.clear()
         output(w, c, m, p)
-        w.addstr(23, 0, translate("IN WHAT DIRECTION DO YOU WANT TO CAST THE SPELL?:"), c.color_pair(7))
+        w.addstr(23, 0, translate("IN WHAT DIRECTION DO YOU WANT TO CAST THE SPELL?:"), c.color_pair(2))
         it = get_in(w)
         dy, dx, t1 = player_move(it)
         if t1 and it != "5":
@@ -59,7 +66,10 @@ def spell_menager(w, c, m, p):
             return[p["echo"], True]
         return[translate("WRONG DIRECTION!"), False]
     #else:
-    if spell_list[p["magic_list"][q]][5] == 0:
+    if spell_list[p["magic_list"][q]][5] == 7:
+        spell_list[p["magic_list"][q]][5] = 1
+    match spell_list[p["magic_list"][q]][5]:
+     case 0:
         if p["torch"] == False:
             p["torchtime"] = 10
             p["torch"] = True
@@ -67,7 +77,7 @@ def spell_menager(w, c, m, p):
                 return[translate("YOU FAILED TO CAST THE SPELL"), True]
             return[translate("SPARKS FLY AROUND YOU..."), True]
         return[translate("YOU HAVE LIGHT, YOU CAN'T SPELL MORE"), False]
-    elif spell_list[p["magic_list"][q]][5] == 1:
+     case 1:
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         mx, my = m["sx"]-2, m["sy"]-2
@@ -77,7 +87,54 @@ def spell_menager(w, c, m, p):
             q = m["r"][y][x]
         p["x"], p["y"] = x, y
         return[translate("TELEPORTED"), True]
-    else:
+     case 2:
+        if p["hp"] > p["maxhp"]//2:
+            return[translate("YOU CAN'T BE HEALED MORE"), False]
+        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        p["hp"] += 2
+        if p["hp"] > p["maxhp"]//2:
+            p["hp"] = p["maxhp"]//2
+        return[translate("HEALED"), True]
+     case 3:
+        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        for y in range(m["sy"]):
+            for x in range(m["sx"]):
+                if m["r"][y][x][0] == "%":
+                    m["v"][y][x] = m["r"][y][x]
+        return[translate("DETECTED"), True]
+     case 5:
+        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        for y in range(m["sy"]):
+            for x in range(m["sx"]):
+                if m["r"][y][x][0] == "=":
+                    m["v"][y][x] = m["r"][y][x]
+        return[translate("DETECTED"), True]
+     case 4:
+        if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
+            if m["r"][p["y"]][p["x"]][0] in {" ", ".", "="}:
+                m["r"][p["y"]][p["x"]] = "%"
+                return[translate("NATURE AROUND YOU"), True]
+        return[translate("YOU FAILED TO CAST THE SPELL"), True]
+     case 6:
+        if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
+            if m["r"][p["y"]][p["x"]][0] in {" ", ".", "%"}:
+                m["r"][p["y"]][p["x"]] = "="
+                return[translate("SHALLOW WATER"), True]
+        return[translate("YOU FAILED TO CAST THE SPELL"), True]
+     case 7: #water jump -PR-
+        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        mx, my = m["sx"]-1, m["sy"]-1
+        q = "#"
+        while q[0] != "=":
+            x, y = randint(1, mx), randint(1, my)
+            q = m["r"][y][x]
+        p["x"], p["y"] = x, y
+        return[translate("TELEPORTED"), True]
+     case _:
         if p["hp"] == p["maxhp"]:
             return[translate("YOU CAN'T BE HEALED MORE"), False]
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
@@ -85,4 +142,4 @@ def spell_menager(w, c, m, p):
         p["hp"] += spell_list[p["magic_list"][q]][5]
         if p["hp"] > p["maxhp"]:
             p["hp"] = p["maxhp"]
-            return[translate("HEALED"), True]
+        return[translate("HEALED"), True]

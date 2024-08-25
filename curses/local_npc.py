@@ -5,7 +5,7 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,6,7,51},
+traders = [{5,6,7,51,22,23},
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
            {26, 62, 65},
            {},
