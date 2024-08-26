@@ -62,6 +62,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  **dexterity** 8
 -  **inteligence** 10
 -  Druid's spells
+-  Spell book
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
@@ -91,6 +92,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
+-  Spell book
 -  20 Rocks (sling's ammo)
 ### Rogue
 -  **strength** 8

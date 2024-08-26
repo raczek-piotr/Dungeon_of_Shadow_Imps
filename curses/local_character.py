@@ -32,6 +32,7 @@ def character(w, c, p):
         "dexterity": 9,
         "inteligence": 0,
         "magic_list": False,
+        "cur_magic": 0, # like „anty-mana” -PR-
         "gold": 100,
         "armor": 0,
         "basedefend": 50,
@@ -170,6 +171,7 @@ def human(w, c, p):
                 p["dexterity"] = 7
                 p["inteligence"] = 8
                 p["playertype"] = "HUMAN PALADIN"
+                p["BP"].append(get_item(65))
                 break
             case "7":
                 p["ismage"] = True
@@ -184,7 +186,7 @@ def human(w, c, p):
                 p["BP"] = [get_item(6),get_item(7)]
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+                if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["gold"] = 200
     p["environment"] = [1, 1, 1, 0]
@@ -236,7 +238,7 @@ def fudish(w, c, p):
                 p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+                if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["color"] = 2
     p["gold"] = 200
@@ -282,7 +284,7 @@ def dwarf(w, c, p):
                 p["e_attack"] = get_item(27)
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+                if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["color"] = 6
     p["environment"] = [0, 0, 1, 1]
@@ -324,9 +326,10 @@ def imp(w, c, p):
                 p["dexterity"] = 7
                 p["inteligence"] = 8
                 p["playertype"] = "IMP PALADIN"
+                p["BP"].append(get_item(65))
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+                if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["color"] = 3
     p["environment"] = [1, 1, 2, 2]
@@ -357,6 +360,7 @@ def algal(w, c, p):
                 p["dexterity"] = 7
                 p["inteligence"] = 8
                 p["playertype"] = "ALGAL PALADIN"
+                p["BP"].append(get_item(65))
                 break
             case "2":
                 p["strength"] = 7
@@ -364,7 +368,7 @@ def algal(w, c, p):
                 p["inteligence"] = 10
                 p["playertype"] = "ALGAL DRUID"
                 p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7)]
+                p["BP"] = [get_item(6),get_item(7),get_item(65)]
                 break
             case "3":
                 p["ismage"] = True
@@ -379,7 +383,7 @@ def algal(w, c, p):
                 p["BP"] = [get_item(6),get_item(7)]
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+               if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["color"] = 7
     p["environment"] = [1, 1, 1, 0]
@@ -432,10 +436,10 @@ def gnome(w, c, p):
                 p["inteligence"] = 10
                 p["playertype"] = "GNOMISH DRUID"
                 p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7)]
+                p["BP"] = [get_item(6),get_item(7),get_item(65)]
                 break
             case _:
-                if q in {"PADENTER","\n", ",", "\x1b"}:
+                if q in {"PADENTER","\n", ",", "\x1b", "0"}:
                     return False
     p["color"] = 5
     p["environment"] = [1, 0, 0, 1]

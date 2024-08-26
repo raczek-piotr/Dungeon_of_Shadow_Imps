@@ -279,6 +279,19 @@ def roll(a,b):
         q += randint(1,b)
     return q
 
+def enemies_class_is_blast(m, p, value):
+    global tlist, heads
+    ty, tx = p["y"], p["x"]
+    p["bow"] = 3
+    p["bow_damage"] = value
+    p["bow_hits"] = 1
+    p["bow_acc"] = 100
+    for i in [[1,1],[1,0],[1,-1],[0,1],[0,-1],[-1,1],[-1,0],[-1,-1]]: 
+        if m["r"][ty+i[0]][tx+i[1]][0] in heads:
+            it = int(m["r"][ty+i[0]][tx+i[1]][1:4])
+            enemies_class_is_attacked(m, p, it, value, 1)
+        if m["r"][ty+i[0]][tx+i[1]][0] in {" ", ".", ",", ":", "+", "%"}:
+            m["r"][ty+i[0]][tx+i[1]] = "="
 
 def enemies_class_is_cast(m, p, dire, value):
     global tlist, heads
@@ -290,10 +303,7 @@ def enemies_class_is_cast(m, p, dire, value):
     p["bow_acc"] = 100
     if m["r"][ty][tx][0] in heads:
         it = int(m["r"][ty][tx][1:4])
-        enemies_class_is_attacked(m, p, it, value, 2)
-        return
-    p["echo"] = translate("YOU SHOT SOMEWERE")
-    return
+        enemies_class_is_attacked(m, p, it, value, 1)
 
 def enemies_class_is_shoted(m, p, dire, value):
     global tlist, heads
@@ -322,9 +332,11 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
         q = c[it]
     at_value = 0
     acc = (p["bow_acc"] if ranged else p["attack_acc"])
-    hits = (p["bow_hits"] if ranged else p["attack_hits"])
-    rolls = (ranged if ranged else p["attack"])
+    hits = (ranged if ranged else p["attack_hits"])
+    rolls = (p["bow"] if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
+    with open("log.txt", "a") as txt:
+        txt.write("attack enemie wth prperties " + str(acc)+" "+str(hits)+" "+str(rolls)+" "+str(damage)+"\n")
     if p["blessing"]:
         hits *= 2
     if p["fury"]:
@@ -341,7 +353,7 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
         at_value *= 2
     if at_value != 0:
         q[1] -= at_value
-        q[4], q[5] = 0, 7 # fast wake up -PR- and alarmed
+        q[4], q[5] = 0, 7 # fast wake up enemie (if it sleeps) and it is alarmed now -PR-
         p["echo"] = translate("YOU HIT A")+" "+translate(q[10])
         if q[1] <= 0 :
             m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
