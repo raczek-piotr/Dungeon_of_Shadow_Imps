@@ -8,23 +8,25 @@ from random import randint
 
 spell_list = [
 # name,						 2% 6=,chance,2D_value,inteligence_needed, magic, flag_if_value_is_False
-[translate("MAGIC LIGHT"),    1,    70,  False,   8,  2, 0],#0
+# spellbook (10)
+[translate("MAGIC LIGHT"),    1,    70,  False,   10, 3, 0],#0
 [translate("TELEPORTATION"),  1,    70,  False,   10, 3, 1],#1
-[translate("MAGIC MISSLE"),   1,    70,  1,       11, 1],   #2
-
-[translate("DEDECT NATURE"),  1,    70,  False,   8,  4, 3],#3
-[translate("DRUID'S SHOT"),   2,    70,  5,       10, 1],   #4
-[translate("WORDS OF NATURE"),1,    70,  False,   12, 3, 4],#5
-[translate("HERBALIZM"),      2,    70,  False,   14, 1, 2],#6
-
-[translate("DETECT WATER"),   1,    80,  False,   10, 4, 5],#7
-[translate("WATER JUMP"),     6,    80,  False,   13, 1, 7],#8
-[translate("CONDENCE HUMID"), 1,    80,  False,   14, 3, 6],#9
-[translate("TSUNAMI"),        6,    80,  8,       15, 1],   #10
-
-[translate("FIRE BALL"),      1,    60,  5,       13, 1],   #11
-[translate("LIGHTNING"),      1,    30,  15,      14, 2],   #12
-[translate("HYDROGEN BLAST"), 6,    60,  False,   15, 4, 8],#13
+[translate("MAGIC MISSLE"),   1,    70,  1,       10, 1],   #2
+# druid spells (10)
+[translate("DEDECT NATURE"),  1,    60,  False,   10, 5, 3],#3
+[translate("DRUID'S SHOT"),   2,    60,  5,       11, 1],   #4
+[translate("WORDS OF NATURE"),1,    60,  False,   12, 3, 4],#5
+[translate("HERBALIZM"),      2,    60,  False,   13, 1, 2],#6
+# water language (12)
+[translate("DETECT WATER"),   1,    80,  False,   10, 5, 5],#7
+[translate("WATER JUMP"),     6,    80,  False,   11, 1, 7],#8
+[translate("CONDENCE HUMID"), 1,    80,  False,   12, 3, 6],#9
+[translate("WATER FIST"),     6,    80,  5,       13, 1],   #10
+[translate("TSUNAMI"),        6,    80,  8,       14, 2],   #11
+[translate("HYDROGEN BLAST"), 6,    60,  False,   15, 5, 8],#12
+# fire conpendium (12)
+[translate("FIRE BALL"),      1,    70,  5,       13, 1],   #13
+[translate("LIGHTNING"),      1,    70,  9,       14, 5],   #14
 ]
 
 def spell_menager(w, c, m, p):
@@ -106,7 +108,7 @@ def spell_menager(w, c, m, p):
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         for y in range(m["sy"]):
             for x in range(m["sx"]):
-                if "%" in m["r"][y][x][0]:
+                if "%" in m["r"][y][x]:
                     m["v"][y][x] = "%"
         return[translate("DETECTED"), True]
      case 5:
@@ -114,7 +116,7 @@ def spell_menager(w, c, m, p):
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         for y in range(m["sy"]):
             for x in range(m["sx"]):
-                if "=" in m["r"][y][x][0]:
+                if "=" in m["r"][y][x]:
                     m["v"][y][x] = "="
         return[translate("DETECTED"), True]
      case 4:

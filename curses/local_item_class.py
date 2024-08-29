@@ -7,8 +7,8 @@ item = [
 ['-', [['ARROW', 'ARROWS'], '-', 1, True, 2]], #1
 ['-', [['BOLT', 'BOLTS'], '-', 1, True, 2]], #2
 ['-', [['9mm AMMO', '9mm AMMOS'], '-', 1, True, 5]], #3
-['*', [['MOLD', 0, 300], '*', 1, True, 3]], #4
-['*', [['BREAD', 0, 900], '*', 1, True, 13]], #5
+['*', [['MOLD', 0, 300], '*', 1, True, 5]], #4
+['*', [['BREAD', 0, 900], '*', 1, True, 15]], #5
 ['*', [['RATION OF FOOD', 0, 1500], '*', 1, True, 25]], #6
 ['~', [['TORCH', 1, 1200], '~', 1, True, 19]], #7
 ['?', [['SCROLL', 2, 0], '?', 1, False, 80]], #8
@@ -66,8 +66,8 @@ item = [
 ['}', [['GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 1, 90, 7, 7], True, 230]], #60
 ['}', [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 4055]], #61
 ['?', [["DRUID'S SPELLS", 'e_hand', False], '??', [3, 4, 5, 6], True, 500]], #62
-['?', [['WATER LANGUAGE', 'e_hand', False], '??', [7, 2, 8, 9, 10], True, 5000]], #63
-['?', [['FIRE COMPENDIUM', 'e_hand', False], '??', [0, 1, 2, 11, 12, 13], True, 5000]], #64
+['?', [['WATER LANGUAGE', 'e_hand', False], '??', [7, 8, 9, 10, 11, 12], True, 5000]], #63
+['?', [['FIRE COMPENDIUM', 'e_hand', False], '??', [0, 1, 2, 13, 14, 12], True, 5000]], #64
 ['?', [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 200]], #65
 ]
 

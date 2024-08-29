@@ -259,7 +259,7 @@ def dwarf(w, c, p):
     w.addstr(2, 37, "BASE_0.4", c.color_pair(4))
     w.addstr(4, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
-    w.addstr(7, 2, "1 - DWARWISH CLAN WARRIOR", c.color_pair(6))
+    w.addstr(7, 2, "1 - DWARWISH STEELCLAD", c.color_pair(6))
     w.addstr(9, 2, "2 - DWARWISH MINER", c.color_pair(6))
     w.addstr(11, 2, "3 - DWARWISH SCOUT", c.color_pair(6))
     w.refresh()
@@ -269,7 +269,7 @@ def dwarf(w, c, p):
             case "1":
                 p["strength"] = 11
                 p["dexterity"] = 7
-                p["playertype"] = "DWARWISH CLAN WARRIOR"
+                p["playertype"] = "DWARWISH STEELCLAD"
                 p["e_attack"] = get_item(25)
                 break
             case "2":
@@ -370,8 +370,8 @@ def algal(w, c, p):
                 p["dexterity"] = 9
                 p["inteligence"] = 10
                 p["playertype"] = "ALGAL DRUID"
-                p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7)]
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7),get_item(62)]
                 break
             case "3":
                 p["ismage"] = True
@@ -438,8 +438,8 @@ def gnome(w, c, p):
                 p["dexterity"] = 9
                 p["inteligence"] = 10
                 p["playertype"] = "GNOMISH DRUID"
-                p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7)]
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7),get_item(62)]
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:
