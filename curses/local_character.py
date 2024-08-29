@@ -168,10 +168,11 @@ def human(w, c, p):
                 break
             case "6":
                 p["strength"] = 9
-                p["dexterity"] = 7
-                p["inteligence"] = 8
+                p["dexterity"] = 8
+                p["inteligence"] = 10
                 p["playertype"] = "HUMAN PALADIN"
-                p["BP"].append(get_item(65))
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7)]
                 break
             case "7":
                 p["ismage"] = True
@@ -323,10 +324,11 @@ def imp(w, c, p):
                 break
             case "2":
                 p["strength"] = 9
-                p["dexterity"] = 7
-                p["inteligence"] = 8
+                p["dexterity"] = 8
+                p["inteligence"] = 10
                 p["playertype"] = "IMP PALADIN"
-                p["BP"].append(get_item(65))
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7)]
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:
@@ -357,18 +359,19 @@ def algal(w, c, p):
         match q:
             case "1":
                 p["strength"] = 9
-                p["dexterity"] = 7
-                p["inteligence"] = 8
+                p["dexterity"] = 8
+                p["inteligence"] = 10
                 p["playertype"] = "ALGAL PALADIN"
-                p["BP"].append(get_item(65))
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7)]
                 break
             case "2":
                 p["strength"] = 7
-                p["dexterity"] = 8
+                p["dexterity"] = 9
                 p["inteligence"] = 10
                 p["playertype"] = "ALGAL DRUID"
                 p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7),get_item(65)]
+                p["BP"] = [get_item(6),get_item(7)]
                 break
             case "3":
                 p["ismage"] = True
@@ -432,11 +435,11 @@ def gnome(w, c, p):
                 break
             case "4":
                 p["strength"] = 7
-                p["dexterity"] = 8
+                p["dexterity"] = 9
                 p["inteligence"] = 10
                 p["playertype"] = "GNOMISH DRUID"
                 p["e_hand"] = get_item(62)
-                p["BP"] = [get_item(6),get_item(7),get_item(65)]
+                p["BP"] = [get_item(6),get_item(7)]
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:
