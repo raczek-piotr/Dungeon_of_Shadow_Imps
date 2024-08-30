@@ -1,5 +1,6 @@
 from local_item_class import get_item, change_item
 from random import randint
+from local_scores import scoreboard_print
 
 
 def character(w, c, p):
@@ -13,6 +14,7 @@ def character(w, c, p):
         }
     p = {
         "playertype": "HUMAN DUELIST",
+        "classicgame": True,
         "color": 1,
         "normal_level": True,
         "shift_type_of": 0,#at the depth -PR-
@@ -97,6 +99,7 @@ def character(w, c, p):
         w.addstr(18, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS APPRENTICE. WHO THEY ARE?", c.color_pair(7))
         w.addstr(20, 2, "6 - GNOME", c.color_pair(5))
         w.addstr(21, 2, "YOU AGAIN? WHAT A GNOM... HOW HAVE YOU OPENED THE DOOR?", c.color_pair(5))
+        w.addstr(23, 2, "7 - VIEW SCOREBOARD", c.color_pair(4))
         if w.getmaxyx() != (24,80):
             w.addstr(23, 3, "The screen could't resize it self! (24x80)", c.color_pair(3))
             w.addstr(22, 79, "|", c.color_pair(7))
@@ -120,6 +123,8 @@ def character(w, c, p):
             case "6":
                 if gnome(w, c, p):
                     break
+            case "7":
+                scoreboard_print(w, c)
             case _:
                 pass
     return m, p, path
@@ -173,6 +178,7 @@ def human(w, c, p):
                 p["playertype"] = "HUMAN PALADIN"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
                 break
             case "7":
                 p["ismage"] = True
@@ -185,6 +191,7 @@ def human(w, c, p):
                     p["playertype"] = "HUMAN WIZARD"
                     p["e_hand"] = get_item(randint(62, 64))
                 p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:
@@ -329,6 +336,7 @@ def imp(w, c, p):
                 p["playertype"] = "IMP PALADIN"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:
@@ -402,6 +410,7 @@ def algal(w, c, p):
     item = change_item(15)[1]
     item[-2] = True
     item[0] = ['POTION OF POISON', 3, 3]
+    p["classicgame"] = False # whole class isn't clasic, they use magic -PR-
     return True
 
 def gnome(w, c, p):
@@ -440,6 +449,7 @@ def gnome(w, c, p):
                 p["playertype"] = "GNOMISH DRUID"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7),get_item(62)]
+                p["classicgame"] = False
                 break
             case _:
                 if q in {"PADENTER","\n", ",", "\x1b", "0"}:

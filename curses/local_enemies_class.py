@@ -301,6 +301,7 @@ def enemies_class_is_cast(m, p, dire, value):
     p["bow_damage"] = value
     p["bow_hits"] = 1
     p["bow_acc"] = 100
+    p["echo"] = translate("YOU SHOT SOMEWERE")
     if m["r"][ty][tx][0] in heads:
         it = int(m["r"][ty][tx][1:4])
         enemies_class_is_attacked(m, p, it, value, 1)

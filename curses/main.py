@@ -17,6 +17,7 @@ from random import choice
 
 from time import time, ctime
 
+#C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico
 
 from local_menager import menager
 def mainloop(w):

@@ -4,7 +4,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("625|DEFAULT|FUDISH ARCHER|2214|8|8|-|[]\n")
+            scores_txt.write("625|DEFAULT|FUDISH ARCHER|2214|8|8|-|[]|True\n")
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 
@@ -13,19 +13,41 @@ def scoreboard_print(w, c):
     for t in range(len(scores)):
         scores[t] = scores[t].split("|")
     scores = sorted(scores, key = lambda key: int(key[0]))
+    orgscores = scores.copy()
 
     w.clear()
-    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
-    scores = scores[:-23:-1]
+    w.addstr(0, 8, "DoSI Scoreboard", c.color_pair(1))
+    w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
+    scores = scores[:-22:-1]
     for t in range(len(scores)):
-        w.addstr(t+1, 1, str(t+1)+".", c.color_pair(2))
-        w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
-        w.addstr(t+1, 8, scores[t][0], c.color_pair(1))
-        w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
-        w.addstr(t+1, 28, scores[t][4], c.color_pair(1))
-        w.addstr(t+1, 33, scores[t][5], c.color_pair(1))
-        w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
-        w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(1))
+        w.addstr(t+2, 1, str(t+1)+".", c.color_pair(2))
+        w.addstr(t+2, 4, scores[t][6], c.color_pair(5))
+        w.addstr(t+2, 8, scores[t][0], c.color_pair(1))
+        w.addstr(t+2, 18, scores[t][3], c.color_pair(5))
+        w.addstr(t+2, 28, scores[t][4], c.color_pair(1))
+        w.addstr(t+2, 33, scores[t][5], c.color_pair(1))
+        w.addstr(t+2, 39, scores[t][2], c.color_pair(5))
+        w.addstr(t+2, 59, scores[t][1][:20], c.color_pair(1))
+    w.getkey()
+
+    scores = orgscores
+    for t in range(len(scores)-1 ,-1,-1):
+        if scores[t][8] != "True":
+            scores.pop(t)
+            
+    w.clear()
+    w.addstr(0, 8, "Classic DoSI Scoreboard", c.color_pair(1))
+    w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
+    scores = scores[:-22:-1]
+    for t in range(len(scores)):
+        w.addstr(t+2, 1, str(t+1)+".", c.color_pair(2))
+        w.addstr(t+2, 4, scores[t][6], c.color_pair(5))
+        w.addstr(t+2, 8, scores[t][0], c.color_pair(1))
+        w.addstr(t+2, 18, scores[t][3], c.color_pair(5))
+        w.addstr(t+2, 28, scores[t][4], c.color_pair(1))
+        w.addstr(t+2, 33, scores[t][5], c.color_pair(1))
+        w.addstr(t+2, 39, scores[t][2], c.color_pair(5))
+        w.addstr(t+2, 59, scores[t][1][:20], c.color_pair(1))
     w.getkey()
 
 
@@ -41,7 +63,10 @@ def scoreboard_append(w, c, p, wins = False):
         with open("scores.txt", 'w') as  scores_txt:
             scores_txt.write("505|DEFAULT|DWARF MINER|2343|7|7|-|[]\n")
 
-    points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"]+p["armor"])-80
+    if p["classicgame"]:
+        points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"]+p["armor"])-80
+    else:
+        points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+10*(p["lw"]+p["depth"]+p["armor"]+p["inteligence"])-22
     c.curs_set(2)
     q = ""
     nick = ""
@@ -58,28 +83,8 @@ def scoreboard_append(w, c, p, wins = False):
         q = w.getkey()
     c.curs_set(0)
     with open("scores.txt", 'a') as scores_txt:
-        scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|"+win+"|"+str(p["BP"])+"\n")
+        scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|"+win+"|"+str(p["BP"])+"|"+str(p["classicgame"])+"\n")
 
-    with open("scores.txt", 'r') as scores_txt:
-        scores = scores_txt.read().split("\n")
-    while scores[-1] == "": # empty lines -PR-
-        scores.pop(-1)
+    scoreboard_print(w, c)
 
-    for t in range(len(scores)):
-        scores[t] = scores[t].split("|")
-    scores = sorted(scores, key = lambda key: int(key[0]))
-
-    w.clear()
-    w.addstr(0, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:          ", c.color_pair(4))
-    scores = scores[:-23:-1]
-    for t in range(len(scores)):
-        w.addstr(t+1, 1, str(t+1)+".", c.color_pair(2))
-        w.addstr(t+1, 4, scores[t][6], c.color_pair(5))
-        w.addstr(t+1, 8, scores[t][0], c.color_pair(1))
-        w.addstr(t+1, 18, scores[t][3], c.color_pair(5))
-        w.addstr(t+1, 28, scores[t][4], c.color_pair(1))
-        w.addstr(t+1, 33, scores[t][5], c.color_pair(1))
-        w.addstr(t+1, 39, scores[t][2], c.color_pair(5))
-        w.addstr(t+1, 59, scores[t][1][:20], c.color_pair(1))
-    w.getkey()
     return points
