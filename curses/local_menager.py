@@ -12,8 +12,6 @@ from local_item_class import get_item, randitem
 
 from local_output import output
 
-from local_item_class import get_item, change_item
-
 
 _type = 1 # local (script) permanent variable -PR-
 c_type = [0,2,1,2,3] # color_type -PR-
@@ -55,11 +53,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(6, 57, -1)
             c.init_pair(7, 196, -1)
             c.init_pair(8, 41, -1)#It don't need to be definited here -PR-
-            c.init_pair(9, 238, -1)
             m, p, path = character(w, c, p) # I have to return the first data -PR-
-            if p["ismage"]:
-                change_item(22)[1] = get_item(17)
-                change_item(23)[1] = get_item(18)
             get_equip_values(p)
             scoreboard_print(w, c)
             w.clear()

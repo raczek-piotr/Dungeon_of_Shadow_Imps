@@ -26,7 +26,7 @@ def get_equip_values(p):
             p["bow_acc"] = (p["bow_acc"])//(2+ta) #rogue with short bow is op with 1 -PR-
         p["magic_list"] = False
         p["hand_name"] = str(p["bow"])+"D"+str(p["bow_damage"])+" "+(str(p["bow_hits"])+"H"+str(p["bow_acc"])+"%")
-    elif p["e_hand"][1] == "??":
+    elif p["e_hand"][1] == "~":
         p["bow"] = False
         p["bow_damage"] = 0
         p["bow_acc"] = 0

@@ -5,11 +5,11 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,6,7,51},
-           {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
-           {26, 62, 65},
+traders = [{5,6,7,27,28, randint(27, 50)},
+           {60, 61},
+           {26, 62, randint(63, 65)},
            {},
-           {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), randint(52, 59)},
+           {6,7, randint(62, 65), randint(27, 50)},
            {5,7, randint(62, 65), randint(27, 50), randint(27, 50)},
            {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
 
@@ -17,31 +17,25 @@ def npc(w, c, m, p, it, stay):
     it = int(it)
     match it:
         case 0:
-            return trader(w, c, m, p, it, "Trader", [
-[["ROCK", "ROCKS"], "-", 25, True, 1],
+            return trader(w, c, m, p, it, "Seller", [
+[["ROCK", "ROCKS"], "-", 5, True, 1],
+[["ARROW", "ARROWS"], "-", 10, True, 2],
+[["BOLT", "BOLTS"], "-", 25, True, 2],
 ])
         case 1:
-            return trader(w, c, m, p, it, "Armory", [
-[["ARROW", "ARROWS"], "-", 25, True, 2],
-[["BOLT", "BOLTS"], "-", 25, True, 2],
-[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],
-])
+            return trader(w, c, m, p, it, "Powder Monkey", [[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5]])
         case 2:
             return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[["POTION OF HEALING", 3, 0], "!", 1, True, 120]])
         case 3:
             return[False, translate("- I DON'T KNOW WHAT TO THINK ABOUT YOUR DREAM!"), False]
         case 4:
-            return trader(w, c, m, p, it, "Armory", [
-[["ARROW", "ARROWS"], "-", 25, True, 2],
-[["BOLT", "BOLTS"], "-", 25, True, 2],
-[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],
-])
+            return trader(w, c, m, p, it, "Fudit Seller", [[["SCROLL OF TELEPORTATION", 2, 1], "!", 1, True, 50]])
         case 5:
-            return trader(w, c, m, p, it, "Lost Dwarwish Trader", [[["POTION OF HEALING", 3, 0], "!", 1, True, 120], [["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],[["BOLT", "BOLTS"], "-", 25, True, 2]])
+            return trader(w, c, m, p, it, "Lost Dwarf Seller", [[["POTION OF HEALING", 3, 0], "!", 1, True, 120], [["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[['9mm AMMO', '9mm AMMOS'], '-', 10, True, 5],[["BOLT", "BOLTS"], "-", 25, True, 2]])
         case 6:
-            return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "?", 1, True, 100]])
+            return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "!", 1, True, 100]])
         case 7:
-            return trader(w, c, m, p, it, "ANGEL", [[["BOOK OF BOOKS", 2, 0], "?", 1, True, 100]]) #ENDING
+            return trader(w, c, m, p, it, "ANGEL", [[["BOOK OF BOOKS", 2, 0], "!", 1, True, 100]]) #ENDING
         case 8:
             return[False, translate("- MAYOR IS EMBARRASSED"), False]
         case 9:
@@ -83,7 +77,8 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
                     echo = translate("YOUR BACKPACK IS FULL!")
                 return[False, echo, False]
         elif q in {"s","-"}:
-            return seller(w, c, m, p, it, trader, ilist)
+            seller(w, c, m, p, it, trader, ilist)
+            return[False, p["echo"], False]
         elif q in {"PADENTER","\n", ",", "\x1b"}:
             return[False, p["echo"], False]
         w.clear()
@@ -109,21 +104,19 @@ def seller(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
     while True:
         if q in slots:
             q = int(q)
-            echo = translate("YOU SELL")+" '"+translate(item(p["BP"], q, p))+"'"
-            t = p["BP"][q][-1] * p["BP"][q][3]
+            t = p["BP"][q][-1]
             if p["BP"][q][1] == "-":
                 t *= p["BP"][q][2]
-            if p["BP"][q][1] == "!":
-                t = 0
-            t = t // 25
+            t = t // 10
             p["gold"] += t
             p["BP"].pop(q)
             #merge(p)
             #get_equip_values(p)
+            echo = translate("YOU SELL")+" '"+translate(item(p["BP"], q, p))+"'"
             return[False, echo, True]
-        #elif q in {"PADMINUS","-","s","S"}: #PADMINUS for windows; doesn't work -PR-
-        #    seller(w, c, m, p, it, trader, ilist)
-        #    return[False, p["echo"], False]
+        elif q in {"PADMINUS","-","s","S"}: #PADMINUS for windows; doesn't work -PR-
+            seller(w, c, m, p, it, trader, ilist)
+            return[False, p["echo"], False]
         elif q in {"PADENTER","\n", ",", "\x1b"}:
             return[False, p["echo"], False]
         w.clear()
@@ -132,10 +125,10 @@ def seller(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(p["BP"])):
             w.addstr(i+3, 2, str(i)+": "+item(p["BP"], i, p), c.color_pair(1))
-            t = p["BP"][i][-1] * p["BP"][i][3]
+            t = p["BP"][i][-1]
             if p["BP"][i][1] == "-":
                 t *= p["BP"][i][2]
-            t = str(t // 25)
+            t = str(t // 10)
             w.addstr(i+3, 68, "SELL:", c.color_pair(1))
             w.addstr(i+3, 78-len(t), t, c.color_pair(1))
         w.addstr(22, 0, "What do you want to sell?:", c.color_pair(4))
