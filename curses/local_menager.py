@@ -8,8 +8,7 @@ from local_scores import scoreboard_append, scoreboard_print
 
 from local_equip import get_equip_values
 from local_translator import translate
-from local_item_class import get_item, randitem
-
+from local_item_class import get_item, randitem, change_item
 from local_output import output
 
 
@@ -20,6 +19,7 @@ c_type = [0,2,1,2,3] # color_type -PR-
 def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
         case "#E": # END -PR-
+            get_equip_values(p)
             score = scoreboard_append(w, c, p)
             w.clear()
             output(w, c, m, p)
@@ -38,7 +38,7 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             else:
                 prepare_map(c, m, p)
                 if command[2:] == "!":
-                    p["echo"] = translate("YOU FALL DOWNSTAIRS!")
+                    p["echo"] = translate("YOU FALL DOWN!")
                     p["hp"] -= p["maxhp"]//2
                     if p["hp"] <= 0: # not working (nothing changes) -PR-
                         p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
@@ -53,7 +53,11 @@ def menager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(6, 57, -1)
             c.init_pair(7, 196, -1)
             c.init_pair(8, 41, -1)#It don't need to be definited here -PR-
+            c.init_pair(9, 238, -1)
             m, p, path = character(w, c, p) # I have to return the first data -PR-
+            if p["ismage"]:
+                change_item(22)[1] = get_item(17)
+                change_item(23)[1] = get_item(18)
             get_equip_values(p)
             scoreboard_print(w, c)
             w.clear()

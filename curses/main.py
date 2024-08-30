@@ -12,10 +12,12 @@ from local_terrain import terrain
 from local_scripts import sort
 # used in advancing
 from local_equip import get_equip_values
-
+# for cur_magic at the end of main loop
+from random import choice
 
 from time import time, ctime
 
+#C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico
 
 from local_menager import menager
 def mainloop(w):
@@ -98,6 +100,15 @@ def mainloop(w):
                 p["hp"] = p["maxhp"]
             if p["hp"] <= 0:
                 break
+
+            if p["cur_magic"] > 0:
+                p["cur_magic"] -= choice([0, 1, 1, 1])
+                if p["cur_magic"] > p["inteligence"]:
+                    p["wasattackby"] = "@" + p["wasattackby"]
+                    p["hp"] -= (p["maxhp"] * (p["cur_magic"] - p["inteligence"])) // 5
+                    p["cur_magic"] = p["inteligence"]
+                    c.beep() # alarm the player of loosing hit points because of using to much magic -PR-
+
     menager(w, c, "#E", m, p) #End game -PR-
 
 with open("log.txt", "a") as txt:

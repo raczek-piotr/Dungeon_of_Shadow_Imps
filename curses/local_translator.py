@@ -1,4 +1,4 @@
-lang_PL = {
+'''lang_PL = {
     #"A MONSTER": "POTWORA",
     "AND IT WILL GIVE YOU LIGHT FOR": "I BĘDZIE TOBIE DAWAĆ ŚWIATŁO PRZEZ",
     "ARROW": "STRZAŁĘ",
@@ -49,15 +49,44 @@ lang_PL = {
     "YOU MISS A": "SPUDŁOWAŁEŚ",
     "YOU WENT DOWN": "ZSZEDŁEŚ W DÓŁ",
     "YOU WENT UP": "WSZEDŁEŚ DO GÓRY",
-    }
-
+    "YOU TOOK": "WZIĄŁEŚ",
+    }'''
+lang_PL = {
+    "CHOOSE A SPELL TO CAST:": "WYBIERZ ZAKLĘCIE KTÓRE CHCESZ RZUCIĆ:",
+    "YOU FAILED TO CAST THE SPELL": "NIE UDAŁO CI SIĘ RZUCIĆ ZAKLĘCIA",
+    "TELEPORTED": "PRZETELEPORTOWANO",
+    "HEALED": "ULECZONY",
+    "DETECTED": "PRZESKANOWANO POZIOM",
+    "TELEPORTED": "PRZETELEPORTOWANO",
+    "YOU CAN'T BE HEALED MORE": "NIE MOŻESZ ZOSTAĆ BARDZEJ ULECZONY",
+    "YOU FAILED TO CAST THE SPELL": "NIE UDAŁO CI SIĘ RZUCIĆ ZAKLĘCIA",
+    "IN WHAT DIRECTION DO YOU WANT TO CAST THE SPELL?:": "W JAKIM KIERUNKU CHCESZ RZUCIĆ ZAKLĘCIE?:",
+    "WRONG DIRECTION!": "ZŁY KIERUNEK!",
+    "SPARKS FLY AROUND YOU...": "ISKRY LATAJĄ WOKÓŁ CIEBIE...",
+    "YOU HAVE LIGHT, YOU CAN'T SPELL MORE": "MASZ ŚWIATŁO, WIĘC NIE MOŻESZ RZUCIĆ ZAKLĘCIA PRZYWOŁANIA ŚWIATŁA",
+    "MAGIC LIGHT": "MAGICZNE ŚWAITŁO",
+    "TELEPORTATION": "TELEPORTACJA",
+    "MAGIC MISSLE": "MAGICZNY POCISK",
+    "DEDECT NATURE": "ZNAJDZ NATURĘ",
+    "DRUID'S SHOT": "DRUIDZKI STRZAŁ",
+    "WORDS OF NATURE": "SŁOWA NATURY",
+    #"HERBALIZM": "HERBALIZM",
+    "DETECT WATER": "ZNAJDZ WODĘ",
+    "WATER JUMP": "WODNA TELEPORTACJA",
+    "CONDENCE HUMID": "SKONDENSUJ WILGOĆ",
+    #"TSUNAMI": "TSUNAMI",
+    "FIRE BALL": "KULA OGNIA",
+    "LIGHTNING": "BŁUSKAWICA",
+    "HYDROGEN BLAST": "WYBUCH WODORU",
+    "BLAST!": "WYBUCH!",
+}
 def translate(ang, number = 0):
-    lang = "none"
+    lang = "PL"
     match lang:
         case "PL":
-            return(l_pl(ang, number))
+            return l_pl(ang, number)
         case _:
-            return(ang)
+            return ang
 def l_pl(ang, number):
-    global lang_PL
-    return(lang_PL.get(ang+("" if number == 0 else "1" if number == 1 else "2" if number < 5 or number % 10 in [2, 3, 4] and number > 20 else "5"), ang))
+    global lang_PL # why not? -PR-
+    return lang_PL.get(ang+("" if number == 0 else "1" if number == 1 else "2" if number < 5 or number % 10 in [2, 3, 4] and number > 20 else "5"), ang)

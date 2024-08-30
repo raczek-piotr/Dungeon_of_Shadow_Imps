@@ -49,8 +49,8 @@ def item(item, arg=9, p=False): #if moreinfo != False then moreinfo = p -PR-
 
 def playerdata(y, p):
     match y:
-        case 1:
-            return p["playertype"]
+        #case 1:
+        #    return p["playertype"]
         case 3:
             return "hp: " + str(p["hp"]) + "/" + str(p["maxhp"])
         case 4:
@@ -127,6 +127,7 @@ def output(w, c, m, p):
                     w.addstr(y, x, i, c.color_pair(col))
         w.addstr(y, 53, "|", c.color_pair(4))
         w.addstr(y, 56, playerdata(y, p), c.color_pair(1))
+    w.addstr(1, 56, p["playertype"], c.color_pair(p["color"]))
     if p["torch"]:
         for y in range(-1, 2):
             ty = (p["y"] + y) % m["sy"]
