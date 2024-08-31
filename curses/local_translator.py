@@ -59,6 +59,7 @@ lang_PL = {
     "DETECTED": "PRZESKANOWANO POZIOM",
     "TELEPORTED": "PRZETELEPORTOWANO",
     "YOU CAN'T BE HEALED MORE": "NIE MOŻESZ ZOSTAĆ BARDZEJ ULECZONY",
+    "YOU CAN'T CAST THE SPELL HERE!": "NIE MOŻESZ W TYM MIEJSCU RZUCIĆ ZAKLĘCIA!",
     "YOU FAILED TO CAST THE SPELL": "NIE UDAŁO CI SIĘ RZUCIĆ ZAKLĘCIA",
     "IN WHAT DIRECTION DO YOU WANT TO CAST THE SPELL?:": "W JAKIM KIERUNKU CHCESZ RZUCIĆ ZAKLĘCIE?:",
     "WRONG DIRECTION!": "ZŁY KIERUNEK!",
@@ -82,7 +83,7 @@ lang_PL = {
     "BLAST!": "WYBUCH!",
 }
 def translate(ang, number = 0):
-    lang = "PL"
+    lang = "EN"
     match lang:
         case "PL":
             return l_pl(ang, number)

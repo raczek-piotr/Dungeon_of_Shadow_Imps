@@ -38,8 +38,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Rogue
 -  Archer
 -  Druid
-
-## Classes (Common)
+## Common Classes (Classic DoSI)
 ### Archer
 -  **strength** 7
 -  **dexterity** 11
@@ -57,15 +56,6 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Torch
 -  Ration of food
 -  20 Rocks (sling's ammo)
-### Druid
--  **strength** 7
--  **dexterity** 8
--  **inteligence** 10
--  Druid's spells
--  Spell book
--  Knife 1D3 1H60%
--  Torch
--  Ration of food
 ### Duelist
 -  **strength** 9
 -  **dexterity** 9
@@ -73,26 +63,6 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
--  20 Rocks (sling's ammo)
-### Mage
--  **strength** 7
--  **dexterity** 7
--  **inteligence** 12
--  Spell book
--  Knife 1D3 1H60%
--  Torch
--  Ration of food
--  They can't find the heaviest armors
--  5% chance to become Wizard (Mage with other spellbook)
-### Paladin
--  **strength** 9
--  **dexterity** 7
--  **inteligence** 8
--  Sling 1D1 1H60%
--  Knife 1D3 1H60%
--  Torch
--  Ration of food
--  Spell book
 -  20 Rocks (sling's ammo)
 ### Rogue
 -  **strength** 8
@@ -110,8 +80,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Torch
 -  Ration of food
 -  20 Rocks (sling's ammo)
-
-## Classes (Rare)
+## Rare Classes (Classic DoSI)
 ### Dwarwish Clan Warrior
 -  **strength** 11
 -  **dexterity** 7
@@ -147,8 +116,38 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Torch
 -  Ration of food
 -  50 9mm Ammo (gun's ammo)
-
-### Owner and Designer:
+## Common Classes (DoSI with magic)
+### Druid
+-  **strength** 7
+-  **dexterity** 9
+-  **inteligence** 10
+-  Spell book
+-  Druid's spells
+-  Knife 1D3 1H60%
+-  Torch
+-  Ration of food
+### Mage
+-  **strength** 7
+-  **dexterity** 7
+-  **inteligence** 12
+-  Spell book
+-  Knife 1D3 1H60%
+-  Torch
+-  Ration of food
+-  They can't find the heaviest armors
+-  They need highter LW to use armors
+-  5% chance to become Wizard (Mage with other spellbook)
+### Paladin
+-  **strength** 9
+-  **dexterity** 8
+-  **inteligence** 10
+-  Sling 1D1 1H60%
+-  Knife 1D3 1H60%
+-  Torch
+-  Ration of food
+-  Spell book
+-  20 Rocks (sling's ammo)
+## Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/
 -  webpage → never — I think

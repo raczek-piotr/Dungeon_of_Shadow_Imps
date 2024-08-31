@@ -16,7 +16,7 @@ def scoreboard_print(w, c):
     orgscores = scores.copy()
 
     w.clear()
-    w.addstr(0, 8, "DoSI Scoreboard", c.color_pair(1))
+    w.addstr(0, 16, "DoSI Scoreboard", c.color_pair(1))
     w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:-22:-1]
     for t in range(len(scores)):

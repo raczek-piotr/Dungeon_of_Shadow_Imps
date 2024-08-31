@@ -6,7 +6,7 @@ from local_equip import get_equip_values, merge
 
 
 traders = [{5,6,7,51},
-           {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
+           {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
            {26, 62, 65},
            {},
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), randint(52, 59)},

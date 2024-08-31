@@ -1,5 +1,6 @@
 import curses as c
 from curses import wrapper
+from local_manager import manager
 from local_output import output
 # update
 from local_room import test_room
@@ -14,12 +15,12 @@ from local_scripts import sort
 from local_equip import get_equip_values
 # for cur_magic at the end of main loop
 from random import choice
-
+# for logfile
 from time import time, ctime
 
+# my command for making exe file for windows -PR-
 #C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico
 
-from local_menager import menager
 def mainloop(w):
     c.start_color()
     c.use_default_colors()
@@ -28,7 +29,7 @@ def mainloop(w):
     c.curs_set(0)
     w.resize(24,80)
     c.resize_term(24,80)
-    m, p, path = menager(w, c) # from there are imported maps and player :) -PR-
+    m, p, path = manager(w, c) # from there are imported maps and player :) -PR-
     reg_time, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
 
@@ -49,7 +50,7 @@ def mainloop(w):
         else:
             p["echo"], p["moved"] = keyin(w, c, m, p, [p["y"], p["x"]], gi)
         if p["echo"][:1] == "#": # it could be "" … -PR-
-            menager(w, c, p["echo"], m, p) # next map? -PR-
+            manager(w, c, p["echo"], m, p) # next map? -PR-
             if p["echo"] == "#":
                 return # close the game -PR-
 
@@ -109,7 +110,7 @@ def mainloop(w):
                     p["cur_magic"] = p["inteligence"]
                     c.beep() # alarm the player of loosing hit points because of using to much magic -PR-
 
-    menager(w, c, "#E", m, p) #End game -PR-
+    manager(w, c, "#E", m, p) #End game -PR-
 
 with open("log.txt", "a") as txt:
     txt.write("\n" + ctime(time()) + " starting a new game\n")

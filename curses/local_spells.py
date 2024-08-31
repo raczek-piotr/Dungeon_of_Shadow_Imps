@@ -94,14 +94,14 @@ def spell_menager(w, c, m, p):
         p["x"], p["y"] = x, y
         return[translate("TELEPORTED"), True]
      case 2:
-        if p["hp"] > p["maxhp"]//2:
+        if 4*p["hp"]+1 > 3*p["maxhp"]:
             p["cur_magic"] -= spell_list[p["magic_list"][q]][5] # reverse it -PR-
             return[translate("YOU CAN'T BE HEALED MORE"), False]
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         p["hp"] += 2
-        if p["hp"] > p["maxhp"]//2:
-            p["hp"] = p["maxhp"]//2
+        if 4*p["hp"] > 3*p["maxhp"]:
+            p["hp"] = (3*p["maxhp"])//4
         return[translate("HEALED"), True]
      case 3:
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
@@ -120,17 +120,19 @@ def spell_menager(w, c, m, p):
                     m["v"][y][x] = "="
         return[translate("DETECTED"), True]
      case 4:
-        if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
-            if m["r"][p["y"]][p["x"]][0] in {" ", ".", "="}:
+        if m["r"][p["y"]][p["x"]][0] in {" ", ".", "="}:
+            if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
                 m["r"][p["y"]][p["x"]] = "%"
                 return[translate("NATURE AROUND YOU"), True]
-        return[translate("YOU FAILED TO CAST THE SPELL"), True]
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
      case 6:
-        if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
-            if m["r"][p["y"]][p["x"]][0] in {" ", ".", "%"}:
+        if m["r"][p["y"]][p["x"]][0] in {" ", ".", "%"}:
+            if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
                 m["r"][p["y"]][p["x"]] = "="
                 return[translate("SHALLOW WATER"), True]
-        return[translate("YOU FAILED TO CAST THE SPELL"), True]
+            return[translate("YOU FAILED TO CAST THE SPELL"), True]
+        return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
      case 7: #water jump -PR-
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
