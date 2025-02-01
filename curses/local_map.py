@@ -2,6 +2,7 @@ from random import randint, choice
 from time import time, ctime
 
 from local_scripts import zero3
+from local_iostream import write2log
 from local_enemies_class import enemies_class_add
 
 
@@ -54,8 +55,7 @@ def locate_a_room(m, pokoje, hm, minhm, max_room_size, min_room_size, space, are
 
 
 def map_init(m, p, items, type_of = 0, stairs = 3):
-    with open("log.txt", "a") as txt:
-        txt.write(ctime(time()) + " creating map with properties: " + str(type_of)+" "+str(type(type_of))+"\n")
+    write2log("creating map with properties: " + str(type_of))
     if type(type_of) == int:
         return map_init_int(m, p, items, type_of, stairs)
     else:
@@ -208,16 +208,15 @@ def map_init_int(m, p, items, type_of, stairs):
                             m["r"][y][x] = "#"
                         elif m["r"][y][x] == "+, ":
                             m["r"][y][x] = ": "
-                        else:
-                            if randint(0, 7) == 0:
-                                m["r"][y][x] = ":."
+                        elif randint(0, 7) == 0:
+                                m["r"][y][x] = ": "
             if stairs > 1:
                 m["r"][pokoje[-1][0]+pokoje[-1][2]//2][pokoje[-1][1]+pokoje[-1][3]//2] = "> "
                 m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "> "
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
-        case 8:
+        case 5:
             hm = 7
             while len(pokoje) < hm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
@@ -276,7 +275,7 @@ def map_init_int(m, p, items, type_of, stairs):
             pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
             pokoje.extend(Spokoje)
 
-        case _: # 0 -PR-
+        case _: # 0 and 4 -PR-
             hm = 9 # 5 -PR-
             sizey, sizex = 17, 26
             m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1

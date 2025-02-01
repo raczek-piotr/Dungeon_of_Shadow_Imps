@@ -7,6 +7,7 @@ from local_translator import translate
 from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values #, merge # not needed -PR-
+from local_scores import scoreboard_print
 from local_spells import spell_menager
 
 
@@ -68,7 +69,7 @@ def item_menager(w, c, m, p):
                             if p["BP"][q][1] in {"?","!"}:
                                 p["BP"][q][0] = p["BP"][q][0].copy()
                                 if p["BP"][q][1] == "?":
-                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","TREASURE MAPPING"][p["BP"][q][0][2]]
+                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","TREASURE MAPPING","SCROLL OF DISTURBANCE"][p["BP"][q][0][2]]
                                 elif p["BP"][q][1] == "!":
                                     p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
@@ -91,6 +92,8 @@ def item_menager(w, c, m, p):
                                     for x2 in range(x-1, x+2):
                                         m["v"][y2][x2] = m["r"][y2][x2]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF TREASURE MAPPING"), True]
+                elif t[0][2] == 4:
+                    return["#!", True] #return[translate("YOU READ A") + " " + translate("SCROLL OF DISTURBANCE"), True]
                 else: # CYCLOPE-DIA -PR-
                     if randint(0, 1):
                         p["strength"] += 1
@@ -150,7 +153,7 @@ def shot_menager(w, c, m, p):
     #    return[translate("YOU DON'T HAVE AMMO!"), False]
     #return[translate("YOU CAN'T SHOT THERE!"), False]
 
-def pomoc(w, c, m, p): #not beautyful, but done -PR-
+def help(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Game tiles:", c.color_pair(4))
     w.addstr(1, 2, "@/  - you/", c.color_pair(1))
@@ -181,6 +184,7 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
 
     w.addstr(9, 2, "? - scroll or a book", c.color_pair(2))
     w.addstr(9, 28, "! - potion", c.color_pair(2))
+    w.addstr(13, 2, "* - to see scoreboard", c.color_pair(2))
 
 
     w.addstr(16, 0, "Movement:", c.color_pair(4))
@@ -190,10 +194,23 @@ def pomoc(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot / cast a spell", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 61, "Version = Base_0.4", c.color_pair(1))
+    w.addstr(23, 61, "Version = Base_0.5", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
-    get_in(w)
+    w.getkey()
+
+    if p["classicgame"]:
+        return
+
+    w.clear()
+    w.addstr(0, 0, "Using spells (colors):", c.color_pair(4))
+    w.addstr(2, 2, "You can use this spell", c.color_pair(1))
+    w.addstr(3, 2, "You can't use this spell (your PC inteligence is to low...)", c.color_pair(5))
+    w.addstr(4, 2, "You can't use this spell (your PC need to be on tile with nature)", c.color_pair(2))
+    w.addstr(5, 2, "You can't use this spell (your PC need to be on tile with water)", c.color_pair(6))
+    w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
+    w.addstr(23, 61, "Version = Base_0.5", c.color_pair(1))
+    w.getkey()
 
 # def item_menager_keyin(m, p, key):
 
@@ -222,7 +239,10 @@ def keyin(w, c, m, p, pos, key):
         #    get_equip_values(p)
         #    return [p["echo"], False]
         case "?":
-            pomoc(w, c, m, p)
+            help(w, c, m, p)
+            return [p["echo"], False]
+        case "*":
+            scoreboard_print(w, c)
             return [p["echo"], False]
         case _:
            # move a player? (but in where!?), -PR- ?

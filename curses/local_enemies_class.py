@@ -1,5 +1,6 @@
 from random import randint, choice
 from local_scripts import zero3, dire, shot
+from local_iostream import write2log
 from local_translator import translate
 
 
@@ -51,7 +52,7 @@ enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
-del e # e ↑ is used in functions leater, but data isn't deleted -PR-
+del e # „e” ↑ is used in functions leater; but data isn't deleted -PR-
 
 enemies_part1 = [enemies_light,
                  enemies_light,
@@ -313,7 +314,7 @@ def enemies_class_is_shoted(m, p, dire, value):
     for ammo_id in range(len(p["BP"])):
         ammo = p["BP"][ammo_id]
         if ammo[0][0] == p["e_hand"][0][2]:
-            shots = min(ammo[2], p["e_hand"][2][1])
+            shots = min(ammo[2], p["e_hand"][2][2])
             ammo[2] -= shots
             if ammo[2] == 0:
                 p["BP"].pop(ammo_id)
@@ -336,8 +337,8 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     hits = (ranged if ranged else p["attack_hits"])
     rolls = (p["bow"] if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
-    with open("log.txt", "a") as txt:
-        txt.write("attack enemie wth prperties " + str(acc)+" "+str(hits)+" "+str(rolls)+" "+str(damage)+"\n")
+    write2log("attack enemie with prperties " + str(acc)+" "+str(hits)+" "+str(rolls)+" "+str(damage))
+        
     if p["blessing"]:
         hits *= 2
     if p["fury"]:

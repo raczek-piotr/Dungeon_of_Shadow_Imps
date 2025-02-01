@@ -11,12 +11,11 @@ from local_input import keyin
 from local_terrain import terrain
 # alwayes
 from local_scripts import sort
+from local_iostream import write2log
 # used in advancing
 from local_equip import get_equip_values
 # for cur_magic at the end of main loop
 from random import choice
-# for logfile
-from time import time, ctime
 
 # my command for making exe file for windows -PR-
 #C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico
@@ -112,6 +111,5 @@ def mainloop(w):
 
     manager(w, c, "#E", m, p) #End game -PR-
 
-with open("log.txt", "a") as txt:
-    txt.write("\n" + ctime(time()) + " starting a new game\n")
+write2log("starting a new game")
 wrapper(mainloop)

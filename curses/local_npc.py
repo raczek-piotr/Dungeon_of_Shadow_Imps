@@ -5,13 +5,20 @@ from local_item_class import get_item
 from local_equip import get_equip_values, merge
 
 
-traders = [{5,6,7,51},
+traders = []
+def load_traders(p):
+    global traders
+    traders = [{5,6,7,51},
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
-           {26, 62, 65},
+           {26},
            {},
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), randint(52, 59)},
-           {5,7, randint(62, 65), randint(27, 50), randint(27, 50)},
-           {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
+           {5,7, randint(27, 50), randint(27, 50)},
+           {4,7, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
+    if p["classicgame"] == False:
+        traders[2] = {26, 62, 65}
+        traders[5] = {5,7, randint(62, 65), randint(27, 50), randint(27, 50)}
+        traders[6] = {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
 
 def npc(w, c, m, p, it, stay):
     it = int(it)
@@ -56,7 +63,7 @@ def in_BP(BP, item): #copy is in local_terrain.py
             return True
     return False
 
-def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited by python -PR-
+def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited (as a function) by python -PR-
     q = ""
     for i in traders[it]:
         ilist.append(get_item(i)) 

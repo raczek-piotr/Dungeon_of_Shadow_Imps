@@ -1,7 +1,7 @@
 from random import randint
 
 from local_translator import translate
-from local_item_class import get_item
+from local_item_class import get_item, change_stats
 from local_enemies_class import enemies_class_is_attacked
 from local_equip import get_equip_values, merge
 from local_output import item # for f_weapons -PR-
@@ -31,20 +31,35 @@ def f_gold(m, p, npos, stay):
 
 def f_door(m, p, npos, stay):
     npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = m["r"][npy][npx][1:]
-    m["v"][npy][npx] = m["v"][npy][npx][1:]
+    m["r"][npy][npx] = m["r"][npy][npx][1:-1]
+    m["v"][npy][npx] = m["v"][npy][npx][1:-1]
     if m["v"][npy][npx] == "":
         m["v"][npy][npx] = " "
+    if p["iniciative"]:
+        p["y"], p["x"] = npy, npx
+        p["blessing"] = max(p["blessing"], 2)
+        p["fury"] = max(p["fury"], 2)
+        echo = translate("YOU OPEN A DOOR") + " " + translate("... INICIATIVE TAKEN!")
+        return[False, echo, False] 
     echo = translate("YOU OPEN A DOOR")
     return[False, echo, True]
 
 def f_block(m, p, npos, stay):
-    npy, npx = npos[0], npos[1]
-    m["r"][npy][npx] = m["r"][npy][npx][1:]
-    m["v"][npy][npx] = m["v"][npy][npx][1:]
-    if m["v"][npy][npx] == "":
-        m["v"][npy][npx] = " "
-    echo = translate("WEEK WALL FALLED DOWN")
+    if randint(0, 1) == 0:
+        npy, npx = npos[0], npos[1]
+        m["r"][npy][npx] = m["r"][npy][npx][1:]
+        m["v"][npy][npx] = m["v"][npy][npx][1:]
+        if m["v"][npy][npx] == "":
+            m["v"][npy][npx] = " "
+        if p["iniciative"]:
+            p["y"], p["x"] = npy, npx
+            p["blessing"] = max(p["blessing"], 2)
+            p["fury"] = max(p["fury"], 2)
+            echo = translate("THE WEEK WALL FALLED DOWN") + " " + translate("... INICIATIVE TAKEN!")
+        return[False, echo, False] 
+        echo = translate("THE WEEK WALL FALLED DOWN")
+    else:
+        echo = translate("YOU STRUCK THE WEEK WALL")
     return[False, echo, True]
 
 def in_BP(BP, item): #copy is in local_npc.py
@@ -59,6 +74,7 @@ def f_items(m, p, npos, stay):
     i = get_item(i)
     if stay:
         if len(p["BP"]) < 6:# or i[1] == "-" and in_BP(p["BP"], i):
+            i = change_stats(i)
             p["BP"].append(i)
             merge(p)
             get_equip_values(p)

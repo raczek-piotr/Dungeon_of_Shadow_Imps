@@ -1,19 +1,21 @@
 from random import randint, choice
+from local_iostream import write2log
 #from time import sleep
 from local_scripts import zero3
 from local_map import map_init
 from local_enemies_class import enemies_class_clear
 from local_character import character
 from local_scores import scoreboard_append, scoreboard_print
+from local_npc import load_traders
 
 from local_equip import get_equip_values
 from local_translator import translate
-from local_item_class import get_item, randitem, change_item
+from local_item_class import get_item, randitem, mage_items
 from local_output import output
 
 
 _type = 1 # local (script) permanent variable -PR-
-c_type = [0,2,1,2,3] # color_type -PR-
+c_type = [0,2,1,2,3,3] # color_type -PR-
 
 
 def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
@@ -21,11 +23,18 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
         case "#E": # END -PR-
             get_equip_values(p)
             score = scoreboard_append(w, c, p)
+            write2log("player ends his game with score: "+str(score))
             w.clear()
             output(w, c, m, p)
             w.addstr(23, 0, translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))+"...")
             w.addstr(23, 56, "score: "+str(score), c.color_pair(2))
             w.getkey()
+        case "#!": # SCROLL OF DISTURBANCES -PR-
+            d = p["depth"] % 10
+            p["depth"] = (p["depth"]+randint(1, 9))%10 + 10*d
+            p["hp"] = p["mhp"]
+            prepare_map(c, m, p)
+            p["echo"] = translate("YOU READ A") + " " + translate("SCROLL OF DISTURBANCE")
         case "#U": # UP-starir -PR-
             p["depth"] -= 1
             prepare_map(c, m, p)
@@ -52,17 +61,12 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(5, 245, -1)
             c.init_pair(6, 57, -1)
             c.init_pair(7, 196, -1)
-            c.init_pair(8, 41, -1)#It don't need to be definited here -PR-
+            c.init_pair(8, 41, -1) #It don't need to be definited here -PR-
             c.init_pair(9, 238, -1)
             m, p, path = character(w, c, p) # I have to return the first data -PR-
             if p["ismage"]:
-                change_item(17)[1][2][1] = 7
-                change_item(18)[1][2][1] = 17
-                change_item(19)[1][2][1] = 24
-                change_item(20)[1][2][1] = 27
-                change_item(21)[1][2][1] = 34
-                change_item(22)[1] = get_item(17)
-                change_item(23)[1] = get_item(18)
+                mage_items()
+            load_traders(p)
             get_equip_values(p)
             scoreboard_print(w, c)
             w.clear()
@@ -85,7 +89,7 @@ def prepare_map(c, m, p):
             _type += i
         p["type"] = _type + h[0] #h[0] is shift
         type_of = p["type"]
-    elif h[0] in {10,11,12,13}:
+    elif h[0] in {10,11,12,13,15}:
         p["type"] = h[0] - 10
         type_of = p["type"]
     else: #int

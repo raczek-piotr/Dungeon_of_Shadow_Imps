@@ -71,6 +71,12 @@ item = [
 ['?', [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 200]], #65
 ]
 
+def change_stats(i):
+    if i[1] in {"}", "]"} and randint(0, 4) == 0:
+        i[2][1] += 1
+        i[-1] = int((i[-1]*1.2)//1)
+    return i #item
+
 def get_item(it):
     q = item[it][1].copy()
     if q[1] in {"]",")","}"}:
@@ -79,6 +85,15 @@ def get_item(it):
 
 def change_item(it):
     return item[it]
+
+def mage_items():
+    item[17][1][2][1] = 7
+    item[18][1][2][1] = 17
+    item[19][1][2][1] = 24
+    item[20][1][2][1] = 27
+    item[21][1][2][1] = 34
+    item[22] = ['?', [['SCROLL', 2, 0], '?', 1, False, 80]] # 8
+    item[23] = ['?', [['SCROLL', 2, 4], '?', 1, False, 200]]
 
 def randitem(hm, p = 0, k = len(item)-1): # how many -PR-
     global item

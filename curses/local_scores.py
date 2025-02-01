@@ -4,7 +4,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open("scores.txt", 'w') as  scores_txt:
-            scores_txt.write("625|DEFAULT|FUDISH ARCHER|2214|8|8|-|[]|True\n")
+            scores_txt.write("625|CLASSIC|FUDISH ARCHER|2214|8|8|-|[]|True\n390|WSAD do dziury...|GNOMISH DRUID|1185|4|5|-|[]|False\n")
     with open("scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 
@@ -31,14 +31,31 @@ def scoreboard_print(w, c):
     w.getkey()
 
     scores = orgscores
+    scores2 = []
     for t in range(len(scores)-1 ,-1,-1):
         if scores[t][8] != "True":
-            scores.pop(t)
+            scores2.append(scores.pop(t))
             
     w.clear()
-    w.addstr(0, 8, "Classic DoSI Scoreboard", c.color_pair(1))
+    w.addstr(0, 8, "Classic DoSI Scoreboard", c.color_pair(7))
     w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:-22:-1]
+    for t in range(len(scores)):
+        w.addstr(t+2, 1, str(t+1)+".", c.color_pair(2))
+        w.addstr(t+2, 4, scores[t][6], c.color_pair(5))
+        w.addstr(t+2, 8, scores[t][0], c.color_pair(1))
+        w.addstr(t+2, 18, scores[t][3], c.color_pair(5))
+        w.addstr(t+2, 28, scores[t][4], c.color_pair(1))
+        w.addstr(t+2, 33, scores[t][5], c.color_pair(1))
+        w.addstr(t+2, 39, scores[t][2], c.color_pair(5))
+        w.addstr(t+2, 59, scores[t][1][:20], c.color_pair(1))
+    w.getkey()
+
+    scores = scores2
+    w.clear()
+    w.addstr(0, 10, "Magic DoSI Scoreboard", c.color_pair(2))
+    w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
+    scores = scores[:22]
     for t in range(len(scores)):
         w.addstr(t+2, 1, str(t+1)+".", c.color_pair(2))
         w.addstr(t+2, 4, scores[t][6], c.color_pair(5))

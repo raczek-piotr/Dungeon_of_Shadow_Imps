@@ -3,7 +3,7 @@ from local_input_key import *
 from local_enemies_class import enemies_class_is_cast, enemies_class_is_blast
 from local_translator import translate
 
-from random import randint
+from random import randint, choice
 
 
 spell_list = [
@@ -19,7 +19,7 @@ spell_list = [
 [translate("HERBALIZM"),      2,    60,  False,   13, 1, 2],#6
 # water language (12)
 [translate("DETECT WATER"),   1,    80,  False,   10, 5, 5],#7
-[translate("WATER JUMP"),     6,    80,  False,   11, 1, 7],#8
+[translate("WATER JUMP"),     1,    80,  False,   11, 1, 7],#8
 [translate("CONDENCE HUMID"), 1,    80,  False,   12, 3, 6],#9
 [translate("WATER FIST"),     6,    80,  5,       13, 1],   #10
 [translate("TSUNAMI"),        6,    80,  8,       14, 2],   #11
@@ -136,12 +136,15 @@ def spell_menager(w, c, m, p):
      case 7: #water jump -PR-
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        mx, my = m["sx"]-1, m["sy"]-1
-        q = "#"
-        while q[0] != "=":
-            x, y = randint(1, mx), randint(1, my)
-            q = m["r"][y][x]
-        p["x"], p["y"] = x, y
+        lista = [] #list -PR-
+        for y in range(m["sy"]):
+            for x in range(m["sx"]):
+                if "=" in m["r"][y][x]:
+                    lista.append([y, x])
+        if lista == []:
+            return[translate("NO WATER ON THIS LEVEL"), False]
+        lista = choice(lista) #one element now -PR-
+        p["y"], p["x"] = lista[0], lista[1]
         return[translate("TELEPORTED"), True]
      case _: #blast -PR-
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
