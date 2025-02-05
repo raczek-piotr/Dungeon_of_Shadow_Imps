@@ -11,14 +11,14 @@ from local_input import keyin
 from local_terrain import terrain
 # alwayes
 from local_scripts import sort
-from local_iostream import write2log
+from local_iostream import write2log, write2log_newline
 # used in advancing
 from local_equip import get_equip_values
 # for cur_magic at the end of main loop
 from random import choice
 
 # my command for making exe file for windows -PR-
-#C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico
+#C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico --optimize 2
 
 def mainloop(w):
     c.start_color()
@@ -28,9 +28,12 @@ def mainloop(w):
     c.curs_set(0)
     w.resize(24,80)
     c.resize_term(24,80)
+    write2log("initialing curses... Done")
+    write2log("loading stuff...")
     m, p, path = manager(w, c) # from there are imported maps and player :) -PR-
     reg_time, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
+    write2log("run main game loop")
 
     while p["hp"] > 0:
         sort(p)
@@ -109,7 +112,11 @@ def mainloop(w):
                     p["cur_magic"] = p["inteligence"]
                     c.beep() # alarm the player of loosing hit points because of using to much magic -PR-
 
+    write2log("player dies")
     manager(w, c, "#E", m, p) #End game -PR-
 
-write2log("starting a new game")
+write2log_newline()
+write2log("starting game")
+write2log("initialing curses...")
 wrapper(mainloop)
+write2log("game ends (in natural way)")

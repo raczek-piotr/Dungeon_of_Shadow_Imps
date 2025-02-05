@@ -1,7 +1,7 @@
-# Dungeons of Shadow Imps Base_0.4
+# Dungeons of Shadow Imps 0.5.X
 ## Dice
 `1D2 2H80%` means
-you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
+you roll `1D2` if you hit the target (`80%` to hit), you try to hit `2` times
 ## Races
 ### Human:
 -  Warrior
@@ -10,7 +10,8 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Rogue
 -  Archer
 -  Paladin
--  Mage
+-  Water Mage
+-  Wizard
 
 ### Fudish:
 -  Warrior
@@ -20,7 +21,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Archer
 
 ### Dwarf:
--  Clan Warrior
+-  Steelclad
 -  Miner
 -  Scout
 
@@ -31,7 +32,8 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 ### Algal:
 -  Paladin
 -  Druid
--  Mage
+-  Water Mage
+-  Wizard
 
 ### Gnome:
 -  Duelist
@@ -81,7 +83,7 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Ration of food
 -  20 Rocks (sling's ammo)
 ## Rare Classes (Classic DoSI)
-### Dwarwish Clan Warrior
+### Dwarwish Steelclad
 -  **strength** 11
 -  **dexterity** 7
 -  Gun 2D1 1H90%
@@ -126,17 +128,6 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
-### Mage
--  **strength** 7
--  **dexterity** 7
--  **inteligence** 12
--  Spell book
--  Knife 1D3 1H60%
--  Torch
--  Ration of food
--  They can't find the heaviest armors
--  They need highter LW to use armors
--  5% chance to become Wizard (Mage with other spellbook)
 ### Paladin
 -  **strength** 9
 -  **dexterity** 8
@@ -147,6 +138,26 @@ you roll 1D2 if you hit the target (80% to hit), and you try o hit it 2 times
 -  Ration of food
 -  Spell book
 -  20 Rocks (sling's ammo)
+### Water Mage
+-  **strength** 7
+-  **dexterity** 7
+-  **inteligence** 12
+-  Water Language (type of spell book)
+-  Knife 1D3 1H60%
+-  Torch
+-  Ration of food
+-  They can't find the heaviest armors
+-  They need highter LW to use armors
+### Wizard
+-  **strength** 7
+-  **dexterity** 7
+-  **inteligence** 12
+-  Fire Compendium (type of spell book)
+-  Knife 1D3 1H60%
+-  Torch
+-  Ration of food
+-  They can't find the heaviest armors
+-  They need highter LW to use armors
 ## Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/

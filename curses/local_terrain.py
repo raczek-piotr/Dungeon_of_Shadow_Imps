@@ -35,13 +35,13 @@ def f_door(m, p, npos, stay):
     m["v"][npy][npx] = m["v"][npy][npx][1:-1]
     if m["v"][npy][npx] == "":
         m["v"][npy][npx] = " "
+    echo = translate("YOU OPEN A DOOR")
     if p["iniciative"]:
         p["y"], p["x"] = npy, npx
         p["blessing"] = max(p["blessing"], 2)
         p["fury"] = max(p["fury"], 2)
-        echo = translate("YOU OPEN A DOOR") + " " + translate("... INICIATIVE TAKEN!")
+        echo += " " + translate("... INICIATIVE TAKEN!")
         return[False, echo, False] 
-    echo = translate("YOU OPEN A DOOR")
     return[False, echo, True]
 
 def f_block(m, p, npos, stay):
@@ -51,11 +51,6 @@ def f_block(m, p, npos, stay):
         m["v"][npy][npx] = m["v"][npy][npx][1:]
         if m["v"][npy][npx] == "":
             m["v"][npy][npx] = " "
-        if p["iniciative"]:
-            p["y"], p["x"] = npy, npx
-            p["blessing"] = max(p["blessing"], 2)
-            p["fury"] = max(p["fury"], 2)
-            echo = translate("THE WEEK WALL FALLED DOWN") + " " + translate("... INICIATIVE TAKEN!")
         return[False, echo, False] 
         echo = translate("THE WEEK WALL FALLED DOWN")
     else:

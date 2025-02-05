@@ -194,7 +194,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot / cast a spell", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 61, "Version = Base_0.5", c.color_pair(1))
+    w.addstr(23, 59, "Version = DoSI_0.5.0", c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     w.getkey()
@@ -209,7 +209,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(4, 2, "You can't use this spell (your PC need to be on tile with nature)", c.color_pair(2))
     w.addstr(5, 2, "You can't use this spell (your PC need to be on tile with water)", c.color_pair(6))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 61, "Version = Base_0.5", c.color_pair(1))
+    w.addstr(23, 59, "Version = DoSI_0.5.0", c.color_pair(1))
     w.getkey()
 
 # def item_menager_keyin(m, p, key):
