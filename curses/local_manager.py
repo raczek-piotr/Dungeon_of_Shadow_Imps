@@ -12,15 +12,15 @@ from local_equip import get_equip_values
 from local_translator import translate
 from local_item_class import get_item, randitem, mage_items
 from local_output import output
+from local_iostream import savegame, clearsave
 
 
-_type = 1 # local (script) permanent variable -PR-
-c_type = [0,2,1,2,3,3] # color_type -PR-
-
+c_type = [0,2,1,2,3,3] # color.p["_type"] -PR-
 
 def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
         case "#E": # END -PR-
+            clearsave()
             get_equip_values(p)
             score = scoreboard_append(w, c, p)
             write2log("player ends his game with score: "+str(score))
@@ -35,10 +35,12 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             p["hp"] = p["mhp"]
             prepare_map(c, m, p)
             p["echo"] = translate("YOU READ A") + " " + translate("SCROLL OF DISTURBANCE")
+            savegame(p)
         case "#U": # UP-starir -PR-
             p["depth"] -= 1
             prepare_map(c, m, p)
             p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOSED BEHIND YOU")
+            savegame(p)
         case "#D": # DOWN-starir -PR-
             p["depth"] += 1
             if p["depth"] >= 40:
@@ -53,6 +55,8 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
                         p["echo"] = translate("YOU FALL DOWNSTAIRS AND DIED!") # not working -PR-
                 else:
                     p["echo"] = translate("YOU WENT DOWNSTAIRS, AND THE DOOR CLOSED BEHIND YOU")
+            savegame(p)
+
         case "#R": # RESET -PR-
             c.init_pair(1, 231, -1)
             c.init_pair(2, 46, -1)
@@ -68,6 +72,8 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
                 mage_items()
             load_traders(p)
             get_equip_values(p)
+            savegame(p)
+
             scoreboard_print(w, c)
             w.clear()
             w.addstr(5, 4, "The angel of the LORD came back a second time and touched 'you' and said:", c.color_pair(5))
@@ -78,17 +84,17 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             return m, p, path
 
 def prepare_map(c, m, p):
-    global _type, c_type
+    global c_type
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
     while h == "next": # not used -PR-
         p["id_camp"] += 1
         h = p["camp"][p["id_camp"]][p["depth"]].copy()
     if h[0] in {0,1,2,3}:
-        i = randint(-1, 1)
-        if _type + i in {0,1,2}:
-            _type += i
-        p["type"] = _type + h[0] #h[0] is shift
+        p["type"] = p["_type"] + h[0] #h[0] is shift
         type_of = p["type"]
+        i = randint(-1, 1)
+        if p["_type"] + i in {0,1,2}:
+            p["_type"] += i
     elif h[0] in {10,11,12,13,15}:
         p["type"] = h[0] - 10
         type_of = p["type"]

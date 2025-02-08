@@ -11,6 +11,9 @@ from local_scores import scoreboard_print
 from local_spells import spell_menager
 
 
+from local_character import version
+
+
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
@@ -184,17 +187,17 @@ def help(w, c, m, p): #not beautyful, but done -PR-
 
     w.addstr(9, 2, "? - scroll or a book", c.color_pair(2))
     w.addstr(9, 28, "! - potion", c.color_pair(2))
-    w.addstr(13, 2, "* - to see scoreboard", c.color_pair(2))
 
+    w.addstr(14, 2, "Going up/down the staris will save the game to the file", c.color_pair(1))
 
     w.addstr(16, 0, "Movement:", c.color_pair(4))
     w.addstr(17, 4, "7 8 9", c.color_pair(1))
     w.addstr(18, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
     w.addstr(19, 4, "1 2 3", c.color_pair(1))
-    w.addstr(20, 2, "+ - use (backpack)     ? - help", c.color_pair(5))
+    w.addstr(20, 2, "+ - use (backpack)     * - to see scoreboard       ? - help", c.color_pair(5))
     w.addstr(21, 2, ", - drop (backpack)    > - go down    < - go up    0 - shot / cast a spell", c.color_pair(5))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 59, "Version = DoSI_0.5.0", c.color_pair(1))
+    w.addstr(23, 59, "Version = " + version, c.color_pair(1))
     #w.addstr(22, 4, "Not working? NumLock!", c.color_pair(4))
     #w.addstr(23, 0, "Press enter to continue", c.color_pair(4))
     w.getkey()
@@ -209,7 +212,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(4, 2, "You can't use this spell (your PC need to be on tile with nature)", c.color_pair(2))
     w.addstr(5, 2, "You can't use this spell (your PC need to be on tile with water)", c.color_pair(6))
     w.addstr(23, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 59, "Version = DoSI_0.5.0", c.color_pair(1))
+    w.addstr(23, 59, "Version = " + version, c.color_pair(1))
     w.getkey()
 
 # def item_menager_keyin(m, p, key):

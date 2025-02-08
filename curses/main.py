@@ -116,7 +116,7 @@ def mainloop(w):
     manager(w, c, "#E", m, p) #End game -PR-
 
 write2log_newline()
-write2log("starting game")
+write2log("starting game DoSI_0.5.1")
 write2log("initialing curses...")
 wrapper(mainloop)
-write2log("game ends (in natural way)")
+write2log("game ends (terminates) DoSI_0.5.1")

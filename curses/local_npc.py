@@ -3,11 +3,15 @@ from local_translator import translate
 from local_output import item
 from local_item_class import get_item
 from local_equip import get_equip_values, merge
+from local_iostream import trades_save
+from local_iostream import trades_load
 
 
 traders = []
 def load_traders(p):
     global traders
+    if traders != []:
+        return
     traders = [{5,6,7,51},
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
            {26},
@@ -19,6 +23,13 @@ def load_traders(p):
         traders[2] = {26, 62, 65}
         traders[5] = {5,7, randint(62, 65), randint(27, 50), randint(27, 50)}
         traders[6] = {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
+
+def trades_do_save():
+    global traders
+    return trades_save(traders)
+def trades_do_load():
+    global traders
+    traders = trades_load()
 
 def npc(w, c, m, p, it, stay):
     it = int(it)

@@ -1,7 +1,11 @@
 from local_item_class import get_item, change_item
 from random import randint
 from local_scores import scoreboard_print
+from local_iostream import loadgame
+from os.path import isfile
 
+
+version = "DoSI_0.5.1"
 
 def character(w, c, p):
     path = "data/"
@@ -78,6 +82,7 @@ def character(w, c, p):
         "environment": [0, 0, 0, 0],
         "environment_bonus": 0,
         "type": 1, # type of dungeon -PR-
+        "_type": 0,
         "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[12,3],
                   ["fudit_village",2],[12,3],[12,3],[12,3],[1,3],[1,3],[1,3],[1,3],[1,3],[11,3],
                   ["stonehouse",3],[11,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[13,3],
@@ -90,7 +95,7 @@ def character(w, c, p):
         w.clear() # ? -PR-
         w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
         w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-        w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+        w.addstr(2, 35, version, c.color_pair(4))
         w.addstr(3, 2, "SELECT A RACE:", c.color_pair(4))
         w.addstr(5, 2, "1 - HUMAN", c.color_pair(1))
         w.addstr(6, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
@@ -105,7 +110,8 @@ def character(w, c, p):
         w.addstr(20, 2, "6 - GNOME", c.color_pair(5))
         w.addstr(21, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
         w.addstr(23, 2, "7 - VIEW SCOREBOARD", c.color_pair(4))
-        w.addstr(23, 42, "8 - LOAD SEVED GAME", c.color_pair(4))
+        if isfile("save.txt"):
+            w.addstr(23, 42, "8 - LOAD SAVED GAME", c.color_pair(4))
         if w.getmaxyx() != (24,80):
             w.addstr(22, 35, "The screen could't resize it self! (24x80)", c.color_pair(1))
             w.addstr(22, 79, "|", c.color_pair(1))
@@ -131,6 +137,10 @@ def character(w, c, p):
                     break
             case "7":
                 scoreboard_print(w, c)
+            case "8":
+                t = loadgame()
+                if t:
+                    return m, t, path
             case _:
                 pass
     return m, p, path
@@ -139,7 +149,7 @@ def human(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
     w.addstr(5, 2, "CLASSES (HUMAN):", c.color_pair(4))
     w.addstr(7, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
@@ -221,7 +231,7 @@ def fudish(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(7, 2, "1 - FUDISH WARRIOR", c.color_pair(2))
@@ -276,7 +286,7 @@ def dwarf(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
     w.addstr(7, 2, "1 - DWARWISH STEELCLAD", c.color_pair(6))
@@ -326,7 +336,7 @@ def imp(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "THEY ARE FROM THE BOTTOM OF THE WORLD, THEY KNEW THE WORLD WELL", c.color_pair(3))
     w.addstr(5, 2, "CLASSES (IMP):", c.color_pair(4))
     w.addstr(7, 2, "1 - IMP LINE SOLDIER", c.color_pair(3))
@@ -367,7 +377,7 @@ def algal(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS APPRENTICE. WHO THEY ARE?", c.color_pair(7))
     w.addstr(5, 2, "CLASSES (ALGAL):", c.color_pair(4))
     w.addstr(7, 2, "1 - ALGAL PALADIN", c.color_pair(7))
@@ -436,7 +446,7 @@ def gnome(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, "DoSI_0.5.0", c.color_pair(4))
+    w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(7, 2, "1 - GNOMISH DUELIST", c.color_pair(5))
