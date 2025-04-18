@@ -1,11 +1,13 @@
+from consts import path
+
 def scoreboard_print(w, c):
     try:
-        with open("scores.txt", 'r'):
+        with open(path + "scores.txt", 'r'):
             pass
     except:
-        with open("scores.txt", 'w') as  scores_txt:
+        with open(path + "scores.txt", 'w') as  scores_txt:
             scores_txt.write("625|CLASSIC|FUDISH ARCHER|2214|8|8|-|[]|True\n390|WSAD do dziury...|GNOMISH DRUID|1185|4|5|-|[]|False\n")
-    with open("scores.txt", 'r') as scores_txt:
+    with open(path + "scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 
     while scores[-1] == "": # empty lines -PR-
@@ -16,7 +18,7 @@ def scoreboard_print(w, c):
     orgscores = scores.copy()
 
     w.clear()
-    w.addstr(0, 16, "DoSI Scoreboard", c.color_pair(1))
+    w.addstr(0, 16, "dosi Scoreboard", c.color_pair(1))
     w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:-22:-1]
     for t in range(len(scores)):
@@ -37,7 +39,7 @@ def scoreboard_print(w, c):
             scores2.append(scores.pop(t))
             
     w.clear()
-    w.addstr(0, 8, "Classic DoSI Scoreboard", c.color_pair(7))
+    w.addstr(0, 8, "Classic dosi Scoreboard", c.color_pair(7))
     w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:-22:-1]
     for t in range(len(scores)):
@@ -53,7 +55,7 @@ def scoreboard_print(w, c):
 
     scores = scores2
     w.clear()
-    w.addstr(0, 10, "Magic DoSI Scoreboard", c.color_pair(2))
+    w.addstr(0, 10, "Magic dosi Scoreboard", c.color_pair(2))
     w.addstr(1, 3, "Win? Score:    Turns:    Lw: Depth: PlayerType:         NickName:", c.color_pair(4))
     scores = scores[:22]
     for t in range(len(scores)):
@@ -74,10 +76,10 @@ def scoreboard_append(w, c, p, wins = False):
     else:
         win = "-"
     try:
-        with open("scores.txt", 'r'):
+        with open(path + "scores.txt", 'r'):
             pass
     except:
-        with open("scores.txt", 'w') as  scores_txt:
+        with open(path + "scores.txt", 'w') as  scores_txt:
             scores_txt.write("505|DEFAULT|DWARF MINER|2343|7|7|-|[]\n")
 
     if p["classicgame"]:
@@ -99,7 +101,7 @@ def scoreboard_append(w, c, p, wins = False):
         w.addstr(3, 31, nick, c.color_pair(1))
         q = w.getkey()
     c.curs_set(0)
-    with open("scores.txt", 'a') as scores_txt:
+    with open(path + "scores.txt", 'a') as scores_txt:
         scores_txt.write(str(points)+"|"+nick+"|"+p["playertype"]+"|"+str(p["time"])+"|"+str(p["lw"])+"|"+str(p["depth"])+"|"+win+"|"+str(p["BP"])+"|"+str(p["classicgame"])+"\n")
 
     scoreboard_print(w, c)

@@ -2,6 +2,7 @@
 from random import randint
 
 from local_output import output, item
+from consts import version
 
 from local_translator import translate
 from local_input_key import *
@@ -9,9 +10,6 @@ from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values #, merge # not needed -PR-
 from local_scores import scoreboard_print
 from local_spells import spell_menager
-
-
-from local_character import version
 
 
 def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-

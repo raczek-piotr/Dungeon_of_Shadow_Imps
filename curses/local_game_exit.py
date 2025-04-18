@@ -1,4 +1,5 @@
 from local_iostream import write2log
+from sys import exit
 
 
 def game_exit():

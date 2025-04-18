@@ -1,3 +1,5 @@
+from consts import path
+
 from random import randint, choice
 from time import time, ctime
 
@@ -9,7 +11,7 @@ from local_deep_map import deep_map
 
 
 def map_init_str(m, p, items, type_of):
-    with open("maps/"+type_of+".cfg", "r") as rm: # readmap -PR-
+    with open(path + "maps/"+type_of+".cfg", "r") as rm: # readmap -PR-
         p["echo"] = "?!"
         rm = rm.read().split("\n")
         while rm[-1] == "":

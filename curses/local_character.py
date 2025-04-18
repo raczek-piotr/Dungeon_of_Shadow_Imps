@@ -2,12 +2,10 @@ from local_item_class import get_item
 from local_scores import scoreboard_print
 from local_iostream import loadgame
 from local_game_exit import game_exit
+from consts import version, path
 
 from random import randint
 from os.path import isfile
-
-
-version = "DoSI_0.6"
 
 def character(w, c, p):
     path = "data/"
@@ -114,8 +112,8 @@ def character(w, c, p):
         w.addstr(21, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
         w.addstr(23, 2, "7 - VIEW SCOREBOARD", c.color_pair(4))
         w.addstr(23, 68, "q - quit", c.color_pair(4))
-        if isfile("save.txt"):
-            w.addstr(23, 31, "8 - LOAD SAVED GAME", c.color_pair(4))
+        #if isfile(path + "save.txt"):
+        w.addstr(23, 31, "8 - LOAD SAVED GAME (if saved)", c.color_pair(4))
         if w.getmaxyx() != (24,80):
             w.addstr(22, 35, "The screen could't resize it self! (24x80)", c.color_pair(1))
             w.addstr(22, 79, "|", c.color_pair(1))
