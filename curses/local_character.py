@@ -41,7 +41,7 @@ def character(w, c, p):
         "inteligence": 0,
         "magic_list": False,
         "cur_magic": 0, # like „anty-mana” -PR-
-        "alt": True,#False,
+        "alt": False,
         "gold": 200,
         "armor": 0,
         "basedefend": 50,
