@@ -90,7 +90,7 @@ def mage_items():
     item[19][1][2][1] = 24
     item[20][1][2][1] = 27
     item[21][1][2][1] = 34
-    item[22][1][2][1] = 44
+    item[22] = ['?', [['SCROLL', 2, 4], '?', 1, False, 200]]
     item[23] = ['?', [['SCROLL', 2, 4], '?', 1, False, 200]]
 
 def randitem(hm, p = 0, k = len(item)-1): # how many -PR-
