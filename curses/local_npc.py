@@ -59,9 +59,9 @@ def npc(w, c, m, p, it, stay):
         case 6:
             return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "?", 1, True, 100]])
         case 7:
-            return trader(w, c, m, p, it, "ANGEL", [[["BOOK OF BOOKS", 2, 0], "?", 1, True, 100]]) #ENDING
+            return[False, translate("- BRING LIGHT TO YOUR VILLAGE!"), False]
         case 8:
-            return[False, translate("- MAYOR IS EMBARRASSED"), False]
+            return[False, translate("- SHERIF IS EMBARRASSED"), False]
         case 9:
             return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM... I NEVER SEE HIM", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
         case 10:

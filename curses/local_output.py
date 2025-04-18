@@ -105,20 +105,20 @@ def output(w, c, m, p):
     for y in range(23):
         ty = p["y"] + y - 11
         if ty >= 0 and ty < m["sy"]:
-            t = m["v"][ty]
+            t = m["v"][ty] #?????????????????????????????????/
             for x in range(53):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
                     i = t[tx][0]
-                    if i in {"@","]","}",")","~","$","*","-","?","!","%","~"}:
+                    if i in {"@","]","}",")","~","$","*","-","?","!","%"}:
                         col = 2
                     elif i == "#":
-                        col = 8
+                        col = 9
                     elif i == "=":
                         col = 6
                     elif i == "&":
                         col = 7
-                    elif i in {"<",">","+",",",":"}:
+                    elif i in {"<",">","+",",",":","\"","_"}:
                         col = 4
                     elif i.upper() != i.lower():
                         col = 3

@@ -51,8 +51,8 @@ def f_block(m, p, npos, stay):
         m["v"][npy][npx] = m["v"][npy][npx][1:]
         if m["v"][npy][npx] == "":
             m["v"][npy][npx] = " "
-        return[False, echo, False] 
         echo = translate("THE WEEK WALL FALLED DOWN")
+        return[False, echo, False] 
     else:
         echo = translate("YOU STRUCK THE WEEK WALL")
     return[False, echo, True]
@@ -136,6 +136,8 @@ def terrain(w, c, m, p, npos, stay):
             return [True, translate("NATURE AROUND YOU"), True]
         case "&":
             return [False, translate("HERE IS LAVA!"), False]
+        case "\"":
+            return [True, translate("OLD BRIDGE"), True]
         case ".":
             return [True, "", True]
         case ",":
@@ -147,6 +149,8 @@ def terrain(w, c, m, p, npos, stay):
                 return [True, "#D!", True]
             return [True, "", True]
         case "^":
+            if p["alt"]:
+                return [True, translate("YOU CLIMBED A STEP HILL"), True]
             return [False, translate("HERE IS A VERY STEP HILL, YOU CAN'T GET HERE"), False]
         case "#":
             return [False, translate("HERE IS A WALL"), False]

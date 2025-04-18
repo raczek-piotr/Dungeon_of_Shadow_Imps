@@ -34,8 +34,8 @@ def get_equip_values(p):
         p["magic_list"] = p["e_hand"][2]
         p["hand_name"] = p["e_hand"][0][0]
     else:
-        p["bow"], p["bow_attacks"], p["bow_acc"], p["bow_hits"] = 1,0,0,0
-        p["hand_name"] = "1D0 0H0%"
+        p["bow"], p["bow_attacks"], p["bow_acc"], p["bow_hits"] = 0,0,0,0
+        p["hand_name"] = "0D0 0H0%"
 
     if p["e_armor"][1] == ")":
         p["armor"] = p["e_armor"][2][0]
@@ -43,7 +43,7 @@ def get_equip_values(p):
         t = p["e_armor"][2][1] - p["lw"]
         if t > 0:
             p["armor"] = (2*p["armor"])//(2+t)
-        #    p["defend"] -= 10*t
+            p["defend"] -= 10*t
     else:
         p["armor"] = 0
 
@@ -55,7 +55,7 @@ def merge(p): # polacz (PL) -PR-
             if i == j:
                 j += 1
                 continue
-            if p["BP"][i][1] == "-" and p["BP"][i][0] == p["BP"][j][0]:
+            if p["BP"][i][1] in {"-"} and p["BP"][i][0] == p["BP"][j][0]:
                 t1 = p["BP"].pop(j)
                 p["BP"][i][2] += t1[2]
             else:

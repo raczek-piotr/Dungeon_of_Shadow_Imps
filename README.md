@@ -9,9 +9,9 @@
 ## General info
 * Roguelike game with colored interface, played in console.
 * The polish translation is disabled default, so you can enable it in "local_translator.py"
-* **6** races to choose from; 24 different characters
+* **6** races to choose from and **24** different characters (in total) to play!
 * Classical DoSI and DoSI with magical spells
-* game characters can be found: https://github.com/raczek-piotr/Dungeon_of_Shadow_Imps/blob/main/curses/characters.md
+* Game characters could be found: https://github.com/raczek-piotr/Dungeon_of_Shadow_Imps/blob/main/curses/characters.md
 	
 ## Technologies
 ### Project with curses is created with (curses):
@@ -22,20 +22,11 @@
 	
 ## Setup
 * To run this project in python3, run terminal or cmd in windows, and run the file "main.py" is (in main dictionary)
-* To run it, type command "python3 main.py".
+* To run it, type command "python3 main.py" in game directory.
 * **Or just run the .exe file** (you will need "maps" folder too)
-	
-## Errors in curses
-### Errors:
-  1. `no module called curses` or `no module called _curses`
-      *  curses is not installed
-      *  install windows.curses
-  2. `_curses.error: setupterm: could not find terminal`
-      *  you had to ran it in editor's terminal or console, but it has it be the terminal/cmd (ctrl + t, great shortcut in thonny)
-  3. if any errors occur while playing, there is simple log file with **almost** no *log* in it
 
 ## Contact
-* email raczek.piotr@o2.pl
+* email raczek.piotr@o2.pl (I don't check it much…)
 
 ## Authors
 * By: Piotr Raczek

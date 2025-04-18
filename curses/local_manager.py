@@ -10,12 +10,13 @@ from local_npc import load_traders
 
 from local_equip import get_equip_values
 from local_translator import translate
-from local_item_class import get_item, randitem, mage_items
+from local_item_class import randitem, mage_items
 from local_output import output
 from local_iostream import savegame, clearsave
+from local_game_exit import game_exit
 
 
-c_type = [0,2,1,2,3,3] # color.p["_type"] -PR-
+color_type = [0,2,1,0,3,3]
 
 def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to reload or start, #S - save, #U - go up, #D - go down -PR-
     match command[:2]:
@@ -29,6 +30,7 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             w.addstr(23, 0, translate(choice(["YOU SLOWLY CLOSED YOUR EYES", "YOU DIED", "YOU NEVER KNOW WHAT HAPPENED", "YOU THINK - OH NO, WHAT I HAVE DONE!"]))+"...")
             w.addstr(23, 56, "score: "+str(score), c.color_pair(2))
             w.getkey()
+            game_exit()
         case "#!": # SCROLL OF DISTURBANCES -PR-
             d = p["depth"] % 10
             p["depth"] = (p["depth"]+randint(1, 9))%10 + 10*d
@@ -65,9 +67,10 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(5, 245, -1)
             c.init_pair(6, 57, -1)
             c.init_pair(7, 196, -1)
-            c.init_pair(8, 41, -1) #It don't need to be definited here -PR-
-            c.init_pair(9, 238, -1)
-            m, p, path = character(w, c, p) # I have to return the first data -PR-
+            #It don't need to be definited here -PR-
+            c.init_pair(8, 41, -1) # 8 → 4 game type color -PR-
+            c.init_pair(9, 41, -1) # 9 → wall color, almost the same colors as game type color -PR-
+            m, p, path = character(w, c, p) # I have to return the data for the first time -PR-
             if p["ismage"]:
                 mage_items()
             load_traders(p)
@@ -84,7 +87,7 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             return m, p, path
 
 def prepare_map(c, m, p):
-    global c_type
+    global color_type
     h = p["camp"][p["id_camp"]][p["depth"]].copy()
     while h == "next": # not used -PR-
         p["id_camp"] += 1
@@ -93,9 +96,9 @@ def prepare_map(c, m, p):
         p["type"] = p["_type"] + h[0] #h[0] is shift
         type_of = p["type"]
         i = randint(-1, 1)
-        if p["_type"] + i in {0,1,2}:
+        if p["_type"] + i in {0,1}:
             p["_type"] += i
-    elif h[0] in {10,11,12,13,15}:
+    elif h[0] in {10,11,12,13,14}:
         p["type"] = h[0] - 10
         type_of = p["type"]
     else: #int
@@ -113,18 +116,22 @@ def prepare_map(c, m, p):
     #else:
     #    p["normal_level"] = False
     print(p["type"])
-    typ = c_type[p["type"]] # TYPe -PR-
+    typ = color_type[p["type"]] # TYPe -PR-
     if typ < 0:
         typ = 0
     elif typ > 3:
         typ = 3
     if typ == 0:
         c.init_pair(8, 245, -1)
+        c.init_pair(9, 245, -1)
     elif typ == 1:
         c.init_pair(8, 41, -1)
+        c.init_pair(9, 41, -1)
     elif typ == 2:
         c.init_pair(8, 238, -1)
+        c.init_pair(9, 238, -1)
     else: # == 3
         c.init_pair(8, 196, -1)
+        c.init_pair(9, 238, -1)
     p["environment_bonus"] = p["environment"][typ]
     p["y"], p["x"] = map_init(m, p, ilist, type_of, h[1])

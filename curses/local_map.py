@@ -5,6 +5,8 @@ from local_scripts import zero3
 from local_iostream import write2log
 from local_enemies_class import enemies_class_add
 
+from local_deep_map import deep_map
+
 
 def map_init_str(m, p, items, type_of):
     with open("maps/"+type_of+".cfg", "r") as rm: # readmap -PR-
@@ -69,6 +71,45 @@ def map_init_int(m, p, items, type_of, stairs):
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
     match type_of:
+        case 0:
+            hm = 9
+            sizey, sizex = 17, 26
+            m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
+            m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
+            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+            while len(pokoje) < hm:
+                sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
+                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx) if hm != 0 else 1 #on left boarder
+                can = True
+                for i in pokoje:
+                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy and
+                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx)):
+                        can = False
+                if can:
+                    pokoje.append([y, x, sy, sx])
+                    continue
+
+            hm = len(pokoje)
+            for it in range(hm):
+                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
+                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
+                        m["r"][y][x] = "|"
+            for it in range(hm):
+                RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
+            for it in range(hm):
+                for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
+                    for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
+                        m["r"][y][x] = "."
+            for it in range(hm):
+                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
+                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
+                        if m["r"][y][x] == "|":
+                            m["r"][y][x] = "#"
+            if stairs > 1:
+                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">"
+            if stairs % 2 == 1:
+                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<"
+
         case 1:
             hm = 0
             while hm < 16:
@@ -216,103 +257,9 @@ def map_init_int(m, p, items, type_of, stairs):
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
-        case 5:
-            hm = 7
-            while len(pokoje) < hm:
-                sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
-                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-                can = True
-                for i in pokoje:
-                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy and
-                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx)):
-                        can = False
-                if can:
-                    pokoje.append([y, x, sy, sx])
-                    continue
 
-            hm = 3
-            Spokoje = []
-            while len(Spokoje) < hm:
-                sy, sx = randint(2,3), randint(2,3)
-                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
-                can = True
-                for i in pokoje:
-                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy and
-                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx)):
-                        can = False
-                if can:
-                    Spokoje.append([y, x, sy, sx]) # one room in enother -PR-
-                    continue
-            hm = len(Spokoje)
-            for it in range(hm):
-                for y in range(Spokoje[it][0], Spokoje[it][0] + Spokoje[it][2]):
-                    for x in range(Spokoje[it][1], Spokoje[it][1] + Spokoje[it][3]):
-                        m["r"][y][x] = " "
-            for it in range(hm):
-                RegularConnect(m, Spokoje[it-1].copy(), Spokoje[it].copy())
-
-            hm = len(pokoje)
-            for it in range(hm):
-                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
-                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
-                        m["r"][y][x] = "|"
-            for it in range(hm):
-                RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
-            RegularConnect(m, Spokoje[hm-it].copy(), pokoje[it].copy()) # connect the two "worlds" -PR-
-            for it in range(hm):
-                for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
-                    for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
-                        m["r"][y][x] = "."
-            for it in range(hm):
-                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
-                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
-                        if m["r"][y][x] == "|":
-                            m["r"][y][x] = "#"
-            if stairs > 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">"
-            if stairs % 2 == 1:
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<"
-            pokoje[0], pokoje[-1] = pokoje[-1], pokoje[0] # for good place player to start -PR-
-            pokoje.extend(Spokoje)
-
-        case _: # 0 and 4 -PR-
-            hm = 9 # 5 -PR-
-            sizey, sizex = 17, 26
-            m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
-            m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
-            m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-            while len(pokoje) < hm:
-                sy, sx = 1+2*randint(1,2), 1+2*randint(1,3)
-                y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx) if hm != 0 else 1 #on left boarder
-                can = True
-                for i in pokoje:
-                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy and
-                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx)):
-                        can = False
-                if can:
-                    pokoje.append([y, x, sy, sx])
-                    continue
-
-            hm = len(pokoje)
-            for it in range(hm):
-                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
-                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
-                        m["r"][y][x] = "|"
-            for it in range(hm):
-                RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
-            for it in range(hm):
-                for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
-                    for x in range(pokoje[it][1], pokoje[it][1] + pokoje[it][3]):
-                        m["r"][y][x] = "."
-            for it in range(hm):
-                for y in range(pokoje[it][0]-1, pokoje[it][0] + pokoje[it][2] +1):
-                    for x in range(pokoje[it][1]-1, pokoje[it][1] + pokoje[it][3] +1):
-                        if m["r"][y][x] == "|":
-                            m["r"][y][x] = "#"
-            if stairs > 1:
-                m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = ">"
-            if stairs % 2 == 1:
-                m["r"][pokoje[-3][0]+pokoje[-3][2]//2][pokoje[-3][1]+pokoje[-3][3]//2] = "<"
+        case _: # case 4, 5 -PR-
+            return deep_map(m, p, items, type_of, stairs)
 
     more = True # here are added enemies on "battle field" :) -PR-
     l_pokoje = len(pokoje)-1

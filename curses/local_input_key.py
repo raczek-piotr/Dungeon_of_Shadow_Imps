@@ -18,24 +18,6 @@ def player_move(p):
             return [-1, 0, True]
         case "9":
             return [-1, 1, True]
-        case "z":
-            return [1, -1, True]
-        case "x":
-            return [1, 0, True]
-        case "c":
-            return [1, 1, True]
-        case "a":
-            return [0, -1, True]
-        case "s":
-            return [0, 0, True]
-        case "d":
-            return [0, 1, True]
-        case "q":
-            return [-1, -1, True]
-        case "w":
-            return [-1, 0, True]
-        case "e":
-            return [-1, 1, True]
         case _:
             return [0, 0, False]
 

@@ -1,4 +1,4 @@
-# Dungeons of Shadow Imps 0.5.X
+# Dungeons of Shadow Imps 0.6
 ## Dice
 `1D2 2H80%` means
 you roll `1D2` if you hit the target (`80%` to hit), you try to hit `2` times

@@ -1,11 +1,13 @@
-from local_item_class import get_item, change_item
-from random import randint
+from local_item_class import get_item
 from local_scores import scoreboard_print
 from local_iostream import loadgame
+from local_game_exit import game_exit
+
+from random import randint
 from os.path import isfile
 
 
-version = "DoSI_0.5.1"
+version = "DoSI_0.6"
 
 def character(w, c, p):
     path = "data/"
@@ -24,9 +26,9 @@ def character(w, c, p):
         "shift_type_of": 0,#at the depth -PR-
         "skill": 1,
         "maxeat": 3500,
-        "maxhp": 20,
-        "hp": 20,
-        "hpchange": 2,
+        "maxhp": 30,
+        "hp": 30,
+        "hpchange": 3,
         "reg_time": 10,
         "reg_1/": 10,
         "needxp": 40,
@@ -39,6 +41,7 @@ def character(w, c, p):
         "inteligence": 0,
         "magic_list": False,
         "cur_magic": 0, # like „anty-mana” -PR-
+        "alt": True,#False,
         "gold": 200,
         "armor": 0,
         "basedefend": 50,
@@ -83,10 +86,10 @@ def character(w, c, p):
         "environment_bonus": 0,
         "type": 1, # type of dungeon -PR-
         "_type": 0,
-        "camp": [[["surface",0],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[0,3],[12,3],
-                  ["fudit_village",2],[12,3],[12,3],[12,3],[1,3],[1,3],[1,3],[1,3],[1,3],[11,3],
-                  ["stonehouse",3],[11,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[1,3],[13,3],
-                  ["gate",1],[13,3],[2,3],[2,3],[2,3],[2,3],[2,3],[2,3],[2,3],[2,3],["thebook",3],
+        "camp": [[["surface",0],      [10,3],[10,3],[10,3],[0,3], [0,3], [0,3], [0,3], [0,3], [11,3],
+                  ["stonehouse",0],   [11,3],[11,3],[11,3],[1,3], [1,3], [1,3], [1,3], [1,3], [12,3],
+                  ["fudit_village",0],[12,3],[12,3],[12,3],[1,3], [1,3], [1,3], [1,3], [1,3], [13,3],
+                  ["gate",0],         [13,3], [3,3], [3,3],[3,3], [3,3], [14,3],[14,3],[14,3],[14,3], ["thebook",3],
                   [],]
                 ]
         }
@@ -110,8 +113,9 @@ def character(w, c, p):
         w.addstr(20, 2, "6 - GNOME", c.color_pair(5))
         w.addstr(21, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
         w.addstr(23, 2, "7 - VIEW SCOREBOARD", c.color_pair(4))
+        w.addstr(23, 68, "q - quit", c.color_pair(4))
         if isfile("save.txt"):
-            w.addstr(23, 42, "8 - LOAD SAVED GAME", c.color_pair(4))
+            w.addstr(23, 31, "8 - LOAD SAVED GAME", c.color_pair(4))
         if w.getmaxyx() != (24,80):
             w.addstr(22, 35, "The screen could't resize it self! (24x80)", c.color_pair(1))
             w.addstr(22, 79, "|", c.color_pair(1))
@@ -141,6 +145,8 @@ def character(w, c, p):
                 t = loadgame()
                 if t:
                     return m, t, path
+            case "q":
+                game_exit()
             case _:
                 pass
     return m, p, path
@@ -222,9 +228,6 @@ def human(w, c, p):
                     return False
     p["gold"] = 350
     p["environment"] = [1, 1, 1, 0]
-    item = change_item(8)[1]
-    item[-2] = True
-    item[0] = ['SCROLL OF IDENTIFY', 2, 0]
     return True
 
 def fudish(w, c, p):
@@ -277,9 +280,6 @@ def fudish(w, c, p):
     p["basedefend"] = 60
     p["reg_time"] = 12
     p["maxeat"] = 5000
-    item = change_item(9)[1]
-    item[-2] = True
-    item[0] = ['SCROLL OF TELEPORTATION', 2, 1]
     return True
 
 def dwarf(w, c, p):
@@ -319,17 +319,14 @@ def dwarf(w, c, p):
                     return False
     p["color"] = 6
     p["environment"] = [0, 0, 1, 1]
-    p["maxhp"], p["hp"] = 30, 30
-    p["hpchange"] = 3
+    p["maxhp"], p["hp"] = 50, 50
+    p["hpchange"] = 5
     p["basedefend"] = 30
     p["reg_time"] = 10
-    p["reg_1/"] = 8
+    p["reg_1/"] = 10
     p["e_hand"] = get_item(60)
     p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
     p["e_armor"] = get_item(17)
-    item = change_item(13)[1]
-    item[-2] = True
-    item[0] = ['POTION OF ENHANCEMENT', 3, 1]
     return True
 
 def imp(w, c, p):
@@ -366,11 +363,6 @@ def imp(w, c, p):
                     return False
     p["color"] = 3
     p["environment"] = [1, 1, 2, 2]
-    p["maxhp"], p["hp"] = 20, 20
-    p["basedefend"] = 40
-    item = change_item(11)[1]
-    item[-2] = True
-    item[0] = ['TREASURE MAPPING', 2, 3]
     return True
 
 def algal(w, c, p):
@@ -430,15 +422,9 @@ def algal(w, c, p):
     p["maxhp"], p["hp"] = 10, 10
     p["hpchange"] = 1
     p["basedefend"] = 70
-    p["reg_time"] = 16
-    p["reg_1/"] = 5
+    p["reg_time"] = 5
+    p["reg_1/"] = 10
     p["maxeat"] = 5000
-    item = change_item(12)[1]
-    item[-2] = True
-    item[0] = ['POTION OF HEALING', 3, 0]
-    item = change_item(15)[1]
-    item[-2] = True
-    item[0] = ['POTION OF POISON', 3, 3]
     p["classicgame"] = False # all algals use magic -PR-
     return True
 
@@ -485,10 +471,10 @@ def gnome(w, c, p):
                     return False
     p["iniciative"] = 1
     p["color"] = 5
-    p["environment"] = [1, 0, 0, 1]
-    p["maxhp"], p["hp"] = 10, 10
-    p["hpchange"] = 1
+    #p["environment"] = [0, 0, 0, 0]
+    p["maxhp"], p["hp"] = 20, 20
+    p["hpchange"] = 2
     p["basedefend"] = 70
     p["reg_time"] = 10
-    p["reg_1/"] = 5
+    p["reg_1/"] = 10
     return True
