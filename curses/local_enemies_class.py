@@ -10,7 +10,7 @@ def flag(f, n):
 # 1 - is a shooter
 # 2 - poison/something_else (armor penetration)
 # 4 - random movement 50% (always)
-# 8 - when not sleeping and there is no player in range, then random movement (seeks player)
+# 8 - wondering
 e = [
     ["r",4,2,3,1,5,"drop",3,1,3,"RAT", 8], #0
     ["m",3,2,2,1,5,"drop",3,1,3,"MOUSE", 0], #1
@@ -22,19 +22,19 @@ e = [
     ["b",10,7,5,1,7,"drop",9,7,9,"BAT", 12], #7
     ["F",3,5,5,1,3,"drop",9,7,9,"POISON DART FROG", 2], #8
 
-    ["m",7,5,6,1,3,[4],13,11,13,"FUNGAL WORM MASS", 8], #9
-    ["t",10,6,12,1,6,"drop",16,14,16,"FUDISH TRAPPER", 1], #10
-    ["c",15,7,12,1,3,"drop",16,14,16,"FUNGAL CRAB", 0], #11
-    ["w",15,8,10,1,6,"drop",19,17,19,"WOLF", 0], #12
+    ["s",7,5,6,1,3,"drop",13,11,13,"SKELETON", 8], #9
+    ["z",10,6,12,1,6,"drop",16,14,16,"ZOMBI GUNNER", 1], #10
+    ["p",15,7,12,1,3,"drop",16,14,16,"PLAGUE", 0], #11
+    ["t",10,6,10,1,6,"drop",19,17,19,"FUDISH TRAPER", 1], #12
     ["S",10,6,20,1,3,"drop",19,17,19,"FUNGAL SCORPION", 2], #13
 
-    ["g",10,11,17,1,4,"drop",23,21,23,"GOBLIN WITH A CHAINSAW", 0], #14
-    ["z",6,12,12,1,6,"drop",23,21,23,"ZOMBI", 0], #15
-    ["m",30,12,30,0,2,"drop",26,24,26,"MONKEY WITH A KNIFE", 8], #16
-    ["C",30,17,60,1,7,"drop",26,24,26,"FUDISH CANNON", 1], #17
-    ["x",27,15,27,0,2,"drop",29,27,29,"PLAGUE", 8], #18
+    ["w",10,11,17,1,4,"drop",23,21,23,"FUNGAL WORM MASS", 0], #14
+    ["c",18,9,12,1,6,"drop",23,21,23,"FUNGAL CRAB", 0], #15
+    ["b",30,11,30,1,7,"drop",26,24,26,"BLOOD BAT", 12], #16
+    ["a",40,11,60,1,7,"drop",26,24,26,"FUDISH ARCHER", 1], #17
+    ["W",27,15,27,0,4,"drop",29,27,29,"WOLF", 8], #18
 
-    ["G",30,20,80,1,5,"drop",33,31,33,"GHOST", 13], #19
+    ["G",30,20,80,0,4,"drop",33,31,33,"GHOST", 13], #19
     ["D",60,24,160,5,7,"drop",36,34,36,"GREADY DWARF MINER", 0], #20
     ["s",12,27,44,1,7,"drop",36,34,36,"SHADOW IMP", 0], #21
     ["v",32,31,160,1,7,"drop",39,37,39,"SHADOW IMP VETERAN", 0], #22

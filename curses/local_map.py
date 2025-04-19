@@ -148,14 +148,14 @@ def map_init_int(m, p, items, type_of, stairs):
             RandomTileConnect(m, "= ")
 
         case 2:
-            minhm = 7 # should be space on the map… -PR-
+            minhm = 7 # should be space on the map, but… not calculated yet -PR-
             while len(pokoje) < minhm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,2)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
                 can = True
                 for i in pokoje:
-                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy and
-                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx)):
+                    if ((abs((i[0]+i[2])-(y+sy)) <= i[2]+sy-2 and
+                         abs((i[1]+i[3])-(x+sx)) <= i[3]+sx-2)):
                         can = False
                 if can:
                     pokoje.append([y, x, sy, sx]) # one room in enother -PR-
@@ -169,7 +169,7 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
 
-            type_of_rooms = [["%"],["%"],["%","%","%","=","="],["="],["."],[".","%","="]]
+            type_of_rooms = [["%"],["%"],["."],["."],["%","=","."],["%","=","."]]
             for it in range(hm):
                 i = choice(type_of_rooms)
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):

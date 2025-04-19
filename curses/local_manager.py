@@ -32,9 +32,9 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             w.getkey()
             game_exit()
         case "#!": # SCROLL OF DISTURBANCES -PR-
-            d = p["depth"] % 10
+            d = p["depth"] // 10
             p["depth"] = (p["depth"]+randint(1, 9))%10 + 10*d
-            p["hp"] = p["mhp"]
+            p["hp"] = p["maxhp"]
             prepare_map(c, m, p)
             p["echo"] = translate("YOU READ A") + " " + translate("SCROLL OF DISTURBANCE")
             savegame(p)
@@ -115,7 +115,6 @@ def prepare_map(c, m, p):
             ilist += randitem(4, 4, 4)
     #else:
     #    p["normal_level"] = False
-    print(p["type"])
     typ = color_type[p["type"]] # TYPe -PR-
     if typ < 0:
         typ = 0
