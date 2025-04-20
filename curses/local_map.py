@@ -19,10 +19,7 @@ def map_init_str(m, p, items, type_of):
         ty, tx = rm.pop(0).split(" ")
         m["sy"], m["sx"] = int(ty), int(tx)
         ty, tx = rm.pop(0).split(" ")
-        if type_of[:3] == "sur":
-            m["r"] = [["^" for _ in range(m["sx"])] for _ in range(m["sy"])]
-        else:
-            m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
+        m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
         m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
         l = 0
         for y in range(m["sy"]-2):
