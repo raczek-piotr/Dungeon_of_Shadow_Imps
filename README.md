@@ -1,11 +1,14 @@
 # Dungeons of Shadow Imps (DoSI)
+A **classical ASCII rogue-like game** where you set off on a perilous quest to retrieve *The Book of Books* — your destiny awaits!
 * [About the Game](#about-the-game)
 * [Technologies](#technologies)
 * [Installation](#installation)
 * [Contact](#contact)
 * [Authors](#authors)
 
-A **classical ASCII rogue-like game** where you set off on a perilous quest to retrieve *The Book of Books*—your destiny awaits!
+# Warning
+- **I left game tiles as they were designed when I was 15, preserving it as a piece of history**
+- (A game tile is a… string that says everything (maximum length = 7) — Over time, this turned out to be a bad idea.)
 
 ## About the Game
 
