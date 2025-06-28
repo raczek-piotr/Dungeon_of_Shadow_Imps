@@ -8,7 +8,7 @@ A **classical ASCII rogue-like game** where you set off on a perilous quest to r
 
 # Warning
 - **I left game tiles as they were designed when I was 15, preserving it as a piece of history**
-- (A game tile is a… string that says everything (maximum length = 7) — Over time, this turned out to be a bad idea.)
+- (A game tile is a… string that says everything (maximum length = 8) — Over time, this turned out not to be best idea)
 
 ## About the Game
 
@@ -29,24 +29,23 @@ Beware—after the bats, the difficulty **spikes**! Can you uncover the truth be
 - Linux / macOS / Windows
 - Terminal with ASCII support
 
-## Installation
+## Running
 Clone this repository:
 
 ```sh
 git clone https://github.com/raczek-piotr/Dungeon_of_Shadow_Imps.git
-cd Dungeon_of_Shadow_Imps
-./dosi
+cd Dungeon_of_Shadow_Imps/curses
+python3 main.py
 ```
 
 ## Technologies
-### Project with curses is created with (curses):
 * Python 3.10 or better
-* Libraries: curses
+* Libraries: **curses**
 * Size(x,y): 80x24
 * FontSize: What do you like!
 
 ## Contact
-* email raczek.piotr@o2.pl (I don't check it much…)
+* by github please
 
 ## Authors
 * By: Piotr Raczek

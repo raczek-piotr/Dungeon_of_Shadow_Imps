@@ -6,7 +6,7 @@ def scoreboard_print(w, c):
             pass
     except:
         with open(path + "scores.txt", 'w') as  scores_txt:
-            scores_txt.write("625|CLASSIC|FUDISH ARCHER|2214|8|8|-|[]|True\n390|WSAD do dziury...|GNOMISH DRUID|1185|4|5|-|[]|False\n")
+            scores_txt.write("5001|CLASSIC|DWARWISH STEELCLAD|7245|28|27|-|[]|True\n625|CLASSIC|FUDISH ARCHER|2214|8|8|-|[]|True\n")
     with open(path + "scores.txt", 'r') as scores_txt:
         scores = scores_txt.read().split("\n")
 

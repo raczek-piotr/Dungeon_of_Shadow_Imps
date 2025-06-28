@@ -38,7 +38,6 @@ def character(w, c, p):
         "dexterity": 9,
         "inteligence": 0,
         "magic_list": False,
-        "cur_magic": 0, # like „anty-mana” -PR-
         "alt": False,
         "gold": 200,
         "armor": 0,
@@ -103,17 +102,13 @@ def character(w, c, p):
         w.addstr(8, 2, "2 - FUDISH", c.color_pair(2))
         w.addstr(9, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
         w.addstr(11, 2, "3 - DWARF", c.color_pair(6))
-        w.addstr(12, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
-        w.addstr(14, 2, "4 - IMP", c.color_pair(3))
-        w.addstr(15, 2, "THEY ARE FROM THE BOTTOM OF THE WORLD, THEY KNEW THE WORLD WELL", c.color_pair(3))
-        w.addstr(17, 2, "5 - ALGAL", c.color_pair(7))
-        w.addstr(18, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS APPRENTICE. WHO THEY ARE?", c.color_pair(7))
-        w.addstr(20, 2, "6 - GNOME", c.color_pair(5))
-        w.addstr(21, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
-        w.addstr(23, 2, "7 - VIEW SCOREBOARD", c.color_pair(4))
-        w.addstr(23, 68, "q - quit", c.color_pair(4))
+        w.addstr(12, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE DO THEY COME FROM", c.color_pair(6))
+        w.addstr(14, 2, "4 - GNOME", c.color_pair(7))
+        w.addstr(15, 2, "HOW HAD YOU OPENED THE DOOR AND KILL ALL THESE RATS?", c.color_pair(7))
+        w.addstr(23, 2, "* - VIEW SCOREBOARD", c.color_pair(4))
         #if isfile(path + "save.txt"):
-        w.addstr(23, 31, "8 - LOAD SAVED GAME (if saved)", c.color_pair(4))
+        w.addstr(23, 31, "+ - LOAD SAVED GAME (if saved)", c.color_pair(4))
+        w.addstr(23, 68, "q - quit", c.color_pair(4))
         if w.getmaxyx() != (24,80):
             w.addstr(22, 35, "The screen could't resize it self! (24x80)", c.color_pair(1))
             w.addstr(22, 79, "|", c.color_pair(1))
@@ -129,17 +124,11 @@ def character(w, c, p):
                 if dwarf(w, c, p):
                     break
             case "4":
-                if imp(w, c, p):
-                    break
-            case "5":
-                if algal(w, c, p):
-                    break
-            case "6":
                 if gnome(w, c, p):
                     break
-            case "7":
+            case "*":
                 scoreboard_print(w, c)
-            case "8":
+            case "+":
                 t = loadgame()
                 if t:
                     return m, t, path
@@ -162,8 +151,9 @@ def human(w, c, p):
     w.addstr(13, 2, "4 - HUMAN ROGUE", c.color_pair(1))
     w.addstr(15, 2, "5 - HUMAN ARCHER", c.color_pair(1))
     w.addstr(7, 42, "6 - HUMAN PALADIN", c.color_pair(1))
-    w.addstr(9, 42, "7 - HUMAN WATER MAGE", c.color_pair(1))
-    w.addstr(11, 42, "8 - HUMAN WIZARD", c.color_pair(1))
+    w.addstr(9, 42, "7 - HUMAN DRUID", c.color_pair(1))
+    w.addstr(11, 42, "8 - HUMAN WATER MAGE", c.color_pair(1))
+    w.addstr(13, 42, "9 - HUMAN WIZARD", c.color_pair(1))
     w.refresh()
     while True:
         q = w.getkey()
@@ -195,13 +185,22 @@ def human(w, c, p):
             case "6":
                 p["strength"] = 9
                 p["dexterity"] = 8
-                p["inteligence"] = 10
+                p["inteligence"] = 9
                 p["playertype"] = "HUMAN PALADIN"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
             case "7":
+                p["strength"] = 7
+                p["dexterity"] = 9
+                p["inteligence"] = 10
+                p["playertype"] = "HUMAN DRUID"
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7),get_item(62)]
+                p["classicgame"] = False
+                break
+            case "8":
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
@@ -211,7 +210,7 @@ def human(w, c, p):
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
-            case "8":
+            case "9":
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
@@ -222,9 +221,9 @@ def human(w, c, p):
                 p["classicgame"] = False
                 break
             case _:
-                #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
+                return False
     p["gold"] = 350
+    # except last levels…
     p["environment"] = [1, 1, 1, 0]
     return True
 
@@ -244,7 +243,7 @@ def fudish(w, c, p):
     while True:
         q = w.getkey()
         match q:
-            case "2":
+            case "1":
                 p["strength"] = 11
                 p["dexterity"] = 7
                 p["playertype"] = "FUDISH WARRIOR"
@@ -252,7 +251,7 @@ def fudish(w, c, p):
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
-                p["playertype"] = "HUMAN BANDIT"
+                p["playertype"] = "FUDISH BANDIT"
                 break
             case "3":
                 #p["strength"] = 9
@@ -271,10 +270,10 @@ def fudish(w, c, p):
                 p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
                 break
             case _:
-                #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
+                return False
     p["color"] = 2
-    p["environment"] = [0, 3, 0, 0]
+    # self ground boost
+    p["environment"] = [0, 5, 0, 0]
     p["basedefend"] = 60
     p["reg_time"] = 12
     p["maxeat"] = 5000
@@ -297,133 +296,30 @@ def dwarf(w, c, p):
             case "1":
                 p["strength"] = 11
                 p["dexterity"] = 7
-                p["playertype"] = "DWARWISH STEELCLAD"
-                p["e_attack"] = get_item(25)
+                p["playertype"] = "DWARWISH WARRIOR"
                 break
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
-                p["playertype"] = "DWARWISH MINER"
-                p["e_attack"] = get_item(28)
+                p["playertype"] = "DWARWISH BANDIT"
                 break
             case "3":
                 #p["strength"] = 9
                 #p["dexterity"] = 9
                 p["playertype"] = "DWARWISH SCOUT"
                 p["e_attack"] = get_item(27)
+                p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
                 break
             case _:
-                #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
+                return False
     p["color"] = 6
-    p["environment"] = [0, 0, 1, 1]
+    # no critic hits
+    #p["environment"] = [0, 0, 0, 0]
     p["maxhp"], p["hp"] = 50, 50
     p["hpchange"] = 5
     p["basedefend"] = 30
     p["reg_time"] = 10
     p["reg_1/"] = 10
-    p["e_hand"] = get_item(60)
-    p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
-    p["e_armor"] = get_item(17)
-    return True
-
-def imp(w, c, p):
-    w.clear()
-    w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
-    w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
-    w.addstr(4, 2, "THEY ARE FROM THE BOTTOM OF THE WORLD, THEY KNEW THE WORLD WELL", c.color_pair(3))
-    w.addstr(5, 2, "CLASSES (IMP):", c.color_pair(4))
-    w.addstr(7, 2, "1 - IMP LINE SOLDIER", c.color_pair(3))
-    w.addstr(9, 2, "2 - IMP PALADIN", c.color_pair(3))
-    w.refresh()
-    while True:
-        q = w.getkey()
-        match q:
-            case "1":
-                p["strength"] = 10
-                p["dexterity"] = 8
-                p["playertype"] = "IMP LINE SOLDIER"
-                p["e_hand"] = get_item(60)
-                p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
-                break
-            case "2":
-                p["strength"] = 9
-                p["dexterity"] = 8
-                p["inteligence"] = 10
-                p["playertype"] = "IMP PALADIN"
-                p["e_hand"] = get_item(65)
-                p["BP"] = [get_item(6),get_item(7)]
-                p["classicgame"] = False
-                break
-            case _:
-                #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
-    p["color"] = 3
-    p["environment"] = [1, 1, 2, 2]
-    return True
-
-def algal(w, c, p):
-    w.clear()
-    w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
-    w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
-    w.addstr(4, 2, "THEY LOOK WEAK, LIKE ALGS. THEY TRAVEL AS APPRENTICE. WHO THEY ARE?", c.color_pair(7))
-    w.addstr(5, 2, "CLASSES (ALGAL):", c.color_pair(4))
-    w.addstr(7, 2, "1 - ALGAL PALADIN", c.color_pair(7))
-    w.addstr(9, 2, "2 - ALGAL DRUID", c.color_pair(7))
-    w.addstr(11, 2, "3 - ALGAL WATER MAGE", c.color_pair(7))
-    w.addstr(13, 2, "4 - ALGAL WIZARD", c.color_pair(7))
-    w.refresh()
-    while True:
-        q = w.getkey()
-        match q:
-            case "1":
-                p["strength"] = 9
-                p["dexterity"] = 8
-                p["inteligence"] = 10
-                p["playertype"] = "ALGAL PALADIN"
-                p["e_hand"] = get_item(65)
-                p["BP"] = [get_item(6),get_item(7)]
-                break
-            case "2":
-                p["strength"] = 7
-                p["dexterity"] = 9
-                p["inteligence"] = 10
-                p["playertype"] = "ALGAL DRUID"
-                p["e_hand"] = get_item(65)
-                p["BP"] = [get_item(6),get_item(7),get_item(62)]
-                break
-            case "3":
-                p["ismage"] = True
-                p["strength"] = 7
-                p["dexterity"] = 7
-                p["inteligence"] = 12
-                p["playertype"] = "ALGAL WATER MAGE"
-                p["e_hand"] = get_item(63)
-                p["BP"] = [get_item(6),get_item(7)]
-                break
-            case "4":
-                p["ismage"] = True
-                p["strength"] = 7
-                p["dexterity"] = 7
-                p["inteligence"] = 12
-                p["playertype"] = "ALGAL WIZARD"
-                p["e_hand"] = get_item(64)
-                p["BP"] = [get_item(6),get_item(7)]
-                break
-            case _:
-               #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
-    p["color"] = 7
-    p["environment"] = [1, 1, 1, 0]
-    p["maxhp"], p["hp"] = 10, 10
-    p["hpchange"] = 1
-    p["basedefend"] = 70
-    p["reg_time"] = 5
-    p["reg_1/"] = 10
-    p["maxeat"] = 5000
-    p["classicgame"] = False # all algals use magic -PR-
     return True
 
 def gnome(w, c, p):
@@ -431,12 +327,14 @@ def gnome(w, c, p):
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
     w.addstr(2, 35, version, c.color_pair(4))
-    w.addstr(4, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(5))
-    w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
-    w.addstr(7, 2, "1 - GNOMISH DUELIST", c.color_pair(5))
-    w.addstr(9, 2, "2 - GNOMISH ROGUE", c.color_pair(5))
-    w.addstr(11, 2, "3 - GNOMISH ARCHER", c.color_pair(5))
-    w.addstr(13, 2, "4 - GNOMISH DRUID", c.color_pair(5))
+    w.addstr(4, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(7))
+    w.addstr(5, 2, "CLASSES (GNOME):", c.color_pair(7))
+    w.addstr(7, 2, "1 - GNOMISH DUELIST", c.color_pair(7))
+    w.addstr(9, 2, "2 - GNOMISH ROGUE", c.color_pair(7))
+    w.addstr(11, 2, "3 - GNOMISH ARCHER", c.color_pair(7))
+    w.addstr(13, 2, "4 - GNOMISH DRUID", c.color_pair(7))
+    w.addstr(15, 2, "5 - GNOMISH WATER MAGE", c.color_pair(7))
+    w.addstr(17, 2, "6 - GNOMISH WIZARD", c.color_pair(7))
     w.refresh()
     while True:
         q = w.getkey()
@@ -464,15 +362,34 @@ def gnome(w, c, p):
                 p["BP"] = [get_item(6),get_item(7),get_item(62)]
                 p["classicgame"] = False
                 break
+            case "5":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "GNOMISH WATER MAGE"
+                p["e_hand"] = get_item(63)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
+                break
+            case "6":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "GNOMISH WIZARD"
+                p["e_hand"] = get_item(64)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
+                break
             case _:
-                #if q in {"PADENTER","\n", ",", "\x1b", "0"}:
-                    return False
+                return False
+    p["color"] = 7
     p["iniciative"] = 1
-    p["color"] = 5
-    #p["environment"] = [0, 0, 0, 0]
+    p["environment"] = [1, 1, 1, 1]
     p["maxhp"], p["hp"] = 20, 20
     p["hpchange"] = 2
-    p["basedefend"] = 70
-    p["reg_time"] = 10
+    p["basedefend"] = 60
+    p["reg_time"] = 6
     p["reg_1/"] = 10
     return True

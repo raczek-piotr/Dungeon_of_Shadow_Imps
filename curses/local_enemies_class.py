@@ -282,7 +282,7 @@ def roll(a,b):
         q += randint(1,b)
     return q
 
-# hydrogen balst — water language -PR-
+# hydrogen blast — local_spells -PR-
 def enemies_class_is_blast(m, p, value):
     global heads
     ty, tx = p["y"], p["x"]
