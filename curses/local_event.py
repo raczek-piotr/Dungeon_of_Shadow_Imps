@@ -4,7 +4,7 @@ from local_iostream import write2log
 # for ending the game
 from local_equip import get_equip_values
 from local_scores import scoreboard_append, scoreboard_print
-from local_iostream import savegame, clearsave
+from local_iostream import events_save, events_load
 from local_game_exit import game_exit
 
 events_done = []
@@ -29,6 +29,15 @@ all_events = [
      "once" : True,
     },
 ]
+
+def events_do_save():
+    global all_events, events_done
+    return events_save(all_events, events_done)
+def events_do_load():
+    global all_events, events_done
+    AB = events_load()
+    if AB:
+        all_events, events_done = AB
 
 
 def check_events(w, c, m, p, ground):

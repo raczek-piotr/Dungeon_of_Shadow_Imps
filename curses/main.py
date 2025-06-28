@@ -1,14 +1,16 @@
-# Author           : Piotr Raczek ( raczek.piotr@o2.pl )
+# Author           : Piotr Raczek
 # Created On       : several months before 05.12.2022
-# Last Modified By : Piotr Raczek ( raczek.piotr@o2.pl )
-# Last Modified On : 16.04.2025
+# Last Modified By : Piotr Raczek
+# Last Modified On : 1.06.2025
 #
 # Product          : Dungeon of Shadow Imps
-# Version          : 0.6
+# Version          : 1.0
 #
 # Description      : Classic ascii rogue game played in console
 #
-# Licensed under GPL (see /usr/share/common-licenses/GPL for more details
+# Licensed under GPL
+# (see /usr/share/common-licenses/GPL for more details
+# or see license.txt [should be next to main.py]
 # or contact # the Free Software Foundation for a copy)
 
 
@@ -29,10 +31,9 @@ from local_scripts import sort
 from local_iostream import write2log, write2log_newline
 # used in advancing
 from local_equip import get_equip_values
-# for cur_magic at the end of main loop
-from random import choice
-# quit
+# quit and log
 from local_game_exit import check_exit
+from consts import version
 
 # my command for making exe file for windows -PR-
 #C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico --optimize 2
@@ -42,7 +43,7 @@ def mainloop(w):
     c.use_default_colors()
     c.initscr()
     c.noqiflush()
-    c.curs_set(0)
+    c.curs_set(0) # no visible cursor
     w.resize(24,80)
     c.resize_term(24,80)
     write2log("initialing curses... Done")
@@ -121,21 +122,13 @@ def mainloop(w):
             if p["hp"] > p["maxhp"]:
                 p["hp"] = p["maxhp"]
             if p["hp"] <= 0:
+                write2log("player dies")
+                manager(w, c, "#E", m, p) #End game -PR-
                 break
-
-            if p["cur_magic"] > 0:
-                p["cur_magic"] -= choice([0, 1, 1, 1])
-                if p["cur_magic"] > p["inteligence"]:
-                    p["wasattackby"] = "@" + p["wasattackby"]
-                    p["hp"] -= (p["maxhp"] * (p["cur_magic"] - p["inteligence"])) // 5
-                    p["cur_magic"] = p["inteligence"]
-                    c.beep() # alarm the player of loosing hit points because of using to much magic -PR-
-
-    write2log("player dies")
-    manager(w, c, "#E", m, p) #End game -PR-
+    write2log("exit main game loop")
 
 write2log_newline()
-write2log("starting game DoSI_0.6")
+write2log("starting game " + version)
 write2log("initialing curses...")
 wrapper(mainloop)
-write2log("game ends (terminates) DoSI_0.6")
+write2log("game ends (terminates) " + version)

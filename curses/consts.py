@@ -1,6 +1,6 @@
-version = "DoSI_1.a"
+version = "DoSI_1.A"
 path = ""
 
 # disable traceback
-from sys import excepthook, exit
-excepthook = lambda exc_type, exc_value, traceback: exit(1)
+import sys
+sys.excepthook = lambda exc_type, exc_value, traceback: sys.exit(1)
