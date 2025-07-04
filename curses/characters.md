@@ -1,7 +1,8 @@
 # Dungeons of Shadow Imps 1.0
 ## Dice
-`1D2 2H80%` means
-you roll `1D2` if you hit the target (`80%` to hit), you try to hit `2` times
+`1D3 2H60%` means
+You try to hit the target 2 times, and each time you have an 60% chance to hit.
+For each successful hit, you roll a **1D3** to determine how much damage you do.
 ## Races
 ### Human:
 -  Warrior
@@ -19,14 +20,23 @@ you roll `1D2` if you hit the target (`80%` to hit), you try to hit `2` times
 -  Duelist
 -  Rogue
 -  Archer
+-  Paladin
+-  Druid
+-  Water Mage
+-  Wizard
 ### Dwarf:
 -  Warrior
 -  Bandit
 -  Duelist
+-  Rogue
+-  Archer
 ### Gnome:
+-  Warrior
+-  Bandit
 -  Duelist
 -  Rogue
 -  Archer
+-  Paladin
 -  Druid
 -  Water Mage
 -  Wizard
@@ -87,7 +97,6 @@ you roll `1D2` if you hit the target (`80%` to hit), you try to hit `2` times
 -  **strength** 7
 -  **dexterity** 9
 -  **inteligence** 10
--  Spell book
 -  Druid's spells
 -  Knife 1D3 1H60%
 -  Torch

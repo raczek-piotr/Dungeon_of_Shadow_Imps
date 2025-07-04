@@ -72,7 +72,7 @@ def map_init_int(m, p, items, type_of, stairs):
     match type_of:
         case 0:
             hm = 9
-            sizey, sizex = 17, 26
+            sizey, sizex = 18, 28
             m["sy"], m["sx"] = 2*sizey+1, 2*sizex+1
             m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
             m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]

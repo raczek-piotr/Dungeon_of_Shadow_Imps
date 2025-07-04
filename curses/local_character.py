@@ -102,7 +102,7 @@ def character(w, c, p):
         w.addstr(8, 2, "2 - FUDISH", c.color_pair(2))
         w.addstr(9, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
         w.addstr(11, 2, "3 - DWARF", c.color_pair(6))
-        w.addstr(12, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE DO THEY COME FROM", c.color_pair(6))
+        w.addstr(12, 2, "GOOD TANK FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
         w.addstr(14, 2, "4 - GNOME", c.color_pair(7))
         w.addstr(15, 2, "HOW HAD YOU OPENED THE DOOR AND KILL ALL THESE RATS?", c.color_pair(7))
         w.addstr(23, 2, "* - VIEW SCOREBOARD", c.color_pair(4))
@@ -180,14 +180,15 @@ def human(w, c, p):
                 p["strength"] = 7
                 p["dexterity"] = 11
                 p["playertype"] = "HUMAN ARCHER"
-                p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
+                p["BP"].append(get_item(1))
+                p["BP"][-1][2] = 25
                 break
             case "6":
                 p["strength"] = 9
                 p["dexterity"] = 8
                 p["inteligence"] = 9
                 p["playertype"] = "HUMAN PALADIN"
-                p["e_hand"] = get_item(65)
+                p["e_hand"] = get_item(66)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
@@ -196,8 +197,7 @@ def human(w, c, p):
                 p["dexterity"] = 9
                 p["inteligence"] = 10
                 p["playertype"] = "HUMAN DRUID"
-                p["e_hand"] = get_item(65)
-                p["BP"] = [get_item(6),get_item(7),get_item(62)]
+                p["e_hand"] = get_item(63)
                 p["classicgame"] = False
                 break
             case "8":
@@ -206,7 +206,7 @@ def human(w, c, p):
                 p["dexterity"] = 7
                 p["inteligence"] = 12
                 p["playertype"] = "HUMAN WATER MAGE"
-                p["e_hand"] = get_item(63)
+                p["e_hand"] = get_item(64)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
@@ -216,7 +216,7 @@ def human(w, c, p):
                 p["dexterity"] = 7
                 p["inteligence"] = 12
                 p["playertype"] = "HUMAN WIZARD"
-                p["e_hand"] = get_item(64)
+                p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
@@ -234,11 +234,15 @@ def fudish(w, c, p):
     w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
-    w.addstr(7, 2, "1 - FUDISH WARRIOR", c.color_pair(2))
-    w.addstr(9, 2, "2 - FUDISH BANDIT", c.color_pair(2))
-    w.addstr(11, 2, "3 - FUDISH DUELIST", c.color_pair(2))
-    w.addstr(13, 2, "4 - FUDISH ROGUE", c.color_pair(2))
-    w.addstr(15, 2, "5 - FUDISH ARCHER", c.color_pair(2))
+    w.addstr(7, 2, "1 - FUDISH WARRIOR", c.color_pair(1))
+    w.addstr(9, 2, "2 - FUDISH BANDIT", c.color_pair(1))
+    w.addstr(11, 2, "3 - FUDISH DUELIST", c.color_pair(1))
+    w.addstr(13, 2, "4 - FUDISH ROGUE", c.color_pair(1))
+    w.addstr(15, 2, "5 - FUDISH ARCHER", c.color_pair(1))
+    w.addstr(7, 42, "6 - FUDISH PALADIN", c.color_pair(1))
+    w.addstr(9, 42, "7 - FUDISH DRUID", c.color_pair(1))
+    w.addstr(11, 42, "8 - FUDISH WATER MAGE", c.color_pair(1))
+    w.addstr(13, 42, "9 - FUDISH WIZARD", c.color_pair(1))
     w.refresh()
     while True:
         q = w.getkey()
@@ -254,20 +258,56 @@ def fudish(w, c, p):
                 p["playertype"] = "FUDISH BANDIT"
                 break
             case "3":
-                #p["strength"] = 9
-                #p["dexterity"] = 9
                 p["playertype"] = "FUDISH DUELIST"
                 break
             case "4":
                 p["strength"] = 8
                 p["dexterity"] = 10
-                p["playertype"] = "FUDISH ROGUE"
+                p["playertype"] = "FUDISH ROUGE"
                 break
             case "5":
                 p["strength"] = 7
                 p["dexterity"] = 11
                 p["playertype"] = "FUDISH ARCHER"
-                p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
+                p["BP"].append(get_item(1))
+                p["BP"][-1][2] = 25
+                break
+            case "6":
+                p["strength"] = 9
+                p["dexterity"] = 8
+                p["inteligence"] = 9
+                p["playertype"] = "FUDISH PALADIN"
+                p["e_hand"] = get_item(66)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
+                break
+            case "7":
+                p["strength"] = 7
+                p["dexterity"] = 9
+                p["inteligence"] = 10
+                p["playertype"] = "FUDISH DRUID"
+                p["e_hand"] = get_item(63)
+                p["classicgame"] = False
+                break
+            case "8":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "FUDISH WATER MAGE"
+                p["e_hand"] = get_item(64)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
+                break
+            case "9":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "FUDISH WIZARD"
+                p["e_hand"] = get_item(65)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
                 break
             case _:
                 return False
@@ -284,11 +324,13 @@ def dwarf(w, c, p):
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
     w.addstr(2, 35, version, c.color_pair(4))
-    w.addstr(4, 2, "GOOD MELEE FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
+    w.addstr(4, 2, "GOOD TANK FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
-    w.addstr(7, 2, "1 - DWARWISH STEELCLAD", c.color_pair(6))
-    w.addstr(9, 2, "2 - DWARWISH MINER", c.color_pair(6))
-    w.addstr(11, 2, "3 - DWARWISH SCOUT", c.color_pair(6))
+    w.addstr(7, 2, "1 - DWARF WARRIOR", c.color_pair(6))
+    w.addstr(9, 2, "2 - DWARF BANDIT", c.color_pair(6))
+    w.addstr(11, 2, "3 - DWARF DUELIST", c.color_pair(6))
+    w.addstr(13, 2, "4 - DWARF ROGUE", c.color_pair(6))
+    w.addstr(15, 2, "5 - DWARF ARCHER", c.color_pair(6))
     w.refresh()
     while True:
         q = w.getkey()
@@ -296,30 +338,38 @@ def dwarf(w, c, p):
             case "1":
                 p["strength"] = 11
                 p["dexterity"] = 7
-                p["playertype"] = "DWARWISH WARRIOR"
+                p["playertype"] = "DWARF WARRIOR"
                 break
             case "2":
                 p["strength"] = 10
                 p["dexterity"] = 8
-                p["playertype"] = "DWARWISH BANDIT"
+                p["playertype"] = "DWARF BANDIT"
                 break
             case "3":
-                #p["strength"] = 9
-                #p["dexterity"] = 9
-                p["playertype"] = "DWARWISH SCOUT"
-                p["e_attack"] = get_item(27)
-                p["BP"] = [get_item(6),get_item(7),(get_item(3)[:2] + [50] + get_item(3)[3:])]
+                p["playertype"] = "DWARF DUELIST"
+                break
+            case "4":
+                p["strength"] = 8
+                p["dexterity"] = 10
+                p["playertype"] = "DWARF ROUGE"
+                break
+            case "5":
+                p["strength"] = 7
+                p["dexterity"] = 11
+                p["playertype"] = "DWARF ARCHER"
+                p["BP"].append(get_item(1))
+                p["BP"][-1][2] = 25
                 break
             case _:
                 return False
     p["color"] = 6
     # no critic hits
     #p["environment"] = [0, 0, 0, 0]
-    p["maxhp"], p["hp"] = 50, 50
-    p["hpchange"] = 5
-    p["basedefend"] = 30
+    p["maxhp"], p["hp"] = 40, 40
+    p["hpchange"] = 4
+    p["basedefend"] = 20
     p["reg_time"] = 10
-    p["reg_1/"] = 10
+    p["reg_1/"] = 16
     return True
 
 def gnome(w, c, p):
@@ -328,57 +378,79 @@ def gnome(w, c, p):
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
     w.addstr(2, 35, version, c.color_pair(4))
     w.addstr(4, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(7))
-    w.addstr(5, 2, "CLASSES (GNOME):", c.color_pair(7))
-    w.addstr(7, 2, "1 - GNOMISH DUELIST", c.color_pair(7))
-    w.addstr(9, 2, "2 - GNOMISH ROGUE", c.color_pair(7))
-    w.addstr(11, 2, "3 - GNOMISH ARCHER", c.color_pair(7))
-    w.addstr(13, 2, "4 - GNOMISH DRUID", c.color_pair(7))
-    w.addstr(15, 2, "5 - GNOMISH WATER MAGE", c.color_pair(7))
-    w.addstr(17, 2, "6 - GNOMISH WIZARD", c.color_pair(7))
+    w.addstr(5, 2, "CLASSES (GNOME):", c.color_pair(4))
+    w.addstr(7, 2, "1 - GNOME WARRIOR", c.color_pair(7))
+    w.addstr(9, 2, "2 - GNOME BANDIT", c.color_pair(7))
+    w.addstr(11, 2, "3 - GNOME DUELIST", c.color_pair(7))
+    w.addstr(13, 2, "4 - GNOME ROGUE", c.color_pair(7))
+    w.addstr(15, 2, "5 - GNOME ARCHER", c.color_pair(7))
+    w.addstr(7, 42, "6 - GNOME PALADIN", c.color_pair(7))
+    w.addstr(9, 42, "7 - GNOME DRUID", c.color_pair(7))
+    w.addstr(11, 42, "8 - GNOME WATER MAGE", c.color_pair(7))
+    w.addstr(13, 42, "9 - GNOME WIZARD", c.color_pair(7))
     w.refresh()
     while True:
         q = w.getkey()
         match q:
             case "1":
-                p["playertype"] = "GNOMISH DUELIST"
+                p["strength"] = 11
+                p["dexterity"] = 7
+                p["playertype"] = "GNOME WARRIOR"
                 break
             case "2":
-                p["strength"] = 8
-                p["dexterity"] = 10
-                p["playertype"] = "GNOMISH ROGUE"
+                p["strength"] = 10
+                p["dexterity"] = 8
+                p["playertype"] = "GNOME BANDIT"
                 break
             case "3":
-                p["strength"] = 7
-                p["dexterity"] = 11
-                p["playertype"] = "GNOMISH ARCHER"
-                p["BP"].append(get_item(1)[:2] + [25] + get_item(1)[3:])
+                p["playertype"] = "GNOME DUELIST"
                 break
             case "4":
-                p["strength"] = 7
-                p["dexterity"] = 9
-                p["inteligence"] = 10
-                p["playertype"] = "GNOMISH DRUID"
-                p["e_hand"] = get_item(65)
-                p["BP"] = [get_item(6),get_item(7),get_item(62)]
-                p["classicgame"] = False
+                p["strength"] = 8
+                p["dexterity"] = 10
+                p["playertype"] = "GNOME ROUGE"
                 break
             case "5":
-                p["ismage"] = True
                 p["strength"] = 7
-                p["dexterity"] = 7
-                p["inteligence"] = 12
-                p["playertype"] = "GNOMISH WATER MAGE"
-                p["e_hand"] = get_item(63)
+                p["dexterity"] = 11
+                p["playertype"] = "GNOME ARCHER"
+                p["BP"].append(get_item(1))
+                p["BP"][-1][2] = 25
+                break
+            case "6":
+                p["strength"] = 9
+                p["dexterity"] = 8
+                p["inteligence"] = 9
+                p["playertype"] = "GNOME PALADIN"
+                p["e_hand"] = get_item(66)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break
-            case "6":
+            case "7":
+                p["strength"] = 7
+                p["dexterity"] = 9
+                p["inteligence"] = 10
+                p["playertype"] = "GNOME DRUID"
+                p["e_hand"] = get_item(63)
+                p["classicgame"] = False
+                break
+            case "8":
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
                 p["inteligence"] = 12
-                p["playertype"] = "GNOMISH WIZARD"
+                p["playertype"] = "GNOME WATER MAGE"
                 p["e_hand"] = get_item(64)
+                p["BP"] = [get_item(6),get_item(7)]
+                p["classicgame"] = False
+                break
+            case "9":
+                p["ismage"] = True
+                p["strength"] = 7
+                p["dexterity"] = 7
+                p["inteligence"] = 12
+                p["playertype"] = "GNOME WIZARD"
+                p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
                 p["classicgame"] = False
                 break

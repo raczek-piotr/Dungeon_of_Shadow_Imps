@@ -64,12 +64,13 @@ item = [
 ['}', [['CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 15, 1, 40, 11, 11], True, 579]], #58
 ['}', [['H. CROSSBOW', 'e_hand', 'BOLT'], '}', [1, 20, 1, 40, 12, 12], True, 963]], #59
 ['}', [['GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 1, 90, 7, 7], True, 230]], #60
-['}', [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 4055]], #61
-['?', [["DRUID'S SPELLS", 'e_hand', False], '??', [3, 4, 5, 6], True, 500]], #62
-['?', [['WATER LANGUAGE', 'e_hand', False], '??', [7, 8, 9, 10], True, 5000]], #63
-['?', [['FIRE COMPENDIUM', 'e_hand', False], '??', [11, 12, 13, 10], True, 5000]], #64
-['?', [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 200]], #65
-['?', [['BOOK OF BOOKS', 'BOOK OF BOOKS'], '???', [], True, 2000]], #66
+['}', [['MULTI GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 3, 90, 8, 8], True, 966]], #61
+['}', [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 4055]], #62
+['?', [["DRUID'S SPELLS", 'e_hand', False], '??', [3, 4, 5, 6], True, 500]], #63
+['?', [['WATER LANGUAGE', 'e_hand', False], '??', [7, 8, 9, 10], True, 5000]], #64
+['?', [['FIRE COMPENDIUM', 'e_hand', False], '??', [11, 12, 13, 10], True, 5000]], #65
+['?', [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 200]], #66
+['?', [['BOOK OF BOOKS', 'BOOK OF BOOKS'], '???', [], True, 2000]], #67
 ]
 
 def change_stats(i):

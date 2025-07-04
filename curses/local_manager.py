@@ -108,7 +108,7 @@ def prepare_map(c, m, p):
     ilist = []
     if type(h[0]) == int:
         p["normal_level"] = True # "needs" are enable/disable -PR-
-        ilist = randitem(h[0]+5, 8, 58)+randitem(2, 0, 4)# + arrows -PR-
+        ilist = randitem(h[0]+5, 8, 58)+randitem(2, 0, 4)# + ammo -PR-
         for _ in range(randint(0,3+p["type"])):
             ilist.append("$"+zero3(randint(3,5+5*p["type"])))
         if p["type"] == 2:

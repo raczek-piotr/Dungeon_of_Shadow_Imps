@@ -1,4 +1,4 @@
-version = "DoSI_1.A"
+version = "DoSI_1.B"
 path = ""
 
 # disable traceback

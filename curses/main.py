@@ -1,10 +1,10 @@
 # Author           : Piotr Raczek
 # Created On       : several months before 05.12.2022
 # Last Modified By : Piotr Raczek
-# Last Modified On : 28.06.2025
+# Last Modified On : 04.07.2025
 #
 # Product          : Dungeon of Shadow Imps
-# Version          : 1.A
+# Version          : 1.B
 #
 # Description      : Classic ascii rogue game played in console
 #
@@ -35,8 +35,6 @@ from local_equip import get_equip_values
 from local_game_exit import check_exit
 from consts import version
 
-# my command for making exe file for windows -PR-
-#C:\Users\piotr\Documents\Thonny\python.exe -OO -m PyInstaller --onefile C:\Users\piotr\Desktop\Dungeon_of_Shadow_Imps-main\curses\main.py -c --ico logo.ico --optimize 2
 
 def mainloop(w):
     c.start_color()

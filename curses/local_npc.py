@@ -16,13 +16,13 @@ def load_traders(p):
            {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), 52, 56},
            {26},
            {},
-           {60, 61, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), randint(52, 59)},
+           {61, 62, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50), randint(52, 59)},
            {5,7, randint(27, 50), randint(27, 50)},
            {4,7, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
     if p["classicgame"] == False:
-        traders[2] = {26, 62, 65}
-        traders[5] = {5,7, randint(62, 65), randint(27, 50), randint(27, 50)}
-        traders[6] = {4,7, randint(62, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
+        traders[2] = {26, 63, 66}
+        traders[5] = {5,7, randint(63, 66), randint(27, 50), randint(27, 50)}
+        traders[6] = {4,7, randint(63, 66), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
 
 def trades_do_save():
     global traders
@@ -59,11 +59,11 @@ def npc(w, c, m, p, it, stay):
         case 6:
             return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "?", 1, True, 100]])
         case 7:
-            return[False, translate("- BRING LIGHT TO YOUR VILLAGE!"), False]
+            return[False, translate(), False]
         case 8:
             return[False, translate("- SHERIF IS EMBARRASSED"), False]
         case 9:
-            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM... I NEVER SEE HIM", "- WHAT A NICE DAY!", "- HAVE A NICE DAY!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
+            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM... I NEVER SEE HIM", "- BRING LIGHT TO YOUR VILLAGE!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
         case 10:
             return[False, translate(choice(["- FOOD? WE ATE MOLD... IT IS EVERYWERE!", "- FUNGAL GARDENS ARE BELOW US, WITH MOLD!"])), False]
     return[False, p["echo"], False]
