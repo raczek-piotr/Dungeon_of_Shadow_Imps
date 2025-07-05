@@ -260,16 +260,23 @@ def map_init_int(m, p, items, type_of, stairs):
         case _: # case 4, 5 -PR-
             return deep_map(m, p, items, type_of, stairs)
 
-    more = True # here are added enemies on "battle field" :) -PR-
+    more = True # here are added trash, items and enemies on "battle field" :) -PR-
     l_pokoje = len(pokoje)-1
-    for k in items:
+    for k in items: # trash, water etc.
         i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         while m["r"][j[0]][j[1]][0] not in {" ",".","=","%"}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
-    while more:
+    for k in items: # items
+        i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
+        j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        while m["r"][j[0]][j[1]][0] not in {" ",".","=","%"}:
+            i = randint(1, l_pokoje)
+            j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
+        m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]
+    while more: # enemies
         i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         while m["r"][j[0]][j[1]][0] not in {" ",".","=","%","*","~","]","}",")","?","!"}:

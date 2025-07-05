@@ -43,7 +43,7 @@ def spell_menager(w, c, m, p):
             else:
                 colors.append(ml[1])
         else:
-            colors.append(9)
+            colors.append(5)
     q = "-1" # not in slots -PR-
     while q not in slots:
         if q in {"PADENTER","\n", ",", "\x1b", "0"}:
@@ -134,12 +134,12 @@ def spell_menager(w, c, m, p):
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
      case 6: #NATURE WITH ME
-        if p["blessing"] == 0 and p["wasattackby"] != 0:
+        if p["blessing"] == 0 and 2*p["hp"] <= p["maxhp"]:
             if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
                 p["blessing"] = 20
                 return[translate("BLESSED"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        return[translate("BLESSED OR NOT BEING HIT"), False]
+        return[translate("BLESSED OR NOT LOW HP"), False]
      case 7: #DETECT WATER
         if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
@@ -203,7 +203,7 @@ def spell_menager(w, c, m, p):
         if t1 and it != "5":
             if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
                 return[translate("YOU FAILED TO CAST THE SPELL"), True]
-            enemies_class_is_cast(m, p, [dy, dx], 2 + p["lw"] // 4)
+            enemies_class_is_cast(m, p, [dy, dx], 2 + p["lw"] // 7)
             return[p["echo"], True]
         return[translate("WRONG DIRECTION!"), False]
 
@@ -213,10 +213,11 @@ def spell_menager(w, c, m, p):
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
             for x in range(m["sx"]):
-                if m["r"][y][x][0] == "=" and m["v"][y][x][0] == " ":
+                T = m["r"][y][x][0]
+                if  T.upper() != T.lower() and m["v"][y][x][0] == " ":
                     lista.append([y, x])
         if lista == []:
             return[translate("THERE ARE NO MORE UNCOVERED WATER TILES ON THIS LEVEL"), False]
         lista = choice(lista) # one element now -PR-
-        p["y"], p["x"] = lista[0], lista[1]
+        m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
