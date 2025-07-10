@@ -17,7 +17,7 @@ all_events = [
      "once" : True,
     },
     {"id":    "the book",
-     "filter" : [["ground", "?066."], ["player", "depth", 40]],
+     "filter" : [["ground", "?067."], ["player", "depth", 40]],
      "dialog" : ["- YES, IT IS ONE COPY OF BOOK OF BOOKS", "- WHAT? SO WHY IT IS SPECIAL? SHOULDN'T IT BE IN ONE COPY?", "- YOU SEE, IF YOU HAVE GOOD NEWS, THEY ARE NOT 'IN ONE COPY'", "- HMM... SO WHAT ARE THE GOOD NEWS?", "- BUT AT FIRST THE BAD NEWS", "- SO WHAT ARE THE BAD NEWS?", "- BAD NEW SAID THAT WE ARE ALL BAD, SO WE SHALL DIE", "- BUT MY FATHER WAS A FINE MAN!", "- HE WAS, BUT HE WASN'T PERFECT; LIKE ALL PEOPLE", "- I SEE, I'M NOT PERFECT TOO...", "- YOU ARE RIGHT, BUT THEN ARE GOOD NEWS COMMING", "- SO, WHAT ARE THE GOOD NEW?", "- THE GOOD NEWS ARE wonderful MESSAGE FROM GOD", "- SO, WHAT IS THE MESSAGE?", "- JUST READ IT, I HAVE TO GO", "- WAIT, WHO ARE YOU?", "- SHARE THE GOOD NEWS! THE SHERIF IS STILL WAITING FOR THEM!"],
      "changes": [["setpos", 2, 7, "."]],
      "once" : True,
