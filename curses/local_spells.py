@@ -9,25 +9,32 @@ F = 0
 spell_list = [
 # name,						2% 6=,chance,inteligence_needed,id
 # spellbook (PALLADIN 9~12)
-[translate("DETECT DOORS"),      1, 80, 9,  0], #0
-[translate("DETECT STAIRS"),     1, 80, 9,  1], #1
-[translate("DETECT BRIDGES"),    1, 80, 10, 2], #2
+[translate("DETECT DOORS"),      1, 60, 9,  0], #0
+[translate("DETECT STAIRS"),     1, 60, 9,  1], #1
+[translate("DETECT BRIDGES"),    1, 60, 10, 2], #2
 # druid spells (DRUID 10~13)
-[translate("DEDECT NATURE"),     1, 80, 10, 3], #3
-[translate("HERBALIZM"),         2, 80, 10, 4], #4
-[translate("WORDS OF NATURE"),   1, 80, 11, 5], #5
-[translate("NATURE WITH ME"),    2, 80, 12, 6], #6
+[translate("DEDECT NATURE"),     1, 60, 10, 3], #3
+[translate("HERBALIZM"),         2, 60, 10, 4], #4
+[translate("WORDS OF NATURE"),   1, 60, 11, 5], #5
+[translate("NATURE WITH ME"),    2, 60, 12, 6], #6
 # water language (WATER MAGE 12~15)
-[translate("DETECT WATER"),      1, 80, 12, 7], #7
-[translate("WATER JUMP"),        1, 80, 12, 8], #8
-[translate("CONDENCE HUMID"),    1, 80, 13, 9], #9
-[translate("HYDROGEN BLAST"),    6, 80, 14, 10],#10
-# fire conpendium (WIZARD 12~15)
-[translate("DETECT LAVA"),       1, 80, 12, 11],#11
-[translate("FIRE BALL"),         1, 80, 12, 12],#12
-[translate("MASTER MIND"),       1, 80, 13, 13],#13
-# [translate("HYDROGEN BLAST"),  6, 80, 14, 10],#10
+[translate("DETECT WATER"),      1, 60, 12, 7], #7
+[translate("WATER JUMP"),        1, 60, 12, 8], #8
+[translate("CONDENCE HUMID"),    1, 60, 13, 9], #9
+[translate("HYDROGEN BLAST"),    6, 60, 14, 10],#10
 ]
+# fire conpendium (WIZARD 12~15)
+staff_of_fire = lambda p, option: (2 + p["lw"] // 2 if p["ismage"] else 1 + p["lw"] // 4) if option == 1 else 95 if option == 2 else 1
+'''def staff_of_fire(p, option):
+    match option:
+        case 1:
+            if p["ismage"]:
+                return 2 + p["lw"] // 2
+            return 1 + p["lw"] // 4
+        case 2:
+            return 95
+        case _:
+            return 1'''
 
 def spell_menager(w, c, m, p):
     q = "-1" # not in slots -PR-
@@ -43,7 +50,7 @@ def spell_menager(w, c, m, p):
             else:
                 colors.append(ml[1])
         else:
-            colors.append(5)
+            colors.append(5) # color grey
     q = "-1" # not in slots -PR-
     while q not in slots:
         if q in {"PADENTER","\n", ",", "\x1b", "0"}:
@@ -58,10 +65,14 @@ def spell_menager(w, c, m, p):
         w.addstr(23, 0, translate("CHOOSE A SPELL TO CAST:"), c.color_pair(2))
         q = get_in(w)
     q = int(q)-1
+
+    chance = spell_list[p["magic_list"][q]][2]
+    if spell_list[p["magic_list"][q]][3] < p["inteligence"]:
+        chance = 95
     match spell_list[p["magic_list"][q]][4]:
 
      case 0: #DEDECT DOORS
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -74,7 +85,7 @@ def spell_menager(w, c, m, p):
         m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
      case 1: #DEDECT STAIRS
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -89,7 +100,7 @@ def spell_menager(w, c, m, p):
         m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
      case 2: #DEDECT BRIDGES
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -102,7 +113,7 @@ def spell_menager(w, c, m, p):
         m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
      case 3: #DEDECT NATURE
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -119,7 +130,7 @@ def spell_menager(w, c, m, p):
             return[translate("YOU CAN'T BE HEALED MORE"), False]
         if p["fullness"] < 100:
             return[translate("EAT MORE FOOD"), False]
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         p["hp"] += p["maxhp"] // 5
         p["fullness"] -= 80
@@ -128,20 +139,20 @@ def spell_menager(w, c, m, p):
         return[translate("HEALED"), True]
      case 5: #WORDS OF NATURE
         if m["r"][p["y"]][p["x"]][0] in {" ", ".", ",", "="}:
-            if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
+            if chance > randint(0, 99): # ! test the spell -PR-
                 m["r"][p["y"]][p["x"]] = "%"
                 return[translate("NATURE AROUND YOU"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
      case 6: #NATURE WITH ME
         if p["blessing"] == 0 and 2*p["hp"] <= p["maxhp"]:
-            if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
+            if chance > randint(0, 99): # ! test the spell -PR-
                 p["blessing"] = 20
                 return[translate("BLESSED"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         return[translate("BLESSED OR NOT LOW HP"), False]
      case 7: #DETECT WATER
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -154,7 +165,7 @@ def spell_menager(w, c, m, p):
         m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
      case 8: #WATER JUMP -PR-
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         lista = [] #list -PR-
         for y in range(m["sy"]): # O(n²) PR
@@ -168,56 +179,16 @@ def spell_menager(w, c, m, p):
         return[translate("WATERJUMPED"), True]
      case 9: #CONDENCE HUMID -PR-
         if m["r"][p["y"]][p["x"]][0] in {" ", ".", ",", "%"}:
-            if spell_list[p["magic_list"][q]][2] > randint(0, 99): # ! test the spell -PR-
+            if chance > randint(0, 99): # ! test the spell -PR-
                 m["r"][p["y"]][p["x"]] = "="
                 return[translate("SHALLOW WATER"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
-     case 10: #HYDROGEN BLAST -PR-
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
+     case _: #HYDROGEN BLAST -PR-
+        if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         enemies_class_is_blast(m, p, 8)
         if p["inteligence"] >= 15 and randint(0, 100) < 40:
             enemies_class_is_blast(m, p, 8)
             return [translate("HYDROGEN BLAST DETONATED! CHAIN REACTION! DOUBLE DAMAGE!"), True]
         return[translate("HYDROGEN BLAST DETONATED!"), True]
-     case 11: #DETECT LAVA
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
-            return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        lista = [] #list -PR-
-        for y in range(m["sy"]): # O(n²) PR
-            for x in range(m["sx"]):
-                if m["r"][y][x][0] == "&" and m["v"][y][x][0] == " ":
-                    lista.append([y, x])
-        if lista == []:
-            return[translate("THERE ARE NO MORE UNCOVERED LAVA TILES ON THIS LEVEL"), False]
-        lista = choice(lista) # one element now -PR-
-        m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
-        return[translate("DETECTED"), True]
-     case 12: #FIREBALL
-        w.clear()
-        output(w, c, m, p)
-        w.addstr(23, 0, translate("IN WHAT DIRECTION DO YOU WANT TO CAST THE SPELL?:"), c.color_pair(2))
-        it = get_in(w)
-        dy, dx, t1 = player_move(it)
-        if t1 and it != "5":
-            if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
-                return[translate("YOU FAILED TO CAST THE SPELL"), True]
-            enemies_class_is_cast(m, p, [dy, dx], 2 + p["lw"] // 7)
-            return[p["echo"], True]
-        return[translate("WRONG DIRECTION!"), False]
-
-     case 13: #MASTER MIND
-        if spell_list[p["magic_list"][q]][2] <= randint(0, 99): # test the spell -PR-
-            return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        lista = [] #list -PR-
-        for y in range(m["sy"]): # O(n²) PR
-            for x in range(m["sx"]):
-                T = m["r"][y][x][0]
-                if  T.upper() != T.lower() and m["v"][y][x][0] == " ":
-                    lista.append([y, x])
-        if lista == []:
-            return[translate("THERE ARE NO MORE UNCOVERED WATER TILES ON THIS LEVEL"), False]
-        lista = choice(lista) # one element now -PR-
-        m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
-        return[translate("DETECTED"), True]

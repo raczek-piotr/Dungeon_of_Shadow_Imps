@@ -28,6 +28,12 @@ all_events = [
      "changes" : [["player", "alt", True]],
      "once" : True,
     },
+    {"id":    "enable alt",
+     "filter" : [["player", "depth", 1]],
+     "dialog" : ["HMM... COLD IN HERE"],
+     "changes" : [],
+     "once" : True,
+    },
 ]
 
 def events_do_save():

@@ -1,5 +1,6 @@
 from random import randint, choice
 from local_scripts import zero3
+from local_spells import staff_of_fire
 
 
 item = [
@@ -68,7 +69,7 @@ item = [
 ['}', [['MACHINE GUN', 'e_hand', '9mm AMMO'], '}', [2, 1, 6, 90, 9, 9], True, 4055]], #62
 ['?', [["DRUID'S SPELLS", 'e_hand', False], '??', [3, 4, 5, 6], True, 500]], #63
 ['?', [['WATER LANGUAGE', 'e_hand', False], '??', [7, 8, 9, 10], True, 5000]], #64
-['?', [['FIRE COMPENDIUM', 'e_hand', False], '??', [11, 12, 13, 10], True, 5000]], #65
+['?', [['FIRE COMPENDIUM', 'e_hand', False], '{', staff_of_fire, True, 5000]], #65
 ['?', [['SPELL BOOK', 'e_hand', False], '??', [0, 1, 2], True, 200]], #66
 ['?', [['BOOK OF BOOKS', 'BOOK OF BOOKS'], '???', [], True, 2000]], #67
 ]

@@ -20,9 +20,9 @@ def load_traders(p):
            {5,7, randint(27, 50), randint(27, 50)},
            {4,7, randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}]
     if p["classicgame"] == False:
-        traders[2] = {26, 63, 66}
-        traders[5] = {5,7, randint(63, 66), randint(27, 50), randint(27, 50)}
-        traders[6] = {4,7, randint(63, 66), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
+        traders[2] = {26, 63, 64}
+        traders[5] = {5,7, randint(63, 65), randint(27, 50), randint(27, 50)}
+        traders[6] = {4,7, randint(63, 65), randint(27, 50), randint(27, 50), randint(27, 50), randint(27, 50)}
 
 def trades_do_save():
     global traders
