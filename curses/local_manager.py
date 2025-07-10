@@ -60,13 +60,13 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             savegame(p)
 
         case "#R": # RESET -PR-
-            c.init_pair(1, 231, -1)
-            c.init_pair(2, 46, -1)
-            c.init_pair(3, 5, -1)
-            c.init_pair(4, 136, -1)
-            c.init_pair(5, 245, -1)
-            c.init_pair(6, 57, -1)
-            c.init_pair(7, 196, -1)
+            c.init_pair(1, 231, -1) # white
+            c.init_pair(2, 46, -1)  # green
+            c.init_pair(3, 5, -1)   # violet
+            c.init_pair(4, 136, -1) # brown
+            c.init_pair(5, 245, -1) # grey
+            c.init_pair(6, 57, -1)  # blue
+            c.init_pair(7, 196, -1) # red
             #It don't need to be definited here -PR-
             c.init_pair(8, 41, -1) # 8 → 4 game type color -PR-
             c.init_pair(9, 41, -1) # 9 → wall color, almost the same colors as game type color -PR-

@@ -85,7 +85,7 @@ def scoreboard_append(w, c, p, wins = False):
     if p["classicgame"]:
         points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+(p["bow"]*(p["bow_damage"]+1)*p["bow_acc"]*p["bow_hits"])//10+10*(p["lw"]+p["depth"]+p["armor"])-80
     else:
-        points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+10*(p["lw"]+p["depth"]+p["armor"]+p["inteligence"])-22
+        points = p["xp"]+(p["attack"]*(p["attack_damage"]+1)*p["attack_acc"]*p["attack_hits"])//5+10*(p["lw"]+p["depth"]+p["armor"]+p["inteligence"]) +p["lw"]**2 -23 #spellbook??? -PR-
     c.curs_set(2)
     q = ""
     nick = ""

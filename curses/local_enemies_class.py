@@ -299,25 +299,38 @@ def enemies_class_is_blast(m, p, value):
 
 def enemies_class_is_cast(m, p, dire, value):
     global shot_list, heads
-    tx = p["y"], p["x"] # it is NOT x'pos -PR-
-    ty, tx = shot(m["r"], tx, dire, shot_list) # it is a test -PR-
+
+    T = p["y"], p["x"] # T → temporary
+    # someone to get hit?
+    ty, tx = shot(m["r"], T, dire, shot_list)
+    if m["r"][ty][tx][0] not in heads:
+        return # if not
+    del T
+
     p["bow"] = 2
     p["bow_damage"] = value
     p["bow_hits"] = 1
     p["bow_acc"] = 100
     p["echo"] = translate("YOU SHOT SOMEWERE")
-    if m["r"][ty][tx][0] in heads:
-        it = int(m["r"][ty][tx][1:4])
-        enemies_class_is_attacked(m, p, it, value, 1)
+    it = int(m["r"][ty][tx][1:4])
+    enemies_class_is_attacked(m, p, it, value, 1)
 
 def enemies_class_is_shoted(m, p, dire, value):
     global shot_list, heads
     tx = p["y"], p["x"] # it is NOT x'pos -PR-
     ty, tx = shot(m["r"], tx, dire, shot_list) # it is a test -PR-
+    if not p["e_hand"][0][2]:
+        shots = p["bow_hits"]
+        if m["r"][ty][tx][0] in heads:
+            it = int(m["r"][ty][tx][1:4])
+            enemies_class_is_attacked(m, p, it, value, shots)
+            return
+        p["echo"] = translate("THE FIREBALL FLIES AWAY")
+        return
     for ammo_id in range(len(p["BP"])):
         ammo = p["BP"][ammo_id]
         if ammo[0][0] == p["e_hand"][0][2]:
-            shots = min(ammo[2], p["e_hand"][2][2])
+            shots = min(ammo[2], p["bow_hits"])
             ammo[2] -= shots
             if ammo[2] == 0:
                 p["BP"].pop(ammo_id)
