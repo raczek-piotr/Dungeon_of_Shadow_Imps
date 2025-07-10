@@ -28,7 +28,7 @@ all_events = [
      "changes" : [["player", "alt", True]],
      "once" : True,
     },
-    {"id":    "enable alt",
+    {"id":    "storypart1",
      "filter" : [["player", "depth", 1]],
      "dialog" : ["HMM... COLD IN HERE"],
      "changes" : [],

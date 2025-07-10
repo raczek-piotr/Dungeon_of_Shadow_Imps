@@ -37,10 +37,11 @@ def events_save(A, B):
 def events_load():
     with open(path + "save.txt", "r") as txt:
         try:
-            ret = (txt.read().split("\n")[2], txt.read().split("\n")[3])
+            txt = txt.read().split("\n")
+            ret = (ast.literal_eval(txt[2]), ast.literal_eval(txt[3]))
         except:
             return False
-    return ast.literal_eval(ret)
+    return ret
 from local_event import events_do_save, events_do_load
 
 # game saving/loading part3 — player
