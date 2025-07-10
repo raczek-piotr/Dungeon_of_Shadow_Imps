@@ -1,2 +1,0 @@
-625|CLASSIC|FUDISH ARCHER|2214|8|8|-|[]|True
-390|WSAD do dziury...|GNOMISH DRUID|1185|4|5|-|[]|False
