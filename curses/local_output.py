@@ -76,7 +76,7 @@ def playerdata(y, p):
                 return "  " + p["hand_name"]
             return "  range: " + p["hand_name"]
         case 13:
-            return "  armor: " + str(p["armor"])#+"+"+str(p["shield"])
+            return "  armor: " + str(p["armor"]) + " defend: "+str(p["defend"]) + "%"
         case 15:
             return item(p["BP"], 0)
         case 16:
