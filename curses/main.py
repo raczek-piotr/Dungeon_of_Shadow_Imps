@@ -4,7 +4,7 @@
 # Last Modified On : 10.07.2025
 #
 # Product          : Dungeon of Shadow Imps
-# Version          : 1.C
+# Version          : 1.0
 #
 # Description      : Classic ascii rogue game played in console
 #

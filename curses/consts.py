@@ -3,5 +3,5 @@
 sys.excepthook = lambda exc_type, exc_value, traceback: sys.exit(1)'''
 
 
-version = "DoSI_1.C"
+version = "DoSI_1.0"
 path = ""
