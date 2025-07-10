@@ -21,6 +21,8 @@ def get_equip_values(p):
         if t > 0:
             p["armor"] = (2*p["armor"])//(2+t)
             p["defend"] -= 10*t
+            if p["defend"] < 0:
+                p["defend"] = 0
     else:
         p["armor"] = 0
     # range/hand

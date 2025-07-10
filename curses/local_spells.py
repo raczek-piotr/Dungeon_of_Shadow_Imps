@@ -9,9 +9,9 @@ F = 0
 spell_list = [
 # name,						2% 6=,chance,inteligence_needed,id
 # spellbook (PALLADIN 9~12)
-[translate("DETECT DOORS"),      1, 60, 9,  0], #0
+[translate("LAMPYRIDAE"),        1, 60, 9,  0], #0
 [translate("DETECT STAIRS"),     1, 60, 9,  1], #1
-[translate("DETECT BRIDGES"),    1, 60, 10, 2], #2
+[translate("READY STRIKE"),      1, 60, 10, 2], #2
 # druid spells (DRUID 10~13)
 [translate("DEDECT NATURE"),     1, 60, 10, 3], #3
 [translate("HERBALIZM"),         2, 60, 10, 4], #4
@@ -71,19 +71,13 @@ def spell_menager(w, c, m, p):
         chance = 95
     match spell_list[p["magic_list"][q]][4]:
 
-     case 0: #DEDECT DOORS
-        if chance <= randint(0, 99): # test the spell -PR-
+     case 0: #LAMPYRIDAE
+        if m["r"][p["y"]][p["x"]][0] in {" ", ",", "%", "="}:
+            if chance > randint(0, 99): # ! test the spell -PR-
+                m["r"][p["y"]][p["x"]] = "."
+                return[translate("LAMPYRIDAE"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        lista = [] #list -PR-
-        for y in range(m["sy"]): # O(n²) PR
-            for x in range(m["sx"]):
-                if m["r"][y][x][0] == "+" and m["v"][y][x][0] == " ":
-                    lista.append([y, x])
-        if lista == []:
-            return[translate("THERE ARE NO MORE UNCOVERED STAIRS TILES ON THIS LEVEL"), False]
-        lista = choice(lista) # one element now -PR-
-        m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
-        return[translate("DETECTED"), True]
+        return[translate("YOU CAN'T CAST THE SPELL HERE!"), False]
      case 1: #DEDECT STAIRS
         if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
@@ -99,19 +93,14 @@ def spell_menager(w, c, m, p):
         lista = choice(lista) # one element now -PR-
         m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
         return[translate("DETECTED"), True]
-     case 2: #DEDECT BRIDGES
-        if chance <= randint(0, 99): # test the spell -PR-
+     case 2: #READY STRIKE
+        if p["blessing"] == 0 and p["fury"] == 0 and p["hp"] == p["maxhp"]:
+            if chance > randint(0, 99): # ! test the spell -PR-
+                p["blessing"] = 2
+                p["fury"] = 2
+                return[translate("READY"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        lista = [] #list -PR-
-        for y in range(m["sy"]): # O(n²) PR
-            for x in range(m["sx"]):
-                if m["r"][y][x][0] == '"' and m["v"][y][x][0] == " ":
-                    lista.append([y, x])
-        if lista == []:
-            return[translate("THERE ARE NO MORE UNCOVERED BRIDGE TILES ON THIS LEVEL"), False]
-        lista = choice(lista) # one element now -PR-
-        m["v"][lista[0]][lista[1]] = m["r"][lista[0]][lista[1]][0]
-        return[translate("DETECTED"), True]
+        return[translate("YOU ARE TOO LOW HP OR YOU HAVE SOME BUFFS (F,B)"), False]
      case 3: #DEDECT NATURE
         if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
@@ -147,7 +136,7 @@ def spell_menager(w, c, m, p):
      case 6: #NATURE WITH ME
         if p["blessing"] == 0 and 2*p["hp"] <= p["maxhp"]:
             if chance > randint(0, 99): # ! test the spell -PR-
-                p["blessing"] = 20
+                p["blessing"] = 21
                 return[translate("BLESSED"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         return[translate("BLESSED OR NOT LOW HP"), False]
