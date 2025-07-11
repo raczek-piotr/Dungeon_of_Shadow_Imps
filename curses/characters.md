@@ -83,16 +83,16 @@ For each successful hit, you roll a **1D3** to determine how much damage you do.
 -  20 Rocks (sling's ammo)
 -  25 Arrows (bow's ammo)
 ## Magic DoSI Classes
+📜 New scroll: Scroll of Disturbance
 ### Paladin
 -  **strength** 9
 -  **dexterity** 8
 -  **inteligence** 9
--  Sling 1D1 1H60%
+-  Spell book
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
--  Spell book
--  20 Rocks (sling's ammo)
+-  20 Rocks (sling's ammo) (trash)
 ### Druid
 -  **strength** 7
 -  **dexterity** 9
@@ -101,6 +101,7 @@ For each successful hit, you roll a **1D3** to determine how much damage you do.
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
+-  20 Rocks (sling's ammo) (trash)
 ### Water Mage
 -  **strength** 7
 -  **dexterity** 7
@@ -109,13 +110,14 @@ For each successful hit, you roll a **1D3** to determine how much damage you do.
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
+-  20 Rocks (sling's ammo) (trash)
 -  They can't find the heaviest armors
 -  They need highter LW to use armors
 ### Wizard
 -  **strength** 7
 -  **dexterity** 7
 -  **inteligence** 12
--  Fire Compendium (type of spell book)
+-  Fire Compendium (spell book with one spell)
 -  Knife 1D3 1H60%
 -  Torch
 -  Ration of food
@@ -124,4 +126,3 @@ For each successful hit, you roll a **1D3** to determine how much damage you do.
 ## Owner and Designer:
 -  Piotr Raczek (PR)
 -  https://github.com/raczek-piotr/
--  webpage → never — I think
