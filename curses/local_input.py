@@ -43,7 +43,7 @@ def item_menager(w, c, m, p):
     except:
         return[p["echo"], False]
     t = p["BP"][it]
-    if t[1] in {"]","}",")","??"}:
+    if t[1] in {"]","}",")","??", "{"}:
         p["BP"][it], p[t[0][1]] = p[t[0][1]], p["BP"][it]
         get_equip_values(p)
         return[translate("YOU EQUIP") + " " + translate(t[0][0]), True]

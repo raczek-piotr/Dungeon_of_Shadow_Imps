@@ -90,7 +90,7 @@ def playerdata(y, p):
         case 20:
             return item(p["BP"], 5)
         case 22:
-            return "attack by:"
+            return "attacked by:"
         case _:
             return ""
 
@@ -135,7 +135,7 @@ def output(w, c, m, p):
                 i = [ty, (p["x"] + x) % m["sx"]]
                 if m["v"][i[0]][i[1]] == " ":
                     w.addstr(11+y, 26+x, ".", c.color_pair(1))
-    w.addstr(22, 67, p["wasattackby"], c.color_pair(3))
+    w.addstr(22, 69, p["wasattackby"], c.color_pair(3))
     w.addstr(0, 55, spacer, c.color_pair(4))
     w.addstr(2, 55, spacer, c.color_pair(4))
     w.addstr(10, 55, spacer, c.color_pair(4))
