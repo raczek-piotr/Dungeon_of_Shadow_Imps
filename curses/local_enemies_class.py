@@ -10,7 +10,7 @@ def flag(f, n):
 # 1 - is a shooter
 # 2 - poison/something_else (armor penetration)
 # 4 - random movement 50% (always)
-# 8 - wondering
+# 8 - wondering (move randomly when not chasing the player nor sleeping)
 e = [
     ["r",4,2,3,1,5,"drop",3,1,3,"RAT", 8], #0
     ["m",3,2,2,1,5,"drop",3,1,3,"MOUSE", 0], #1
@@ -35,7 +35,7 @@ e = [
     ["W",27,15,27,0,4,"drop",29,27,29,"WOLF", 8], #18
 
     ["G",30,20,80,0,4,"drop",33,31,33,"GHOST", 13], #19
-    ["D",60,24,160,5,7,"drop",36,34,36,"GREADY DWARF MINER", 0], #20
+    ["R",60,24,160,5,7,"drop",36,34,36,"ROBOT", 0], #20
     ["s",12,27,44,1,7,"drop",36,34,36,"SHADOW IMP", 0], #21
     ["v",32,31,160,1,7,"drop",39,37,39,"SHADOW IMP VETERAN", 0], #22
     ]

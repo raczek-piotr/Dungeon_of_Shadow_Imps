@@ -2,6 +2,7 @@ from local_output import output
 from local_translator import translate
 from local_iostream import write2log
 # for ending the game
+from local_iostream import clearsave
 from local_equip import get_equip_values
 from local_scores import scoreboard_append, scoreboard_print
 from local_iostream import events_save, events_load
@@ -17,9 +18,27 @@ all_events = [
      "once" : True,
     },
     {"id":    "the book",
-     "filter" : [["ground", "?067."], ["player", "depth", 40]],
+     "filter" : [["ifdone", "open the door"], ["ground", "?067."], ["player", "depth", 40]],
      "dialog" : ["- YES, IT IS ONE COPY OF BOOK OF BOOKS", "- WHAT? SO WHY IT IS SPECIAL? SHOULDN'T IT BE IN ONE COPY?", "- YOU SEE, IF YOU HAVE GOOD NEWS, THEY ARE NOT 'IN ONE COPY'", "- HMM... SO WHAT ARE THE GOOD NEWS?", "- BUT AT FIRST THE BAD NEWS", "- SO WHAT ARE THE BAD NEWS?", "- BAD NEW SAID THAT WE ARE ALL BAD, SO WE SHALL DIE", "- BUT MY FATHER WAS A FINE MAN!", "- HE WAS, BUT HE WASN'T PERFECT; LIKE ALL PEOPLE", "- I SEE, I'M NOT PERFECT TOO...", "- YOU ARE RIGHT, BUT THEN ARE GOOD NEWS COMMING", "- SO, WHAT ARE THE GOOD NEW?", "- THE GOOD NEWS ARE wonderful MESSAGE FROM GOD", "- SO, WHAT IS THE MESSAGE?", "- JUST READ IT, I HAVE TO GO", "- WAIT, WHO ARE YOU?", "- SHARE THE GOOD NEWS! THE SHERIF IS STILL WAITING FOR THEM!"],
      "changes": [["setpos", 2, 7, "."]],
+     "once" : True,
+    },
+    {"id":    "open the door",
+     "filter" : [["ifdone", "button 1"], ["ifdone", "button 2"], ["player", "depth", 40]],
+     "dialog" : [],
+     "changes": [["setpos", 2, 6, "?067."], ["setpos", 2, 7, "@7"], ["setpos", 9, 5, "."], ["setpos", 7, 3, "="], ["setpos", 8, 3, "="]],
+     "once" : True,
+    },
+    {"id":    "button 2",
+     "filter" : [["ifpos", 12, 9, "&"], ["player", "depth", 40]],
+     "dialog" : [],
+     "changes": [],
+     "once" : True,
+    },
+    {"id":    "button 1",
+     "filter" : [["ifpos", 12, 3, "&"], ["player", "depth", 40]],
+     "dialog" : [],
+     "changes": [],
      "once" : True,
     },
     {"id":    "enable alt",

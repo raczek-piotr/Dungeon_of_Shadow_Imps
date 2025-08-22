@@ -24,13 +24,13 @@ spell_list = [
 [translate("HYDROGEN BLAST"),    6, 60, 14, 10],#10
 ]
 # fire conpendium (WIZARD 12~15)
-staff_of_fire = lambda p, option: (2 + p["lw"] // 2 if p["ismage"] else 1 + p["lw"] // 4) if option == 1 else 95 if option == 2 else 1
+fire_compendium = lambda p, option: (2 + int(p["lw"]**1.1) // 3 if p["ismage"] else 1 + int(p["lw"]**1.1) // 6) if option == 1 else 95 if option == 2 else 1
 '''def staff_of_fire(p, option):
     match option:
         case 1:
             if p["ismage"]:
-                return 2 + p["lw"] // 2
-            return 1 + p["lw"] // 4
+                return 2 + int(p["lw"]**1.1) // 3
+            return 1 + int(p["lw"]**1.1) // 6
         case 2:
             return 95
         case _:

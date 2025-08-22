@@ -59,7 +59,7 @@ def npc(w, c, m, p, it, stay):
         case 6:
             return trader(w, c, m, p, it, "Guardian", [[["SCROLL IDENTIFY", 2, 0], "?", 1, True, 100]])
         case 7:
-            return[False, translate(), False]
+            return[False, translate("- YOU ARE FREE TO TAKE IT"), False]
         case 8:
             return[False, translate("- SHERIF IS EMBARRASSED"), False]
         case 9:

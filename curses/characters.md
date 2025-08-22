@@ -1,4 +1,4 @@
-# Dungeons of Shadow Imps 1.0
+# Dungeons of Shadow Imps 1.1
 ## Dice
 `1D3 2H60%` means
 You try to hit the target 2 times, and each time you have an 60% chance to hit.

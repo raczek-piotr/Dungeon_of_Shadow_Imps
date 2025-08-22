@@ -5,6 +5,14 @@ import ast
 from os import remove
 
 
+# remove game saving (
+def clearsave():
+    try:
+        remove(path + "save.txt")
+    except:
+        pass
+    return
+
 # logfile
 def write2log(message): #type → str
     with open(path + "log.txt", "a") as txt:
@@ -66,10 +74,5 @@ def loadgame():
     except:
         return []
 
-# romove game saving
-def clearsave():
-    try:
-        remove(path + "save.txt")
-    except:
-        pass
-    return
+# remove game saving - in line 8 (because of circular import but I want the code to by clear in some way) -PR-
+#def clearsave()

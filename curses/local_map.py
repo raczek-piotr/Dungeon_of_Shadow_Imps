@@ -69,6 +69,12 @@ def map_init_int(m, p, items, type_of, stairs):
     sizey, sizex = m["sy"]//2, m["sx"]//2
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
+    environment = ["=", "=", "%", "%"]
+    # 0 – regular
+    # 1 — cave
+    # 2 – fungal forest
+    # 3 — old mines
+    # 4 – lost kingdom (deep_map in local_deep_map)
     match type_of:
         case 0:
             hm = 9
@@ -143,6 +149,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
             RandomTileConnect(m, "= ")
             RandomTileConnect(m, "= ")
+            environment = [".", ".", ".", ".", "% ", "% "] # „.” - lost light -PR-
 
         case 2:
             minhm = 7 # should be space on the map, but… not calculated yet -PR-
@@ -166,7 +173,8 @@ def map_init_int(m, p, items, type_of, stairs):
             for it in range(hm):
                 RegularConnect(m, pokoje[it-1].copy(), pokoje[it].copy())
 
-            type_of_rooms = [["%"],["%"],["."],["."],["%","=","."],["%","=","."]]
+            environment = []
+            type_of_rooms = [["."],["."],["."],["%",".","."],["%",".","."],["%","%","="]]
             for it in range(hm):
                 i = choice(type_of_rooms)
                 for y in range(pokoje[it][0], pokoje[it][0] + pokoje[it][2]):
@@ -256,13 +264,14 @@ def map_init_int(m, p, items, type_of, stairs):
             if stairs % 2 == 1:
                 m["r"][pokoje[-2][0]+pokoje[-2][2]//2][pokoje[-2][1]+pokoje[-2][3]//2] = "< "
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
+            environment = []
 
         case _: # case 4, 5 -PR-
             return deep_map(m, p, items, type_of, stairs)
 
     more = True # here are added trash, items and enemies on "battle field" :) -PR-
     l_pokoje = len(pokoje)-1
-    for k in items: # trash, water etc.
+    for k in environment: # trash: water, nature, …
         i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         while m["r"][j[0]][j[1]][0] not in {" ",".","=","%"}:
