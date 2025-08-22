@@ -33,7 +33,7 @@ def character(w, c, p):
         "xpchange": 40,
         "xp": 0,
         "lw": 1,
-        "depth": 40,
+        "depth": 0,
         "strength": 9,
         "dexterity": 9,
         "inteligence": 0,
