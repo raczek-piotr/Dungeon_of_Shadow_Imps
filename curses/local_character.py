@@ -223,7 +223,7 @@ def human(w, c, p):
                 break
             case _:
                 return False
-    p["gold"] = 35000
+    p["gold"] = 350
     # except last levels…
     p["environment"] = [1, 1, 1, 0]
     return True
