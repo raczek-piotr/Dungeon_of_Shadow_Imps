@@ -9,21 +9,21 @@ from local_input_key import *
 from local_enemies_class import enemies_class_is_shoted
 from local_equip import get_equip_values #, merge # not needed -PR-
 from local_scores import scoreboard_print
-from local_spells import spell_menager
+from local_spells import spell_manager
 
 
-def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
+def print_manager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
-    w.addstr(3, 0, translate("CRITIC CHANCE")+": "+ str(p["environment_bonus"]) + "/10", c.color_pair(8))
-    if p["inteligence"] > 0:
-        w.addstr(5, 0, "str|dex|int " + str(p["strength"]) + "|" + str(p["dexterity"]) + "|" + str(p["inteligence"]), c.color_pair(4))
+    w.addstr(3, 0, translate("CRITICAL CHANCE")+": "+ str(p["environment_bonus"]) + "/10", c.color_pair(8))
+    if p["intelligence"] > 0:
+        w.addstr(5, 0, "str|dex|int " + str(p["strength"]) + "|" + str(p["dexterity"]) + "|" + str(p["intelligence"]), c.color_pair(4))
     else:
         w.addstr(5, 0, "str|dex " + str(p["strength"]) + "|" + str(p["dexterity"]), c.color_pair(4))
     w.addstr(6, 0, "hp: " + str(p["hp"]) + "/" + str(p["maxhp"]), c.color_pair(4))
     w.addstr(7, 0, "xp: " + str(p["xp"]) + "/" + str(p["needxp"]), c.color_pair(4))
-    w.addstr(10, 0,"Equipted:", c.color_pair(4))
+    w.addstr(10, 0,"Equipped:", c.color_pair(4))
     w.addstr(11, 2, item(p["e_attack"], 9, p), c.color_pair(5))
     w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
@@ -33,8 +33,8 @@ def print_menager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
 
-def item_menager(w, c, m, p):
-    print_menager(w, c, m, p, 5, 2)
+def item_manager(w, c, m, p):
+    print_manager(w, c, m, p, 5, 2)
     it = get_in(w)
     try:
         it = int(it)-1
@@ -70,7 +70,7 @@ def item_menager(w, c, m, p):
                             if p["BP"][q][1] in {"?","!"}:
                                 p["BP"][q][0] = p["BP"][q][0].copy()
                                 if p["BP"][q][1] == "?":
-                                    p["BP"][q][0][0] = ["SCROLL OF IDENTYFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","TREASURE MAPPING","SCROLL OF DISTURBANCE"][p["BP"][q][0][2]]
+                                    p["BP"][q][0][0] = ["SCROLL OF IDENTIFY","SCROLL OF TELEPORTATION","SCROLL OF BLESSING","TREASURE MAPPING","SCROLL OF DISTURBANCE"][p["BP"][q][0][2]]
                                 elif p["BP"][q][1] == "!":
                                     p["BP"][q][0][0] = ["POTION OF HEALING","POTION OF ENHANCEMENT","POTION OF FURY","POTION OF POISON"][p["BP"][q][0][2]]
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
@@ -127,8 +127,8 @@ def item_menager(w, c, m, p):
     return[translate("YOU TOOK A") + " " + translate(t[0][0]), True]
     return[translate("WRONG SLOT!"), False]
 
-def drop_menager(w, c, m, p):
-    print_menager(w, c, m, p, 5, 3)
+def drop_manager(w, c, m, p):
+    print_manager(w, c, m, p, 5, 3)
     it = get_in(w)
     try:
         it = int(it)-1
@@ -137,9 +137,9 @@ def drop_menager(w, c, m, p):
     except:
         return[p["echo"], False]
     t = p["BP"].pop(it)
-    return[translate("YOU FROWED IT AWAY"), True]
+    return[translate("YOU THREW IT AWAY"), True]
 
-def shot_menager(w, c, m, p):
+def shot_manager(w, c, m, p):
     w.clear()
     output(w, c, m, p)
     w.addstr(23, 0, translate("WHERE DO YOU WANT TO SHOT?"), c.color_pair(1))
@@ -154,7 +154,7 @@ def shot_menager(w, c, m, p):
     #    return[translate("YOU DON'T HAVE AMMO!"), False]
     #return[translate("YOU CAN'T SHOT THERE!"), False]
 
-def help(w, c, m, p): #not beautyful, but done -PR-
+def help(w, c, m, p): #not beautiful, but done -PR-
     w.clear()
     w.addstr(1, 0, "Game tiles:", c.color_pair(4))
     w.addstr(2, 2, "@/  - you/", c.color_pair(1))
@@ -169,7 +169,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(4, 28, "< - stairs up", c.color_pair(1))
     w.addstr(4, 54, '^ - very steep hill', c.color_pair(1))
     if not p["alt"]:
-        w.addstr(5, 58, 'but ungetable', c.color_pair(1))
+        w.addstr(5, 58, 'but ungettable', c.color_pair(1))
     else:
         w.addstr(5, 28, '" - bridge', c.color_pair(4))
 
@@ -189,7 +189,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
 
     w.addstr(13, 0, "Movement:", c.color_pair(4))
     w.addstr(14, 4, "7 8 9", c.color_pair(1))
-    w.addstr(15, 4, "4 5 6   5 - wait or take item from the flor", c.color_pair(1))
+    w.addstr(15, 4, "4 5 6   5 - wait or take item from the floor", c.color_pair(1))
     w.addstr(16, 4, "1 2 3", c.color_pair(1))
 
     w.addstr(18, 2, "+ - use (backpack)     * - to see scoreboard", c.color_pair(5))
@@ -202,11 +202,11 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(1, 0, "Dice:", c.color_pair(4))
     w.addstr(2, 2, "1D2 2H80% means:", c.color_pair(4))
-    w.addstr(3, 2, "- you attack your enemie 2 time", c.color_pair(1))
+    w.addstr(3, 2, "- you attack your enemy 2 times", c.color_pair(1))
     w.addstr(4, 2, "- your chance to hit is 80%", c.color_pair(1))
     w.addstr(5, 2, "- each of your success hit deals 1D2 damage", c.color_pair(1))
 
-    w.addstr(7, 0, "At lower depths roles of the game changes...", c.color_pair(4))
+    w.addstr(7, 0, "At lower depths rules of the game change...", c.color_pair(4))
     w.addstr(8, 2, "- so check this help", c.color_pair(1))
 
     w.addstr(10, 0, "Every 10 player levels, player will receive:", c.color_pair(4))
@@ -216,7 +216,7 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.addstr(14, 0, "Text like '.......... YOU NEED 1|2 MORE' means:", c.color_pair(4))
     w.addstr(15, 2, "- you need +1 dex to use it properly", c.color_pair(1))
     w.addstr(16, 2, "- you need +2 str to use it properly", c.color_pair(1))
-    w.addstr(17, 2, "- in other worlds, it is week in your hand by now, but mayby in the future?", c.color_pair(1))
+    w.addstr(17, 2, "- in other words, it is weak in your hand by now, but maybe in the future?", c.color_pair(1))
 
     w.addstr(19, 0, "Every 10 levels is a shop level for the player:", c.color_pair(4))
     w.addstr(20, 2, "- from the shop level you cannot go up!", c.color_pair(1))
@@ -231,27 +231,27 @@ def help(w, c, m, p): #not beautyful, but done -PR-
     w.clear()
     w.addstr(0, 0, "Using spells (colors):", c.color_pair(4))
     w.addstr(2, 2, "You can use this spell", c.color_pair(1))
-    w.addstr(3, 2, "You can't use this spell (your PC inteligence is to low...)", c.color_pair(5))
-    w.addstr(4, 2, "You can't use this spell (your PC need to be on tile with nature)", c.color_pair(2))
-    w.addstr(5, 2, "You can't use this spell (your PC need to be on tile with water)", c.color_pair(6))
+    w.addstr(3, 2, "You can't use this spell (your PC inteligence is too low...)", c.color_pair(5))
+    w.addstr(4, 2, "You can't use this spell (your PC needs to be on tile with nature)", c.color_pair(2))
+    w.addstr(5, 2, "You can't use this spell (your PC needs to be on tile with water)", c.color_pair(6))
     w.addstr(22, 4, "Don't forget about NumLock!", c.color_pair(2))
     w.addstr(23, 59, "Version = " + version, c.color_pair(1))
     w.getkey()
 
-# def item_menager_keyin(m, p, key):
+# def item_manager_keyin(m, p, key):
 
 def keyin(w, c, m, p, pos, key):
     match key:
         #case "-":
         #    pass
         case "+":
-            return item_menager(w, c, m, p)
+            return item_manager(w, c, m, p)
         case ",":
-            return drop_menager(w, c, m, p)
+            return drop_manager(w, c, m, p)
         case "0":
             if p["magic_list"]:
-                return spell_menager(w, c, m, p)
-            return shot_menager(w, c, m, p)
+                return spell_manager(w, c, m, p)
+            return shot_manager(w, c, m, p)
         case ">":
             if m["r"][pos[0]][pos[1]][0] == ">":
                 return ["#D", False]

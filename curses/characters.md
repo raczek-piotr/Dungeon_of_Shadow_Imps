@@ -1,8 +1,8 @@
-# Dungeons of Shadow Imps 1.1
+# Dungeons of Shadow Imps 1.1.x
 ## Dice
 `1D3 2H60%` means
-You try to hit the target 2 times, and each time you have an 60% chance to hit.
-For each successful hit, you roll a **1D3** to determine how much damage you do.
+You try to hit the target 2 times. Each time, you have a 60% chance to hit.
+For each successful hit, you roll a **1D3** to determine how much damage you deal.
 ## Races
 ### Human:
 -  Warrior

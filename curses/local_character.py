@@ -36,9 +36,9 @@ def character(w, c, p):
         "depth": 0,
         "strength": 9,
         "dexterity": 9,
-        "inteligence": 0,
+        "intelligence": 0,
         "magic_list": False,
-        "alt": False,
+        "alt": False, # could climb in „^”? in later game -PR-
         "gold": 200,
         "armor": 0,
         "basedefend": 50,
@@ -83,6 +83,7 @@ def character(w, c, p):
         "environment_bonus": 0,
         "type": 1, # type of dungeon -PR-
         "_type": 0,
+        # campain
         "camp": [[["surface",0],      [10,3],[10,3],[10,3],[0,3], [0,3], [0,3], [0,3], [0,3], [11,3],
                   ["stonehouse",0],   [11,3],[11,3],[11,3],[1,3], [1,3], [1,3], [12,3],[12,3],[12,3],
                   ["fudit_village",0],[12,3],[12,3],[12,3],[1,3], [1,3], [1,3], [1,3], [1,3], [13,3],
@@ -186,7 +187,7 @@ def human(w, c, p):
             case "6":
                 p["strength"] = 9
                 p["dexterity"] = 8
-                p["inteligence"] = 9
+                p["intelligence"] = 9
                 p["playertype"] = "HUMAN PALADIN"
                 p["e_hand"] = get_item(66)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -195,7 +196,7 @@ def human(w, c, p):
             case "7":
                 p["strength"] = 7
                 p["dexterity"] = 9
-                p["inteligence"] = 10
+                p["intelligence"] = 10
                 p["playertype"] = "HUMAN DRUID"
                 p["e_hand"] = get_item(63)
                 p["classicgame"] = False
@@ -204,7 +205,7 @@ def human(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "HUMAN WATER MAGE"
                 p["e_hand"] = get_item(64)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -214,7 +215,7 @@ def human(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "HUMAN WIZARD"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -222,7 +223,7 @@ def human(w, c, p):
                 break
             case _:
                 return False
-    p["gold"] = 350
+    p["gold"] = 35000
     # except last levels…
     p["environment"] = [1, 1, 1, 0]
     return True
@@ -275,7 +276,7 @@ def fudish(w, c, p):
             case "6":
                 p["strength"] = 9
                 p["dexterity"] = 8
-                p["inteligence"] = 9
+                p["intelligence"] = 9
                 p["playertype"] = "FUDISH PALADIN"
                 p["e_hand"] = get_item(66)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -284,7 +285,7 @@ def fudish(w, c, p):
             case "7":
                 p["strength"] = 7
                 p["dexterity"] = 9
-                p["inteligence"] = 10
+                p["intelligence"] = 10
                 p["playertype"] = "FUDISH DRUID"
                 p["e_hand"] = get_item(63)
                 p["classicgame"] = False
@@ -293,7 +294,7 @@ def fudish(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "FUDISH WATER MAGE"
                 p["e_hand"] = get_item(64)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -303,7 +304,7 @@ def fudish(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "FUDISH WIZARD"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -420,7 +421,7 @@ def gnome(w, c, p):
             case "6":
                 p["strength"] = 9
                 p["dexterity"] = 8
-                p["inteligence"] = 9
+                p["intelligence"] = 9
                 p["playertype"] = "GNOME PALADIN"
                 p["e_hand"] = get_item(66)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -429,7 +430,7 @@ def gnome(w, c, p):
             case "7":
                 p["strength"] = 7
                 p["dexterity"] = 9
-                p["inteligence"] = 10
+                p["intelligence"] = 10
                 p["playertype"] = "GNOME DRUID"
                 p["e_hand"] = get_item(63)
                 p["classicgame"] = False
@@ -438,7 +439,7 @@ def gnome(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "GNOME WATER MAGE"
                 p["e_hand"] = get_item(64)
                 p["BP"] = [get_item(6),get_item(7)]
@@ -448,7 +449,7 @@ def gnome(w, c, p):
                 p["ismage"] = True
                 p["strength"] = 7
                 p["dexterity"] = 7
-                p["inteligence"] = 12
+                p["intelligence"] = 12
                 p["playertype"] = "GNOME WIZARD"
                 p["e_hand"] = get_item(65)
                 p["BP"] = [get_item(6),get_item(7)]

@@ -8,9 +8,9 @@ def flag(f, n):
     return f%(2*n)//n
 # flags
 # 1 - is a shooter
-# 2 - poison/something_else (armor penetration)
+# 2 - 100% armor penetration)
 # 4 - random movement 50% (always)
-# 8 - wondering (move randomly when not chasing the player nor sleeping)
+# 8 - wandering (move randomly when not chasing the player nor sleeping)
 e = [
     ["r",4,2,3,1,5,"drop",3,1,3,"RAT", 8], #0
     ["m",3,2,2,1,5,"drop",3,1,3,"MOUSE", 0], #1
@@ -39,12 +39,12 @@ e = [
     ["s",12,27,44,1,7,"drop",36,34,36,"SHADOW IMP", 0], #21
     ["v",32,31,160,1,7,"drop",39,37,39,"SHADOW IMP VETERAN", 0], #22
     ]
-enemies_light = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
+enemies_light_levels = [e[1],e[1],e[1],e[1],e[2],e[3],e[5],e[6],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
                 e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[16],e[16],e[17],e[17],
                 e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],
                 e[19],e[19],e[19],e[19],e[20],e[20],e[20],e[21],e[21],e[22],e[22],e[22],e[22]]
-enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
+enemies_dark_levels = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
                 e[9],e[9],e[9],e[9],e[10],e[10],e[11],e[12],e[12],e[13],
                 e[14],e[14],e[14],e[14],e[15],e[16],e[16],e[16],e[16],e[17],e[17],e[17],
                 e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],e[18],
@@ -52,29 +52,31 @@ enemies_dark = [e[0],e[0],e[0],e[3],e[4],e[7],e[7],e[7],e[8],
 #enemies_half = enemies_light+enemies_dark
 #enemies_light = enemies_light+enemies_light
 #enemies_dark = enemies_dark+enemies_dark
-del e # „e” ↑ is used in functions leater; but data isn't deleted -PR-
+del e # „e” ↑ is used in functions later; but data is not deleted -PR-
 
-enemies_part1 = [enemies_light,
-                 enemies_light,
-                 enemies_dark,
-                 enemies_light]
-enemies_part2 = [enemies_light,
-                 enemies_dark,
-                 enemies_dark,
-                 enemies_dark]
+enemies_part1 = [enemies_light_levels,
+                 enemies_light_levels,
+                 enemies_light_levels,
+                 enemies_dark_levels]
+enemies_part2 = [enemies_light_levels,
+                 enemies_dark_levels,
+                 enemies_dark_levels,
+                 enemies_dark_levels]
 
 
 def enemies_class_clear():
 # c - warrior class, a - archer class, extended_tile_list - tile_list + heads -PR-
     global c, a, tile_list, shot_list, extended_tile_list, heads, elist
+    # walkable
     tile_list = {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%","\""}
-    shot_list = {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%","\"","^","&"}
+    # where could arrows etc aditionaly fly
+    shot_list = tile_list | {"^", "&"}
     extended_tile_list = tile_list.copy() # = tile_list + heads -PR-
     heads = set()
     c, a = [], []
     elist = [] # tmp list for enemies -PR-
-
-def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
+enemies_class_clear()
+def enemies_class_add(x, y, type_of, lw): #carrying is not used now -PR-
     #global enemies_likes_light, enemies_half_light, enemies_not_light
     if lw == 0:
         lw = 1
@@ -82,14 +84,14 @@ def enemies_class_add(x, y, type_of, lw): #carring is not used now -PR-
     if elist == []:
         for e in enemies_part1[type_of % 4]:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(randint(1, 3)):
+                for _ in range(randint(0, 4)):
                     elist.append(e)
         for e in enemies_part2[type_of % 4]:
             if e[8] <= lw and e[9] >= lw:
-                for _ in range(randint(1, 3)):
+                for _ in range(randint(0, 4)):
                     elist.append(e)
 
-    e = elist.pop(randint(0,len(elist)-1)).copy() # enemie -PR-
+    e = elist.pop(randint(0,len(elist)-1)).copy() # enemy -PR-
     e[8], e[9] = x, y
     if e[11]%2 == 1: # get a flag -PR-
         q, it = a, len(a)+500
@@ -107,7 +109,7 @@ def enemies_class_update(m, p, yx):
     while q != 0:
         q -= 1
     m["m"] = [[-1 for _ in range(m["sx"])] for _ in range(m["sy"])]
-    w, k = yx[0], yx[1] # row kolumn -PR-
+    w, k = yx[0], yx[1] # row column -PR-
     q = [[w, k, -1]]
     while q != []:
         p1 = q.pop(0)
@@ -144,7 +146,7 @@ def enemies_class_update(m, p, yx):
 
     for it in range(len(c)):
         q = c[it]
-        updete_enemie(m, p, q, it)
+        updete_enemy(m, p, q, it)
 
     for y in range(len(m["m"])): # time for archers -PR-
         for x in range(len(m["m"][0])):
@@ -192,9 +194,9 @@ def enemies_class_update(m, p, yx):
 
     for it in range(len(a)):
         q = a[it]
-        updete_enemie(m, p, q, it, 500)
+        updete_enemy(m, p, q, it, 500)
 
-def updete_enemie(m, p, q, it, plus_it = 0):
+def updete_enemy(m, p, q, it, plus_it = 0):
     if q[0]+zero3(it+plus_it) == m["r"][q[9]][q[8]][:4]: # could be updated -PR-
         if q[4] == 0: # wake up -PR-
             if flag(q[11], 4) and randint(0,1): # flag 4? -PR-
@@ -205,7 +207,7 @@ def updete_enemie(m, p, q, it, plus_it = 0):
                     if enemies_class_shot(m["r"], [q[9], q[8]], [p["y"], p["x"]], q[5]):
                         enemies_class_attack(p, q[0], q[2], flag(q[11], 2))
                 else:
-                    move_enemie(m, p, q, it, plus_it)
+                    move_enemy(m, p, q, it, plus_it)
             else:# flag(q[11], 8): # not sleeping and can't hear the player, flag 8 -PR-
                 randmove(m, p, q, it, plus_it)
         elif m["m"][q[9]][q[8]] < q[5] and m["m"][q[9]][q[8]] >= 0: # is sleeping, but would it wake up? -PR-
@@ -221,7 +223,7 @@ def randmove(m, p, q, it, plus_it):
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
     if m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-    if m["r"][direction[0]][direction[1]][0] in tile_list: # move an enemie? -PR-
+    if m["r"][direction[0]][direction[1]][0] in tile_list: # move an enemy? -PR-
         if m["r"][direction[0]][direction[1]] != "  ": # divine -PR-
             q[9], q[8] = direction
             m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
@@ -232,7 +234,7 @@ def randmove(m, p, q, it, plus_it):
     if m["r"][q[9]][q[8]][-1] != " " and m["v"][q[9]][q[8]][-1] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
 
-def move_enemie(m, p, q, it, plus_it):
+def move_enemy(m, p, q, it, plus_it):
     t_mmap = [[m["m"][q[9]-1][q[8]-1], q[9]-1, q[8]-1], [m["m"][q[9]-1][q[8]], q[9]-1, q[8]], [m["m"][q[9]-1][q[8]+1], q[9]-1, q[8]+1], [m["m"][q[9]][q[8]-1], q[9], q[8]-1], [m["m"][q[9]][q[8]+1], q[9], q[8]+1], [m["m"][q[9]+1][q[8]-1], q[9]+1, q[8]-1], [m["m"][q[9]+1][q[8]], q[9]+1, q[8]], [m["m"][q[9]+1][q[8]+1], q[9]+1, q[8]+1],
               ]
     p_min = m["m"][q[9]][q[8]]
@@ -246,7 +248,7 @@ def move_enemie(m, p, q, it, plus_it):
     m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:] # the same -PR-
     if m["v"][q[9]][q[8]] != " ":
         m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
-    if m["r"][direction[1]][direction[2]][0] in tile_list: # move an enemie? -PR-
+    if m["r"][direction[1]][direction[2]][0] in tile_list: # move an enemy? -PR-
         if m["r"][direction[1]][direction[2]] != "  ": # divine -PR-
             q[9], q[8] = direction[1:]
             m["r"][q[9]][q[8]] = body+m["r"][q[9]][q[8]]
@@ -259,10 +261,10 @@ def move_enemie(m, p, q, it, plus_it):
 
 # enemies attacks player
 
-def enemies_class_shot(rmap, e, p, hear_range):#  = 7): in shot -PR-
+def enemies_class_shot(rmap, e, p, hear_range = 7): # in shot -PR-
     global shot_list
     d = dire(e, p)
-    p = shot(rmap, p, d, shot_list, (hear_range if hear_range <= 7 else 7))
+    p = shot(rmap, p, d, shot_list, min(hear_range, 7))
     return p == e
 
 def enemies_class_attack(p, head, value, ap):
@@ -311,7 +313,7 @@ def enemies_class_is_cast(m, p, dire, value):
     p["bow_damage"] = value
     p["bow_hits"] = 1
     p["bow_acc"] = 100
-    p["echo"] = translate("YOU SHOT SOMEWERE")
+    p["echo"] = translate("YOU SHOTED SOMEWHERE")
     it = int(m["r"][ty][tx][1:4])
     enemies_class_is_attacked(m, p, it, value, 1)
 
@@ -338,12 +340,12 @@ def enemies_class_is_shoted(m, p, dire, value):
                 it = int(m["r"][ty][tx][1:4])
                 enemies_class_is_attacked(m, p, it, value, shots)
                 return
-            p["echo"] = translate("YOU SHOT SOMEWERE")
+            p["echo"] = translate("YOU SHOTED SOMEWHERE")
             return
     p["echo"] = translate("NO AMMO")
     return
 
-def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep of an enemie
+def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep of an enemy
     if it >= 500:
         q = a[it-500]
     else:
@@ -353,14 +355,14 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
     hits = (ranged if ranged else p["attack_hits"])
     rolls = (p["bow"] if ranged else p["attack"])
     damage = (p["bow_damage"] if ranged else p["attack_damage"])
-    write2log("attack enemie with properties " + str(acc)+" "+str(hits)+" "+str(rolls)+" "+str(damage))
+    write2log("attack enemy with properties " + str(acc)+" "+str(hits)+" "+str(rolls)+" "+str(damage))
         
     if p["blessing"]:
         hits *= 2
     if p["fury"]:
         rolls *= 2
     if q[4] != 0:
-        at_value += value * damage # free wake up hit
+        at_value += value * damage # free wake-up hit
         acc = acc if ranged else 100
         q[4] = 0
     for _ in range(hits):
@@ -371,14 +373,14 @@ def enemies_class_is_attacked(m, p, it, value, ranged = False): # value - sleep 
         at_value *= 2
     if at_value != 0:
         q[1] -= at_value
-        q[4], q[5] = 0, 7 # fast wake up enemie (if it sleeps) and it is alarmed now -PR-
+        q[4], q[5] = 0, 7 # fast wake up enemy (if it sleeps) and it is alarmed now -PR-
         p["echo"] = translate("YOU HIT A")+" "+translate(q[10])
         if q[1] <= 0 :
             m["r"][q[9]][q[8]] = m["r"][q[9]][q[8]][4:]
             if m["v"][q[9]][q[8]][0] == q[0]:
                 m["v"][q[9]][q[8]] = m["r"][q[9]][q[8]]
             p["xp"] += q[3] * (q[7] >= p["lw"])
-            p["echo"] = translate("YOU KILL A")+" "+translate(q[10])
-        p["echo"] += (" WITH A CRITIC HIT!" if critic else "")
+            p["echo"] = translate("YOU KILLED A")+" "+translate(q[10])
+        p["echo"] += (" WITH A CRITICAL HIT!" if critic else "")
     else:
-        p["echo"] = translate("YOU MISS A")+" "+translate(q[10])
+        p["echo"] = translate("YOU MISSED A")+" "+translate(q[10])

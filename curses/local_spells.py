@@ -36,14 +36,14 @@ fire_compendium = lambda p, option: (2 + int(p["lw"]**1.1) // 3 if p["ismage"] e
         case _:
             return 1'''
 
-def spell_menager(w, c, m, p):
+def spell_manager(w, c, m, p):
     q = "-1" # not in slots -PR-
     slots = set()
     colors = list()
     for i in range(len(p["magic_list"])):
         q = m["r"][p["y"]][p["x"]][0]
         ml = spell_list[p["magic_list"][i]]
-        if ml[3] <= p["inteligence"]:
+        if ml[3] <= p["intelligence"]:
             if (ml[1] == 1 or (ml[1] == 2 and q == "%") or (ml[1] == 6 and q == "=")):
                 slots.add(str(i+1))
                 colors.append(1)
@@ -67,7 +67,7 @@ def spell_menager(w, c, m, p):
     q = int(q)-1
 
     chance = spell_list[p["magic_list"][q]][2]
-    if spell_list[p["magic_list"][q]][3] < p["inteligence"]:
+    if spell_list[p["magic_list"][q]][3] < p["intelligence"]:
         chance = 95
     match spell_list[p["magic_list"][q]][4]:
 
@@ -177,7 +177,7 @@ def spell_menager(w, c, m, p):
         if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         enemies_class_is_blast(m, p, 8)
-        if p["inteligence"] >= 15 and randint(0, 100) < 40:
+        if p["intelligence"] >= 15 and randint(0, 100) < 40:
             enemies_class_is_blast(m, p, 8)
             return [translate("HYDROGEN BLAST DETONATED! CHAIN REACTION! DOUBLE DAMAGE!"), True]
         return[translate("HYDROGEN BLAST DETONATED!"), True]

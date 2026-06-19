@@ -60,12 +60,12 @@ def playerdata(y, p):
         case 6:
             return "depth: " + str(p["depth"])
         case 7:
-            if p["inteligence"] > 0:
+            if p["intelligence"] > 0:
                 return "str|dex|int"
             return "str|dex"
         case 8:
-            if p["inteligence"] > 0:
-                return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+" "*(3-len(str(p["dexterity"])))+str(p["dexterity"])+"|"+" "*(3-len(str(p["inteligence"])))+str(p["inteligence"])
+            if p["intelligence"] > 0:
+                return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+" "*(3-len(str(p["dexterity"])))+str(p["dexterity"])+"|"+" "*(3-len(str(p["intelligence"])))+str(p["intelligence"])
             return " "*(3-len(str(p["strength"])))+str(p["strength"])+"|"+str(p["dexterity"])
         case 9:
             return "gold: " + str(p["gold"])

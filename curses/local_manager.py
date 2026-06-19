@@ -38,12 +38,12 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             prepare_map(c, m, p)
             p["echo"] = translate("YOU READ A") + " " + translate("SCROLL OF DISTURBANCE")
             savegame(p)
-        case "#U": # UP-starir -PR-
+        case "#U": # UP-stair -PR-
             p["depth"] -= 1
             prepare_map(c, m, p)
             p["echo"] = translate("YOU WENT UPSTAIRS, AND THE DOOR CLOSED BEHIND YOU")
             savegame(p)
-        case "#D": # DOWN-starir -PR-
+        case "#D": # DOWN-stair -PR-
             p["depth"] += 1
             if p["depth"] >= 40:
                 p["echo"] = "#"
@@ -67,7 +67,7 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             c.init_pair(5, 245, -1) # grey
             c.init_pair(6, 57, -1)  # blue
             c.init_pair(7, 196, -1) # red
-            #It don't need to be definited here -PR-
+            #It doesn't need to be defined here -PR-
             c.init_pair(8, 41, -1) # 8 → 4 game type color -PR-
             c.init_pair(9, 41, -1) # 9 → wall color, almost the same colors as game type color -PR-
             m, p, path = character(w, c, p) # I have to return the data for the first time -PR-
