@@ -44,7 +44,7 @@ def get_equip_values(p):
         p["bow_damage"] = p["e_hand"][2](p, 1)
         p["bow_acc"] = p["e_hand"][2](p, 2)
         p["bow_hits"] = p["e_hand"][2](p, 3)
-        #p["magic_list"] = p["e_hand"][2]
+        p["magic_list"] = False
         p["hand_name"] = str(p["bow"])+"D"+str(p["bow_damage"])+" "+(str(p["bow_hits"])+"H"+str(p["bow_acc"])+"%")
         #p["hand_name"] = p["e_hand"][0][0]
         p["armor"] += 1 # fear of the fire
