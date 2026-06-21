@@ -183,7 +183,7 @@ def help(w, c, m, p): #not beautiful, but done -PR-
     w.addstr(9, 54, ") - armor", c.color_pair(2))
     w.addstr(10, 2, "~ - torch", c.color_pair(2))
     w.addstr(10, 28, "* - food", c.color_pair(2))
-    w.addstr(10, 54, "- - arrows", c.color_pair(2))
+    w.addstr(10, 54, "- - ammo", c.color_pair(2))
     w.addstr(11, 2, "? - scroll or a book", c.color_pair(2))
     w.addstr(11, 28, "! - potion", c.color_pair(2))
 
