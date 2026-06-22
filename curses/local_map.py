@@ -149,7 +149,7 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
             RandomTileConnect(m, "= ")
             RandomTileConnect(m, "= ")
-            environment = [": ", ": ", ": ", ": ", "% ", "% "]
+            environment = [":", ":", ":", ":", "% ", "% "]
 
         case 2:
             minhm = 7 # should be space on the map, but I do not calculated it yet -PR-
