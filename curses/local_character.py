@@ -21,7 +21,7 @@ def character(w, c, p):
         "classicgame": True,
         "color": 1,
         "normal_level": True,
-        "shift_type_of": 0,#at the depth -PR-
+        "shift_type_of": 0, #at the depth -PR-
         "skill": 1,
         "maxeat": 3500,
         "maxhp": 30,
@@ -96,7 +96,7 @@ def character(w, c, p):
         w.clear() # ? -PR-
         w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
         w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-        w.addstr(2, 35, version, c.color_pair(4))
+        w.addstr(2, 40 - int(len(version)/2), version, c.color_pair(4))
         w.addstr(3, 2, "SELECT A RACE:", c.color_pair(4))
         w.addstr(5, 2, "1 - HUMAN", c.color_pair(1))
         w.addstr(6, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
@@ -143,7 +143,7 @@ def human(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
+    w.addstr(2, 40 - int(len(version)/2), version, c.color_pair(4))
     w.addstr(4, 2, "THE MOST VARIOUS RACE IN THE GAME. THEY LIVE ON THE SURFACE", c.color_pair(1))
     w.addstr(5, 2, "CLASSES (HUMAN):", c.color_pair(4))
     w.addstr(7, 2, "1 - HUMAN WARRIOR", c.color_pair(1))
@@ -232,7 +232,7 @@ def fudish(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
+    w.addstr(2, 40 - int(len(version)/2), version, c.color_pair(4))
     w.addstr(4, 2, "FONGUS-LOOKING MONSTERS THAT LIVE IN THE WET PARTS OF THE DUNGEON", c.color_pair(2))
     w.addstr(5, 2, "CLASSES (FUDISH):", c.color_pair(4))
     w.addstr(7, 2, "1 - FUDISH WARRIOR", c.color_pair(1))
@@ -324,7 +324,7 @@ def dwarf(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
+    w.addstr(2, 40 - int(len(version)/2), version, c.color_pair(4))
     w.addstr(4, 2, "GOOD TANK FIGHTERS. BUT NO ONE KNOWS WHERE THEY COME FROM", c.color_pair(6))
     w.addstr(5, 2, "CLASSES (DWARF):", c.color_pair(4))
     w.addstr(7, 2, "1 - DWARF WARRIOR", c.color_pair(6))
@@ -368,7 +368,7 @@ def dwarf(w, c, p):
     #p["environment"] = [0, 0, 0, 0]
     p["maxhp"], p["hp"] = 40, 40
     p["hpchange"] = 4
-    p["basedefend"] = 20
+    p["basedefend"] = 40
     p["reg_time"] = 10
     p["reg_1/"] = 16
     return True
@@ -377,7 +377,7 @@ def gnome(w, c, p):
     w.clear()
     w.addstr(0, 30, "DUNGEON OF SHADOW IMPS", c.color_pair(2))
     w.addstr(1, 25, "SELECT A CHARACTER TO PLAY WITH", c.color_pair(1))
-    w.addstr(2, 35, version, c.color_pair(4))
+    w.addstr(2, 40 - int(len(version)/2), version, c.color_pair(4))
     w.addstr(4, 2, "HOW HAD YOU OPENED THE DOOR AND KILL THESE RATS?", c.color_pair(7))
     w.addstr(5, 2, "CLASSES (GNOME):", c.color_pair(4))
     w.addstr(7, 2, "1 - GNOME WARRIOR", c.color_pair(7))
@@ -463,6 +463,6 @@ def gnome(w, c, p):
     p["maxhp"], p["hp"] = 20, 20
     p["hpchange"] = 2
     p["basedefend"] = 60
-    p["reg_time"] = 6
+    p["reg_time"] = 8
     p["reg_1/"] = 10
     return True

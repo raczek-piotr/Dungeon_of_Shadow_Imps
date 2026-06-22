@@ -34,10 +34,11 @@ def deep_map(m, p, items, type_of, stairs):
     sizey, sizex = m["sy"]//2, m["sx"]//2
     m["r"] = [["#" for _ in range(m["sx"])] for _ in range(m["sy"])]
     m["v"] = [[" " for _ in range(m["sx"])] for _ in range(m["sy"])]
-               
 
     hm = 13
-    locate_a_room(m, pokoje, hm, 9, 3, 0)
+    pokoje.append([25-8, 25-8, 8, 8])
+    locate_a_room(m, pokoje, hm+1, 9, 3, 0)
+    pokoje.pop(0)
 
     for x in range(m["sx"]): # divine halo -PR-
         rx = x**2 + (m["sx"]-x-1)**2 # for optymalization, remember the value -PR-
@@ -184,7 +185,8 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[0]
                 direction += 1
-            m["r"][k][p_start[1]] = tile
+            if m["r"][k][p_start[1]] != "  ":
+            	m["r"][k][p_start[1]] = tile
             p_start[0] = k
         else:
             if p_start[1] < p_end[1]:
@@ -194,7 +196,8 @@ def RandomTileConnect(m, tile):
             else:
                 k = p_start[1]
                 direction -= 1
-            m["r"][p_start[0]][k] = tile
+            if m["r"][p_start[0]][k] != "  ":
+            	m["r"][p_start[0]][k] = tile
             p_start[1] = k
         if p_start[0] == p_end[0] and p_start[1] == p_end[1]:
             goal = False

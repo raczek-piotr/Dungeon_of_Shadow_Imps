@@ -100,7 +100,7 @@ def spell_manager(w, c, m, p):
                 p["fury"] = 2
                 return[translate("READY"), True]
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
-        return[translate("YOU ARE TOO LOW HP OR YOU HAVE SOME BUFFS (F,B)"), False]
+        return[translate("YOU ARE TOO LOW ON HP OR YOU HAVE SOME BUFFS (F,B)"), False]
      case 3: #DEDECT NATURE
         if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
@@ -118,7 +118,7 @@ def spell_manager(w, c, m, p):
         if p["hp"] == p["maxhp"]:
             return[translate("YOU CAN'T BE HEALED MORE"), False]
         if p["fullness"] < 100:
-            return[translate("EAT MORE FOOD"), False]
+            return[translate("EAT MORE FOOD FIRST"), False]
         if chance <= randint(0, 99): # test the spell -PR-
             return[translate("YOU FAILED TO CAST THE SPELL"), True]
         p["hp"] += p["maxhp"] // 5

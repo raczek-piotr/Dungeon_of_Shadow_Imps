@@ -8,7 +8,7 @@ A **classical ASCII rogue-like game** where you set off on a perilous quest to r
 
 # Warning
 - **I left game tiles as they were designed when I was 15, preserving it as a piece of history**
-- (A game tile is a… string that says everything (maximum length = 8) — Over time, this turned out not to be best idea)
+- (A game tile is a… string that says everything (maximum length = 8) — It’s an interesting but limited and slower approach.)
 
 ## About the Game
 

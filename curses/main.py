@@ -1,12 +1,15 @@
 # Author           : Piotr Raczek
 # Created On       : several months before 05.12.2022
 # Last Modified By : Piotr Raczek
-# Last Modified On : 20.08.2025
+# Last Modified On : 22.06.2026
 #
 # Product          : Dungeon of Shadow Imps
-# Version          : 1.1
+# Version          : 1.3-pre
 #
 # Description      : Classic ascii rogue game played in console
+#
+# First implement. : about 2020 displayed in print
+# Implementation   : third implementation from zero
 #
 # Licensed under GPL
 # (see /usr/share/common-licenses/GPL for more details
@@ -44,12 +47,11 @@ def mainloop(w):
     c.curs_set(0) # no visible cursor
     w.resize(24,80)
     c.resize_term(24,80)
-    write2log("initialing curses... Done")
-    write2log("loading stuff...")
+    write2log("initialing curses... Done\nloading stuff...")
     m, p, path = manager(w, c) # from there are imported maps and player :) -PR-
     reg_time, manacounter, foodcounter = 0, 0, 0
     test_room(m, [p["y"], p["x"]])
-    write2log("run main game loop")
+    write2log("running main game loop")
 
     while p["hp"] > 0:
         sort(p)

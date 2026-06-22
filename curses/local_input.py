@@ -76,8 +76,10 @@ def item_manager(w, c, m, p):
                     return[translate("YOU READ A") + " " + translate("SCROLL OF IDENTIFY"), True]
                 elif t[0][2] == 1:
                     mx, my = m["sx"]-1, m["sy"]-1
+                    px, py = p["x"], p["y"]
+                    x, y = px, py
                     q = "#"
-                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%"} or q == "  ":
+                    while q[0] not in {".",","," ","]","}",")","$","~","-","*","!","?","<",">","=","%"} or q == "  " or (x == px & y == py):
                         x, y = randint(1, mx), randint(1, my)
                         q = m["r"][y][x]
                     p["x"], p["y"] = x, y
@@ -196,15 +198,15 @@ def help(w, c, m, p): #not beautiful, but done -PR-
     w.addstr(19, 2, ", - drop (backpack)    > - go down    < - go up", c.color_pair(5))
     w.addstr(20, 2, "? - help               0 - shot / cast a spell", c.color_pair(5))
     w.addstr(22, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 59, "Version = " + version, c.color_pair(1))
+    w.addstr(23, 68-len(version), "Version = " + version, c.color_pair(1))
     w.getkey()
 
     w.clear()
     w.addstr(1, 0, "Dice:", c.color_pair(4))
-    w.addstr(2, 2, "1D2 2H80% means:", c.color_pair(4))
+    w.addstr(2, 2, "1D4 2H80% means:", c.color_pair(4))
     w.addstr(3, 2, "- you attack your enemy 2 times", c.color_pair(1))
     w.addstr(4, 2, "- your chance to hit is 80%", c.color_pair(1))
-    w.addstr(5, 2, "- each of your success hit deals 1D2 damage", c.color_pair(1))
+    w.addstr(5, 2, "- each of your success hit deals 1D4 damage", c.color_pair(1))
 
     w.addstr(7, 0, "At lower depths rules of the game change...", c.color_pair(4))
     w.addstr(8, 2, "- so check this help", c.color_pair(1))
@@ -219,10 +221,10 @@ def help(w, c, m, p): #not beautiful, but done -PR-
     w.addstr(17, 2, "- in other words, it is weak in your hand by now, but maybe in the future?", c.color_pair(1))
 
     w.addstr(19, 0, "Every 10 levels is a shop level for the player:", c.color_pair(4))
-    w.addstr(20, 2, "- from the shop level you cannot go up!", c.color_pair(1))
+    w.addstr(20, 2, "- from the shop level you cannot go back!", c.color_pair(1))
 
     w.addstr(22, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 59, "Version = " + version, c.color_pair(1))
+    w.addstr(23, 68-len(version), "Version = " + version, c.color_pair(1))
     w.getkey()
 
     if p["classicgame"]:
@@ -235,7 +237,7 @@ def help(w, c, m, p): #not beautiful, but done -PR-
     w.addstr(4, 2, "You can't use this spell (your PC needs to be on tile with nature)", c.color_pair(2))
     w.addstr(5, 2, "You can't use this spell (your PC needs to be on tile with water)", c.color_pair(6))
     w.addstr(22, 4, "Don't forget about NumLock!", c.color_pair(2))
-    w.addstr(23, 59, "Version = " + version, c.color_pair(1))
+    w.addstr(23, 68-len(version), "Version = " + version, c.color_pair(1))
     w.getkey()
 
 # def item_manager_keyin(m, p, key):

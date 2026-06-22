@@ -78,13 +78,14 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
     q = ""
     for i in traders[it]:
         ilist.append(get_item(i)) 
-    slots = {str(i) for i in range(len(ilist))}
+    slots = {str(i+1)[-1] for i in range(len(ilist))}
     for i in ilist:
         if i[1] == "-":
             i[-1] *= i[2]
     while True:
         if q in slots:
-            i = ilist[int(q)]
+            q = int(q)-1
+            i = ilist[q]
             if (len(p["BP"]) < 6 or i[1] == "-" and in_BP(p["BP"], i)) and p["gold"] >= i[-1]:
                 p["gold"] -= i[-1]
                 if i[1] == "-":
@@ -109,7 +110,7 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
         w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(ilist)):
-            w.addstr(i+3, 2, str(i)+": "+item(ilist[i], 9, p), c.color_pair(1))
+            w.addstr(i+3, 2, str(i+1)[-1]+": "+item(ilist[i], 9, p), c.color_pair(1))
             t = str(ilist[i][-1])
             w.addstr(i+3, 68, "COST:", c.color_pair(1))
             w.addstr(i+3, 78-len(t), t, c.color_pair(1))
@@ -120,13 +121,13 @@ def trader(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
 
 def seller(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited by python -PR-
     q = ""
-    slots = {str(i) for i in range(len(p["BP"]))}
+    slots = {str(i+1)[-1] for i in range(len(p["BP"]))}
     for i in ilist:
         if i[1] == "-":
             i[-1] *= i[2]
     while True:
         if q in slots:
-            q = int(q)
+            q = int(q)-1
             echo = translate("YOU SELL")+" '"+translate(item(p["BP"], q, p))+"'"
             t = p["BP"][q][-1] * p["BP"][q][3]
             if p["BP"][q][1] == "-":
@@ -149,7 +150,7 @@ def seller(w, c, m, p, it, trader, ilist = []): #it → id, but id is definited 
         w.addstr(1, 2, "Your gold: "+str(p["gold"]), c.color_pair(1))
         w.addstr(2, 0, "Items:", c.color_pair(5))
         for i in range(len(p["BP"])):
-            w.addstr(i+3, 2, str(i)+": "+item(p["BP"], i, p), c.color_pair(1))
+            w.addstr(i+3, 2, str(i+1)[-1]+": "+item(p["BP"], i, p), c.color_pair(1))
             t = p["BP"][i][-1] * p["BP"][i][3]
             if p["BP"][i][1] == "-":
                 t *= p["BP"][i][2]

@@ -117,7 +117,7 @@ def map_init_int(m, p, items, type_of, stairs):
 
         case 1:
             hm = 0
-            while hm < 16:
+            while hm < 18:
                 sy, sx = randint(2,3), randint(2,4)
                 y, x = randint(1, m["sy"] - sy -1), randint(1, m["sx"] - sx -1)
                 can = True
@@ -149,10 +149,10 @@ def map_init_int(m, p, items, type_of, stairs):
                 m["r"][pokoje[-4][0]+pokoje[-4][2]//2][pokoje[-4][1]+pokoje[-4][3]//2] = "< "
             RandomTileConnect(m, "= ")
             RandomTileConnect(m, "= ")
-            environment = [".", ".", ".", ".", "% ", "% "] # „.” - lost light -PR-
+            environment = [": ", ": ", ": ", ": ", "% ", "% "]
 
         case 2:
-            minhm = 7 # should be space on the map, but… not calculated yet -PR-
+            minhm = 7 # should be space on the map, but I do not calculated it yet -PR-
             while len(pokoje) < minhm:
                 sy, sx = 1+2*randint(1,2), 1+2*randint(1,2)
                 y, x = 1+2*randint(0, sizey - sy), 1+2*randint(0, sizex - sx)
@@ -274,7 +274,7 @@ def map_init_int(m, p, items, type_of, stairs):
     for k in environment: # trash: water, nature, …
         i = randint(1, l_pokoje) # (1→ran) player with nonething else in start_room -PR-
         j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
-        while m["r"][j[0]][j[1]][0] not in {" ",".","=","%"}:
+        while m["r"][j[0]][j[1]][0] not in {" ","."}:
             i = randint(1, l_pokoje)
             j = [pokoje[i][0]+randint(0, pokoje[i][2]-1), pokoje[i][1]+randint(0, pokoje[i][3]-1)]
         m["r"][j[0]][j[1]] = k+m["r"][j[0]][j[1]]

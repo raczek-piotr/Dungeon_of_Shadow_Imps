@@ -1,45 +1,35 @@
-# Dungeons of Shadow Imps 1.2
+# Dungeons of Shadow Imps 1.3
 ## Dice
 `1D4 2H60%` means
 You try to hit the target 2 times. Each time, you have a 60% chance to hit.
 For each successful hit, you roll a **1D4** to determine how much damage you deal.
 ## Races
 ### Human:
--  Warrior
--  Bandit
--  Duelist
--  Rogue
--  Archer
--  Paladin
--  Druid
--  Water Mage
--  Wizard
+- Max hit points (MHP): 30 + 3 × (LW − 1).<br>Example: LW 1 = 30 MHP
+- HP regeneration: + (1/10 of MHP) per 10 turns.
+- Base defend: 50%
+- maximum food: 3500
+- Starting gold: 350
 ### Fudish:
--  Warrior
--  Bandit
--  Duelist
--  Rogue
--  Archer
--  Paladin
--  Druid
--  Water Mage
--  Wizard
+- Max hit points (MHP): 30 + 3 × (LW − 1).<br>Example: LW 1 = 30 MHP
+- HP regeneration: + (1/10 of MHP) per 12 turns.
+- Base defend: 60%
+- maximum food: 5000
+- Starting gold: 200
 ### Dwarf:
--  Warrior
--  Bandit
--  Duelist
--  Rogue
--  Archer
+- Max hit points (MHP): 40 + 4 × (LW − 1).<br>Example: LW 1 = 40 MHP
+- HP regeneration: + (1/16 of MHP) per 10 turns.
+- Base defend: 40%
+- maximum food: 3500
+- Starting gold: 200
+- No critic hits
 ### Gnome:
--  Warrior
--  Bandit
--  Duelist
--  Rogue
--  Archer
--  Paladin
--  Druid
--  Water Mage
--  Wizard
+- Max hit points (MHP): 20 + 2 × (LW − 1).<br>Example: LW 1 = 20 MHP
+- HP regeneration: + (1/10 of MHP) per 8 turns.
+- Base defend: 60%
+- maximum food: 3500
+- Starting gold: 200
+- Iniciative (opening doors)
 ## Classic DoSI Classes
 ### Warrior
 -  **strength** 11
