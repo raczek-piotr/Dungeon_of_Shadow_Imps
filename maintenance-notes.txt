@@ -1,0 +1,1 @@
+Because I maintain it on my own and don’t want to ‘teach’ AI (e.g., I don’t want to write small hints like ‘this small change do this, and that change done that’), I make big commits. The project is so small that I sometimes do a few things in parallel.
