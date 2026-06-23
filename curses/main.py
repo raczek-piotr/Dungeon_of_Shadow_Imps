@@ -82,11 +82,11 @@ def mainloop(w):
         if p["moved"]:
             p["time"] += 1  # for the player, not for me (not now) -PR-
             if p["torch"]:
-                p["torchtime"] -= p["normal_level"] #on „idle levels” player do not need to eat and... -PR-
+                p["torchtime"] -= p["dungeon_level"] #on „idle levels” player do not need to eat and... -PR-
                 if p["torchtime"] < 0:
                     p["torch"] = False
             if not p["starving"]:
-                p["fullness"] -= p["normal_level"]
+                p["fullness"] -= p["dungeon_level"]
                 if p["fullness"] < 1:
                     p["starving"] = True
                     c.beep() # alarm the player -PR-

@@ -28,10 +28,10 @@ def print_manager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(12, 2, item(p["e_hand"], 9, p), c.color_pair(5))
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
-    w.refresh() # ? -PR-
     for i in range(6):
         w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
+    w.refresh()
 
 def item_manager(w, c, m, p):
     print_manager(w, c, m, p, 5, 2)

@@ -108,14 +108,14 @@ def prepare_map(c, m, p):
     enemies_class_clear()
     ilist = []
     if type(h[0]) == int:
-        p["normal_level"] = True # "needs" are enable/disable -PR-
+        p["dungeon_level"] = True # "needs" are enable/disable -PR-
         ilist = randitem(h[0]+5, 8, 58)+randitem(2, 0, 4)# + ammo -PR-
         for _ in range(randint(0,3+p["type"])):
             ilist.append("$"+zero3(randint(3,5+5*p["type"])))
         if p["type"] == 2:
             ilist += randitem(4, 4, 4)
     #else:
-    #    p["normal_level"] = False
+    #    p["dungeon_level"] = False
     typ = color_type[p["type"]] # TYPe -PR-
     if typ < 0:
         typ = 0

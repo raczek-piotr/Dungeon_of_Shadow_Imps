@@ -29,7 +29,7 @@ For each successful hit, you roll a **1D4** to determine how much damage you dea
 - Base defend: 60%
 - maximum food: 3500
 - Starting gold: 200
-- Iniciative (opening doors)
+- Initiative (opening doors)
 ## Classic DoSI Classes
 ### Warrior
 -  **strength** 11

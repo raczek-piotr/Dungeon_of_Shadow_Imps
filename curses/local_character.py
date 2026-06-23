@@ -20,7 +20,7 @@ def character(w, c, p):
         "playertype": "HUMAN DUELIST",
         "classicgame": True,
         "color": 1,
-        "normal_level": True,
+        "dungeon_level": True,
         "shift_type_of": 0, #at the depth -PR-
         "skill": 1,
         "maxeat": 3500,
@@ -59,7 +59,7 @@ def character(w, c, p):
         "e_armor": get_item(16),
         "blessing": 0,
         "fury": 0,
-        "iniciative": 0,
+        "initiative": 0,
         "y": 0,
         "x": 0,
         "dy": 0, # direction (movement or attack) y -PR-
@@ -458,7 +458,7 @@ def gnome(w, c, p):
             case _:
                 return False
     p["color"] = 7
-    p["iniciative"] = 1
+    p["initiative"] = 1
     p["environment"] = [1, 1, 1, 1]
     p["maxhp"], p["hp"] = 20, 20
     p["hpchange"] = 2

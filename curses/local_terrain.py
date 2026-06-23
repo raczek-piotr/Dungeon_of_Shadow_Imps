@@ -36,11 +36,11 @@ def f_door(m, p, npos, stay):
     if m["v"][npy][npx] == "":
         m["v"][npy][npx] = " "
     echo = translate("YOU OPEN A DOOR")
-    if p["iniciative"]:
+    if p["initiative"]:
         p["y"], p["x"] = npy, npx
         p["blessing"] = max(p["blessing"], 2)
         p["fury"] = max(p["fury"], 2)
-        echo += " " + translate("... INICIATIVE TAKEN!")
+        echo += " " + translate("... INITIATIVE TAKEN!")
         return[False, echo, False] 
     return[False, echo, True]
 
