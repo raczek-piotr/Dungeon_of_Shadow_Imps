@@ -110,18 +110,20 @@ def output(w, c, m, p):
                 tx = p["x"] + x - 26
                 if tx >= 0 and tx < m["sx"]:
                     i = t[tx][0]
-                    if i in {"@","]","}",")","~","$","*","-","?","!","%"}:
+                    if i in {"@","]","}",")","~","$","*","-","?","!"}:
                         col = 2
+                    elif i in {"<",">","+",",",":","\"","_"}:
+                        col = 4
+                    elif i.upper() != i.lower():
+                        col = 3
                     elif i == "#":
                         col = 9
                     elif i == "=":
                         col = 6
                     elif i == "&":
                         col = 7
-                    elif i in {"<",">","+",",",":","\"","_"}:
-                        col = 4
-                    elif i.upper() != i.lower():
-                        col = 3
+                    elif i == "%":
+                        col = 10
                     else:
                         col = 1
                     w.addstr(y, x, i, c.color_pair(col))

@@ -70,6 +70,7 @@ def manager(w, c, command = "#R", m = {}, p = {}): # #E - end game #R - try to r
             #It doesn't need to be defined here -PR-
             c.init_pair(8, 41, -1) # 8 → 4 game type color -PR-
             c.init_pair(9, 41, -1) # 9 → wall color, almost the same colors as game type color -PR-
+            c.init_pair(10, 41, -1)# green 2
             m, p, path = character(w, c, p) # I have to return the data for the first time -PR-
             if p["ismage"]:
                 mage_items()
