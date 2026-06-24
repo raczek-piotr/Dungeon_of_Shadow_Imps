@@ -51,10 +51,10 @@ def f_block(m, p, npos, stay):
         m["v"][npy][npx] = m["v"][npy][npx][1:]
         if m["v"][npy][npx] == "":
             m["v"][npy][npx] = " "
-        echo = translate("THE WEEK WALL FALLED DOWN")
+        echo = translate("THE WEAK WALL FALLED DOWN")
         return[False, echo, False] 
     else:
-        echo = translate("YOU STRUCK THE WEEK WALL")
+        echo = translate("YOU STRUCK THE WEAK WALL")
     return[False, echo, True]
 
 def in_BP(BP, item): #copy is in local_npc.py
