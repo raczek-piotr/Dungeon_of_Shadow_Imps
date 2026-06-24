@@ -12,7 +12,7 @@ from local_scores import scoreboard_print
 from local_spells import spell_manager
 
 
-def print_manager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is -PR-
+def print_manager(w, c, m, p, backpackcolor): # m is'n needed, but for formality it is -PR-
     w.clear()
     w.addstr(0, 0, translate("FOOD")+":  "+(translate("STARVING") if p["starving"] else str(p["fullness"])+"/"+str(p["maxeat"])), c.color_pair(4))
     w.addstr(1, 0, translate("LIGHT")+": "+(translate("NO LIGHT") if not p["torch"] else str(p["torchtime"])), c.color_pair(4))
@@ -29,12 +29,12 @@ def print_manager(w, c, m, p, cm, bc): # m is'n needed, but for formality it is 
     w.addstr(13, 2, item(p["e_armor"], 9, p), c.color_pair(5))
     w.addstr(16, 0, "Backpack:", c.color_pair(4))
     for i in range(6):
-        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(bc))
+        w.addstr(17+i, 2, str(i+1)+": "+item(p["BP"], i, p), c.color_pair(backpackcolor))
     w.addstr(23, 0, "What do you want to do?:", c.color_pair(4))
     w.refresh()
 
 def item_manager(w, c, m, p):
-    print_manager(w, c, m, p, 5, 2)
+    print_manager(w, c, m, p, 2)
     it = get_in(w)
     try:
         it = int(it)-1
@@ -130,7 +130,7 @@ def item_manager(w, c, m, p):
     return[translate("WRONG SLOT!"), False]
 
 def drop_manager(w, c, m, p):
-    print_manager(w, c, m, p, 5, 3)
+    print_manager(w, c, m, p, 3)
     it = get_in(w)
     try:
         it = int(it)-1
