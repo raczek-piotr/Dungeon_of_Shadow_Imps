@@ -1,10 +1,10 @@
 # Author           : Piotr Raczek
 # Created On       : several months before 05.12.2022
 # Last Modified By : Piotr Raczek
-# Last Modified On : 22.06.2026
+# Last Modified On : 26.06.2026
 #
 # Product          : Dungeon of Shadow Imps
-# Version          : 1.2-pre
+# Version          : 1.2.1
 #
 # Description      : Classic ascii rogue game played in console
 #

@@ -127,7 +127,7 @@ def output(w, c, m, p):
                     else:
                         col = 1
                     w.addstr(y, x, i, c.color_pair(col))
-        w.addstr(y, 53, "|", c.color_pair(5))
+        w.addstr(y, 53, "|", c.color_pair(4))
         w.addstr(y, 56, playerdata(y, p), c.color_pair(1))
     w.addstr(1, 56, p["playertype"], c.color_pair(p["color"]))
     if p["torch"]:
@@ -138,9 +138,9 @@ def output(w, c, m, p):
                 if m["v"][i[0]][i[1]] == " ":
                     w.addstr(11+y, 26+x, ".", c.color_pair(1))
     w.addstr(22, 69, p["wasattackby"], c.color_pair(3))
-    w.addstr(0, 55, spacer, c.color_pair(5))
-    w.addstr(2, 55, spacer, c.color_pair(5))
-    w.addstr(10, 55, spacer, c.color_pair(5))
+    w.addstr(0, 55, spacer, c.color_pair(4))
+    w.addstr(2, 55, spacer, c.color_pair(4))
+    w.addstr(10, 55, spacer, c.color_pair(4))
     if p["starving"]:
         w.addstr(12, 56, "S", c.color_pair(3))
     if not p["torch"]:
@@ -151,6 +151,6 @@ def output(w, c, m, p):
         w.addstr(13, 55, "F", c.color_pair(2))
     if p["environment_bonus"]:
         w.addstr(11, 55, str(p["environment_bonus"]), c.color_pair(8))
-    w.addstr(14, 55, spacer, c.color_pair(5))
-    w.addstr(21, 55, spacer, c.color_pair(5))
+    w.addstr(14, 55, spacer, c.color_pair(4))
+    w.addstr(21, 55, spacer, c.color_pair(4))
     w.addstr(11, 26, "@", c.color_pair(1))

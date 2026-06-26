@@ -47,7 +47,7 @@ def npc(w, c, m, p, it, stay):
         case 2:
             return trader(w, c, m, p, it, "Druid", [[["POTION OF ENHANCEMENT", 3, 1], "!", 1, True, 120],[["POTION OF HEALING", 3, 0], "!", 1, True, 120]])
         case 3:
-            return[False, translate("- I DON'T KNOW WHAT TO THINK ABOUT YOUR DREAM!"), False]
+            return[False, translate(choice(["- I DON'T KNOW WHAT TO THINK ABOUT YOUR DREAM!", "- FIND THE BOOK OF BOOKS!", "- BE FAST, SOMETHING IS DESTROYING US!"])), False]
         case 4:
             return trader(w, c, m, p, it, "Armory", [
 [["ARROW", "ARROWS"], "-", 25, True, 2],
@@ -61,9 +61,10 @@ def npc(w, c, m, p, it, stay):
         case 7:
             return[False, translate("- YOU ARE FREE TO TAKE IT"), False]
         case 8:
+            return[False, translate(choice(["- SHERIF IS EMBARRASSED", "- GO! DON'T WASTE TIME, OK?"])), False]
             return[False, translate("- SHERIF IS EMBARRASSED"), False]
         case 9:
-            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- FIND THE BOOK OF BOOKS", "- CIVILIZATION? NO, NOBODY LIVE HERE LIKE HIM... I NEVER SEE HIM", "- BRING LIGHT TO YOUR VILLAGE!", "- THE DRUID IS BETWEEN THE RIVERS"])), False]
+            return[False, translate(choice(["- DO YOUR JOB, I WAN'T HELP YOU!", "- MY HOME IS GONE, WE ALL WILL DIE"])), False]
         case 10:
             return[False, translate(choice(["- FOOD? WE ATE MOLD... IT IS EVERYWERE!", "- FUNGAL GARDENS ARE BELOW US, WITH MOLD!"])), False]
     return[False, p["echo"], False]

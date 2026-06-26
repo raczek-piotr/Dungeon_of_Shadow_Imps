@@ -1,4 +1,4 @@
-# Dungeons of Shadow Imps 1.2
+# Dungeons of Shadow Imps 1.2.1
 ## Dice
 `1D4 2H60%` means
 You try to hit the target 2 times. Each time, you have a 60% chance to hit.
